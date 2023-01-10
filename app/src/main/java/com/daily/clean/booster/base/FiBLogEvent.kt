@@ -13,15 +13,15 @@ import java.util.*
 
 object FiBLogEvent {
 
-    val firebaseAnalytics: FirebaseAnalytics by lazy {
+    private val firebaseAnalytics: FirebaseAnalytics by lazy {
         FirebaseAnalytics.getInstance(App.ins)
     }
 
-    fun logEvent(key: String) {
+    private fun logEvent(key: String) {
         logEvent(key, null)
     }
 
-    fun logEvent(key: String, params: Bundle?) {
+    private fun logEvent(key: String, params: Bundle?) {
         LogDB.dEvent("LOGDOT---$key <<< $params")
         if (DBConfig.DAIBOO_USE_FB) {
             firebaseAnalytics.logEvent(key, params)

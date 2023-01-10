@@ -46,20 +46,20 @@ abstract class BaseActivity<T: ViewBinding> : AppCompatActivity() {
         dailyLoad()
     }
 
-    var isPause: Boolean = false
+    var isPaused: Boolean = false
     override fun onResume() {
         super.onResume()
-        isPause = false
+        isPaused = false
     }
 
     override fun onPause() {
         super.onPause()
-        isPause = true
+        isPaused = true
     }
 
     override fun onStop() {
         super.onStop()
-        isPause = true
+        isPaused = true
     }
 
 
@@ -104,9 +104,6 @@ abstract class BaseActivity<T: ViewBinding> : AppCompatActivity() {
     }
 
 
-    /**
-     * @param isNotCheckFileManagerPermisson  是否不继续检查 文件管理权限
-     */
     fun checkStoragePermission(
         onGranted: () -> Unit,
         onDenied: (Boolean) -> Unit
@@ -142,7 +139,7 @@ abstract class BaseActivity<T: ViewBinding> : AppCompatActivity() {
 
 
     //请求 危险权限，管理外部存储权限
-    fun checkIsHaveAllStoragePermission(onGranted: () -> Unit, onDenied: (Boolean) -> Unit) {
+    private fun checkIsHaveAllStoragePermission(onGranted: () -> Unit, onDenied: (Boolean) -> Unit) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !Environment.isExternalStorageManager()) {
 
             MaterialDialog(this).show {

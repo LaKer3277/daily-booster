@@ -31,7 +31,6 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         return ActivityHomeBinding.inflate(layoutInflater)
     }
 
-
     override fun dailyData() {
         FiBLogEvent.page_home_show()
     }
@@ -56,7 +55,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     }
 
 
-    fun initMenu() {
+    private fun initMenu() {
         binding.contentSetting.ivMenuBg.setOnClickListener { }
         binding.contentSetting.llContact.setOnClickListener { goContactUs() }
         binding.contentSetting.llPrivacy.setOnClickListener { goPrivacy() }
@@ -64,7 +63,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         binding.contentSetting.llUpdate.setOnClickListener { updateApp() }
     }
 
-    fun initHome() {
+    private fun initHome() {
         binding.contentHome.titleMenu.setOnClickListener {
             binding.drawerLayout.open()
         }
@@ -87,8 +86,6 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             FiBLogEvent.page_home_clean()
             clean(DBConfig.DAIBOO_WORK_ID_CLEAN)
         }
-
-
     }
 
     fun clean(workId: String) {
@@ -105,15 +102,15 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         }
     }
 
-    fun main() = this@HomeActivity
+    private fun main() = this@HomeActivity
 
-    fun work_junkClean() {
+    private fun work_junkClean() {
         DaiBooADUtil.load(DBConfig.DAIBOO_AD_RESULT_NV, main())
         DaiBooADUtil.load(DBConfig.DAIBOO_AD_CLEAN_IV, main())
         main().goJunkCleanScanning(DBConfig.DAIBOO_ACTION_FROM_MAIN)
     }
 
-    fun work_boost(id: String) {
+    private fun work_boost(id: String) {
         DaiBooADUtil.load(DBConfig.DAIBOO_AD_RESULT_NV, main())
         DaiBooADUtil.load(DBConfig.DAIBOO_AD_CLEAN_IV, main())
         main().goBoosting(id, actionStr = DBConfig.DAIBOO_ACTION_FROM_MAIN)
@@ -121,7 +118,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
 
     var lastScanTime = 0L
-    fun updateView() {
+    private fun updateView() {
         if (DaiBooMK.isNeedClean()) {
             if (System.currentTimeMillis() - lastScanTime > 2.mm) {
                 binding.contentHome.run {

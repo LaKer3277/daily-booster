@@ -21,7 +21,6 @@ class FirstEnterActivity : BaseActivity<ActivityFirstBinding>() {
         return ActivityFirstBinding.inflate(layoutInflater)
     }
 
-
     override fun dailyData() {
         FiBLogEvent.start_first_()
     }
@@ -49,13 +48,13 @@ class FirstEnterActivity : BaseActivity<ActivityFirstBinding>() {
         initLocalData()
     }
 
-    fun initLocalData() {
+    private fun initLocalData() {
         FiBRemoteUtil.initFireBaseData {
             loadADS()
         }
     }
 
-    fun goScan() {
+    private fun goScan() {
         binding.layStart.root.visibility = View.INVISIBLE
         binding.layScan.root.visibility = View.VISIBLE
         var pro = 0
@@ -68,12 +67,10 @@ class FirstEnterActivity : BaseActivity<ActivityFirstBinding>() {
             if (pro >= 100) {
                 goInfo()
             }
-
         }
-
     }
 
-    fun goInfo() {
+    private fun goInfo() {
         binding.layScan.root.visibility = View.INVISIBLE
         binding.layInfo.root.visibility = View.VISIBLE
         DaiBooMK.saveFirstStart()
@@ -87,7 +84,7 @@ class FirstEnterActivity : BaseActivity<ActivityFirstBinding>() {
     }
 
 
-    fun showUsedRAM() {
+    private fun showUsedRAM() {
         lifecycleScope.launch {
 
             val usedPer = DaiBooRAMUtils.getUsedMemoryStringPerInt()
@@ -101,17 +98,14 @@ class FirstEnterActivity : BaseActivity<ActivityFirstBinding>() {
             //使用了的
             binding.layInfo.tvUsed.text = "${DaiBooRAMUtils.getUsedMemoryString()}"
 
-
             binding.layInfo.tvRamUsageIsUp.setForegroundColorSpanText(this@FirstEnterActivity.getString(
                 R.string.boost_now_text,
                 usedPerStr
             ))
-
             binding.layInfo.tvBoostNow.setOnClickListener {
                 goBoosting(DBConfig.DAIBOO_WORK_ID_BOOSTER, isFirst = true, actionStr = DBConfig.DAIBOO_ACTION_FROM_FIRST)
                 finish()
             }
-
         }
     }
 
@@ -121,10 +115,9 @@ class FirstEnterActivity : BaseActivity<ActivityFirstBinding>() {
         jobLoadOpen?.cancel()
     }
 
-    var isCacheOpenAd = false
     var jobLoadOpen: Job? = null
     var loadTimes = 0
-    fun loadADS() {
+    private fun loadADS() {
         loadTimes = 0
 
         lifecycleScope.launch {
@@ -133,15 +126,10 @@ class FirstEnterActivity : BaseActivity<ActivityFirstBinding>() {
             DaiBooADUtil.load(DBConfig.DAIBOO_AD_RESULT_NV, this@FirstEnterActivity)
             DaiBooADUtil.load(DBConfig.DAIBOO_AD_CLEAN_IV, this@FirstEnterActivity)
         }
-
-
-//        ADClnoptUtil.load(MainConfig.DAIBOO_AD_BACK_INT, this)
-
-
     }
 
     var isShowedAD = false
-    fun showAD(next: () -> Unit) {
+    private fun showAD(next: () -> Unit) {
         lifecycleScope.launch {
             delay(100)
             DaiBooADUtil.showAD(DBConfig.DAIBOO_AD_OPEN, this@FirstEnterActivity) {
@@ -150,13 +138,10 @@ class FirstEnterActivity : BaseActivity<ActivityFirstBinding>() {
                 next.invoke()
             }
         }
-
     }
 
 
     override fun onBackPressed() {
-
     }
-
 
 }

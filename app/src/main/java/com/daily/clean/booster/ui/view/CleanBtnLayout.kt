@@ -33,9 +33,4 @@ class CleanBtnLayout : FrameLayout {
         icon?.let { binding.itemIcon.setImageResource(it) }
     }
 
-
-
-
-
-
 }

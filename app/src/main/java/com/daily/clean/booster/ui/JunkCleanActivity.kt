@@ -3,7 +3,6 @@ package com.daily.clean.booster.ui
 import android.view.View
 import android.view.animation.LinearInterpolator
 import androidx.lifecycle.lifecycleScope
-import com.blankj.utilcode.util.ToastUtils
 import com.daily.clean.booster.R
 import com.daily.clean.booster.ad.DaiBooADUtil
 import com.daily.clean.booster.base.BaseActivity
@@ -14,7 +13,6 @@ import com.daily.clean.booster.entity.DaiBooCleanEvent
 import com.daily.clean.booster.utils.DaiBooMK
 import com.daily.clean.booster.utils.doCycle
 import com.daily.clean.booster.utils.goCleanResult
-import com.daily.clean.booster.utils.toast
 import com.lzp.dslanimator.PlayMode
 import com.lzp.dslanimator.animSet
 import kotlinx.coroutines.*
@@ -30,7 +28,6 @@ class JunkCleanActivity : BaseActivity<ActivityCleanBinding>() {
     }
 
     override fun dailyView() {
-
         binding.titleText.text = getString(R.string.junk_clean)
         binding.titleBack.setOnClickListener {
             finish()
@@ -43,15 +40,15 @@ class JunkCleanActivity : BaseActivity<ActivityCleanBinding>() {
 
     override fun onResume() {
         super.onResume()
-        if (isCleand.not()) {
+        if (isCleaned.not()) {
             cleanJob()
         }
     }
 
 
     var jobClean: Job? = null
-    var isCleand = false
-    fun cleanJob() {
+    var isCleaned = false
+    private fun cleanJob() {
         jobClean?.cancel()
         jobClean = lifecycleScope.launch {
             FiBLogEvent.page_clean_show(DBConfig.DAIBOO_WORK_ID_CLEAN)
@@ -60,13 +57,13 @@ class JunkCleanActivity : BaseActivity<ActivityCleanBinding>() {
             doCycle {
                 binding.tvDes.text = "${getString(R.string.is_cleaning)}${it}%"
             }
-            isCleand = true
+            isCleaned = true
             showComplete()
         }
     }
 
 
-    fun showComplete() {
+    private fun showComplete() {
         binding.ivAnimal.visibility = View.INVISIBLE
         animComplete.run {
             start()
@@ -95,9 +92,7 @@ class JunkCleanActivity : BaseActivity<ActivityCleanBinding>() {
             duration = 500
             interpolator = LinearInterpolator()
             playMode = PlayMode.TOGETHER
-
         }
-
     }
 
     private val animClean by lazy {
@@ -122,24 +117,22 @@ class JunkCleanActivity : BaseActivity<ActivityCleanBinding>() {
             duration = 1000
             interpolator = LinearInterpolator()
             playMode = PlayMode.TOGETHER
-
         }
-
     }
 
-    fun loadADs() {
+    private fun loadADs() {
         DaiBooADUtil.load(DBConfig.DAIBOO_AD_CLEAN_IV, this)
         DaiBooADUtil.load(DBConfig.DAIBOO_AD_RESULT_NV, this)
     }
 
 
-    fun showAdOrInvokeNext() {
+    private fun showAdOrInvokeNext() {
         FiBLogEvent.clean_page_to_result_start(DBConfig.DAIBOO_WORK_ID_CLEAN)
         DaiBooADUtil.showAD(DBConfig.DAIBOO_AD_CLEAN_IV, this@JunkCleanActivity, workId = DBConfig.DAIBOO_WORK_ID_CLEAN) {
             DaiBooADUtil.load(DBConfig.DAIBOO_AD_CLEAN_IV, this@JunkCleanActivity)
             lifecycleScope.launch {
                 delay(90)
-                if (isPause.not()) {
+                if (isPaused.not()) {
                     val extra = intent.getStringExtra(DBConfig.DAIBOO_KEY_CLEAN_SIZE) ?: "0B"
                     goCleanResult(DBConfig.DAIBOO_WORK_ID_CLEAN, extra = extra, from = intent.action)
                     FiBLogEvent.clean_page_to_result_end(DBConfig.DAIBOO_WORK_ID_CLEAN)

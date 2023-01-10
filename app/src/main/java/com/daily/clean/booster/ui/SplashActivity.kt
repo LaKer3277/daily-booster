@@ -24,7 +24,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
 
     override fun dailyData() {
-
         initLocalData()
 
         val tanId = intent.getStringExtra(DBConfig.DAIBOO_KEY_NOTY_ID) ?: ""
@@ -41,28 +40,16 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         }
         FiBLogEvent.start_page()
         FiBLogEvent.user_rent()
-
     }
-
 
     override fun dailyView() {
-
-        initStartView()
-
-    }
-
-    override fun dailyLoad() {
-
-        HttpTBA.reportFirst()
-
-    }
-
-
-    fun initStartView() {
         isShowedAD = false
         currentProgress
     }
 
+    override fun dailyLoad() {
+        HttpTBA.reportFirst()
+    }
 
     var isShowedAD = false
     override fun onResume() {
@@ -71,7 +58,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
             loadADS()
             startJob()
         }
-
     }
 
     override fun onPause() {
@@ -87,9 +73,9 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
     var jobToHome: Job? = null
     var currentProgress = 0f
-    fun startJob(faster: Boolean = false) {
+    private fun startJob(faster: Boolean = false) {
         jobToHome?.cancel()
-        var delayTime: Long = 20L
+        var delayTime = 20L
         delayTime = if (!DaiBooADUtil.isReachLimit()) {
             70L
         } else {
@@ -106,23 +92,19 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
                 startProcess++
                 binding.progressbar.progress = startProcess.toInt()
                 currentProgress = startProcess
-//                progress_circle.setValue(startProcess)
-//                LogDM.d("Process=$startProcess -  ---  $delayTime")
             }
             if (startProcess == 100f) {
                 LogDB.d("showAD")
                 showAD()
             }
         }
-
     }
 
 
     override fun onBackPressed() {
     }
 
-
-    fun initLocalData() {
+    private fun initLocalData() {
         FiBRemoteUtil.initFireBaseData {
             startJob()
             loadADS()
@@ -133,7 +115,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     var isCacheOpenAd = false
     var jobLoadOpen: Job? = null
     var loadTimes = 0
-    fun loadADS() {
+    private fun loadADS() {
         loadTimes = 0
         DaiBooADUtil.load(DBConfig.DAIBOO_AD_RESULT_NV, this)
         DaiBooADUtil.load(DBConfig.DAIBOO_AD_CLEAN_IV, this)
@@ -165,14 +147,14 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     }
 
 
-    fun showAD() {
+    private fun showAD() {
         lifecycleScope.launch {
             DaiBooADUtil.showAD(DBConfig.DAIBOO_AD_OPEN, this@SplashActivity) {
                 isShowedAD = it
                 DaiBooADUtil.load(DBConfig.DAIBOO_AD_OPEN, this@SplashActivity)
                 lifecycleScope.launch {
                     delay(120)
-                    if (App.ins.isAtForeground() && isPause.not()) {
+                    if (App.ins.isAtForeground() && isPaused.not()) {
                         goNextByIntent()
                     }
                     finish()
@@ -183,7 +165,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     }
 
 
-    fun goNextByIntent() {
+    private fun goNextByIntent() {
         val workId = intent?.getStringExtra(DBConfig.DAIBOO_KEY_WORK_ID) ?: ""
         LogDB.d("workId---$workId")
         when (workId) {

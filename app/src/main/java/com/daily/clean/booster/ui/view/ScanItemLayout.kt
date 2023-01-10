@@ -18,7 +18,6 @@ class ScanItemLayout : FrameLayout {
         initTypeValue(context, attrs)
     }
 
-
     var name: String? = null
     var size: String? = null
     var icon: Int? = null
@@ -43,8 +42,6 @@ class ScanItemLayout : FrameLayout {
         icon?.let { binding.itemIcon.setImageResource(it) }
         icon_load?.let { binding.itemIconEnd.setImageResource(it) }
         size?.let { binding.itemDes.text = it }
-
-
     }
 
 

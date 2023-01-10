@@ -24,10 +24,6 @@ class WebActivity : BaseActivity<ActivityWebBinding>() {
     }
 
     override fun dailyLoad() {
-        initweb()
-    }
-
-    fun initweb() {
         webview.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(
                 view: WebView?,
@@ -41,7 +37,6 @@ class WebActivity : BaseActivity<ActivityWebBinding>() {
         } else {
             finish()
         }
-
     }
 
 }

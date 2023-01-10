@@ -68,7 +68,7 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
 
     }
 
-    fun log() {
+    private fun log() {
 //        if (intent?.action == DBConfig.DAIBOO_ACTION_FROM_NOTIFYTOOL) {
 //
 //        }
@@ -80,8 +80,8 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
         FiBLogEvent.page_scan_show(DBConfig.DAIBOO_WORK_ID_CLEAN)
     }
 
-    fun goClean() {
-        if (isPause) return
+    private fun goClean() {
+        if (isPaused) return
         if (DaiBooMK.isNeedClean()) {
 //            showAdOrNext(MainConfig.DAIBOO_AD_SCAN_INT) {
                 goJunkCleanPage(selectSizeStr, intent?.action)
@@ -127,7 +127,7 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
 
     private var items = mutableListOf<ScanItemLayout>()
 
-    fun initView() {
+    private fun initView() {
 
         items.add(binding.itemAppCache)
         items.add(binding.itemApkfiles)
@@ -161,7 +161,7 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
 
     }
 
-    fun updateSelectedView() {
+    private fun updateSelectedView() {
         var selectedSize = 0L
         CleanData.cache.forEach { junk ->
             if (junk.isSelected) {
@@ -183,12 +183,6 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
                 binding.tvClean.isClickable = true
             }
         }
-
-
-    }
-
-    override fun onPause() {
-        super.onPause()
     }
 
     private fun showLoading() {

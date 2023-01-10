@@ -6,6 +6,7 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
+import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequest
@@ -20,9 +21,9 @@ import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.base.FiBRemoteUtil
 import com.daily.clean.booster.core.service.Heart
+import com.daily.clean.booster.ext.loggerApp
 import com.daily.clean.booster.ui.*
 import com.daily.clean.booster.utils.AudienceNetworkInitializeHelper
-import com.daily.clean.booster.utils.LogDB
 import com.daily.clean.booster.utils.isADActivity
 import com.daily.clean.booster.utils.startCleanService
 import com.daily.clean.booster.utils.work.FiBLogWorker
@@ -43,7 +44,7 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
     companion object {
         lateinit var ins: App
         const val app_name = BuildConfig.APPLICATION_ID
-        var isReceiveerScreenOn = false
+        var isReceiverScreenOn = false
         var listActivity: MutableList<Activity>? = mutableListOf()
         var isAdActivityResume = false
         var isNotDoHotStart = false
@@ -62,33 +63,31 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
         
         if (isNotMainProcess()) return
         kotlin.runCatching {
-//            Heart.registerReceivers(this)
-            Heart.statrTimingAlertJob()
+            Heart.startTimingAlertJob()
         }
         startCleanService()
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
-        registerActivityLifecycleCallbacks(this)
         MMKV.initialize(this)
 
         AudienceNetworkInitializeHelper.initialize(this)
         if (DBConfig.DAIBOO_USE_FB)
             Firebase.initialize(this)
-        if (DBConfig.DAIBOO_USE_AD) {
-            MobileAds.initialize(this)
-//            initMaxAD()
-        }
-        val testDeviceIds = listOf("", "", "")
-        val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
-        MobileAds.setRequestConfiguration(configuration)
+        initAds()
 
         FiBRemoteUtil.initFireBaseData()
         FiBLogEvent.app_active()
         FiBLogEvent.user_rent()
-
-//        NLU.initNotificationListenerService(this)
         initWork(this)
 
-        LogDB.dLife("App onCreate $isColdStart")
+        registerActivityLifecycleCallbacks(this)
+    }
+
+    private fun initAds() {
+        if (!DBConfig.DAIBOO_USE_AD) return
+        MobileAds.initialize(this)
+        val testDeviceIds = listOf("", "", "")
+        val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
+        MobileAds.setRequestConfiguration(configuration)
     }
 
 
@@ -97,14 +96,14 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
         AppLovinSdk.getInstance(this).run {
             mediationProvider = "max"
             initializeSdk {}
-//            showMediationDebugger()
+            //showMediationDebugger()
         }
     }
 
 
     private fun isNotMainProcess(): Boolean {
-        var pName = getProcessNameString()
-        LogDB.d("process name:${pName} ")
+        val pName = getProcessNameString()
+        loggerApp("process name:${pName} ")
         return app_name != getProcessNameString()
     }
 
@@ -120,8 +119,11 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
     }
 
 
+
+
+
     override fun onActivityStarted(activity: Activity) {
-        LogDB.dLife("Started: ---${activity::class.java.simpleName}  isHotStart = $isHotStart  isColdStar =${isColdStart}  action = ${activity.intent?.action} ")
+        Log.d("ActivityLife", "onActivityStarted: ---${activity::class.java.simpleName}  isHotStart = $isHotStart  isColdStar =${isColdStart}  action = ${activity.intent?.action} ")
         activityCount++
         backJob?.cancel()
         if (isHotStart) {
@@ -138,19 +140,16 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
         } else if (isColdStart) {
             isColdStart = false
         }
-
-
     }
 
     override fun onActivityStopped(activity: Activity) {
         activityCount--
-        LogDB.dLife("Stopped: ---${activity::class.java.simpleName}  count=${activityCount} $isNotDoHotStart ")
+        Log.d("ActivityLife", "onActivityStopped: ---${activity::class.java.simpleName}  count=${activityCount} $isNotDoHotStart ")
         if (activityCount <= 0) {
             timeOnAppStop = System.currentTimeMillis()
             backJob = GlobalScope.launch {
                 delay(3000L)
                 if (activity.isADActivity()) {
-                    LogDB.dLife("Stopped: ---${activity::class.java.simpleName} -- finish()")
                     activity.finish()
                 }
                 delay(1000L)
@@ -160,25 +159,21 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
                     && activity !is NotificationActivity
                 ) {
                     isHotStart = true
-                    LogDB.dLife("Stopped: ---${activity::class.java.simpleName} -- isHotStart=$isHotStart")
-
                 }
             }
         }
     }
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-        LogDB.dLife("Created: ---${activity::class.java.simpleName}")
+        Log.d("ActivityLife", "onActivityCreated: ---${activity::class.java.simpleName}")
         listActivity?.add(activity)
         if (activity is SplashActivity || activity is LaunchActivity) {
             startCleanService()
         }
-
-
     }
 
     override fun onActivityResumed(activity: Activity) {
-        LogDB.dLife("Resumed: ---${activity::class.java.simpleName}  ${listActivity?.size}")
+        Log.d("ActivityLife", "onActivityResumed: ---${activity::class.java.simpleName}  ${listActivity?.size}")
         isAdActivityResume = activity.isADActivity()
         if (activity is SplashActivity || activity is JunkScanActivity) {
             isNotDoHotStart = false
@@ -186,7 +181,7 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
     }
 
     override fun onActivityPaused(activity: Activity) {
-        LogDB.dLife("Paused: ---${activity::class.java.simpleName}")
+        Log.d("ActivityLife", "onActivityPaused: ---${activity::class.java.simpleName}")
         if (activity.isADActivity()) {
             isAdActivityResume = false
         }
@@ -194,7 +189,7 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
 
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
     override fun onActivityDestroyed(activity: Activity) {
-        LogDB.dLife("Destroyed: ---${activity::class.java.simpleName}  ${listActivity?.size}")
+        Log.d("ActivityLife", "onActivityDestroyed: ---${activity::class.java.simpleName}  ${listActivity?.size}")
         listActivity?.remove(activity)
         if (listActivity?.isEmpty() == true) {
             backJob?.cancel()
@@ -202,13 +197,12 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
         }
     }
 
-    fun isScreenOn(): Boolean {
+    private fun isScreenOn(): Boolean {
         val pm = ins.applicationContext.getSystemService(POWER_SERVICE) as PowerManager
-        return if (Build.VERSION.SDK_INT >= 20) pm.isInteractive else pm.isScreenOn
+        return pm.isInteractive
     }
 
-
-    fun initWork(c: Context) {
+    private fun initWork(c: Context) {
         val sendLogsWorkRequest =
             PeriodicWorkRequestBuilder<FiBLogWorker>(PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS, TimeUnit.MILLISECONDS)
                 .build()

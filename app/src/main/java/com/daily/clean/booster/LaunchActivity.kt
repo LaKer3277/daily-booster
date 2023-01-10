@@ -16,12 +16,8 @@ class LaunchActivity : AppCompatActivity() {
 
         if (DaiBooMK.isFirstStart()) {
             ActivityUtils.startActivity(FirstEnterActivity::class.java)
-        }else{
+        } else {
             startActivity(Intent(this, SplashActivity::class.java))
-//            startActivity(Intent(this, NotificationActivity::class.java).apply {
-//                putExtra(DBConfig.DAIBOO_KEY_WORK_ID,DBConfig.DAIBOO_WORK_ID_BOOSTER)
-//                putExtra(DBConfig.DAIBOO_KEY_NOTY_ID,DBConfig.DAIBOO_NOTY_TIME)
-//            })
         }
 
         finish()

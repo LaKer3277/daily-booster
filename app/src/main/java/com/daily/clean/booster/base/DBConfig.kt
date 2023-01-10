@@ -186,87 +186,37 @@ object DBConfig {
     """
 
     //弹窗测试数据
-    const val DAIBOO_POP_JSON_TEST =
-//        """
-//        {
-//   "doc_switch":1,
-//   "up_pop":1,
-//    "booster_avti":1,
-//    "ref_fer":1,
-//  "booster_time": {
-//    "first":5,
-//    "up":1,
-//    "int":10,
-//    "siz":1,
-//    "acti_pos":0
-//  },
-//  "booster_unl": {
-//    "first":5,
-//    "up":1,
-//    "int":10,
-//    "siz":1,
-//    "acti_pos":2
-//  },
-//  "booster_uni": {
-//    "first":5,
-//    "up":1,
-//    "int":10,
-//    "siz":1,
-//    "acti_pos":2
-//  },
-//  "booster_cha": {
-//    "first":5,
-//    "up":1,
-//    "int":10,
-//    "siz":1,
-//    "acti_pos":1
-//  },
-//  "booster_bat": {
-//    "first":5,
-//    "up":1,
-//    "int":10,
-//    "siz":1,
-//    "acti_pos":1
-//  }
-//}
-//    """
-
-        """
-    {
-"up_pop":1, 
-"booster_avti":1,
-"ref_fer":0,
-
-"booster_unl":{
-"first":1, 
-"up":40, 
-"int":10, 
-"siz":2,
-"acti_pos":1
-},
-
-"booster_time":{
-"first":1, 
-"up":50, 
-"int":10, 
-"siz":2,
-"acti_pos":1
-},
-
-"booster_uni":{
-"first":1, 
-"up":40, 
-"int":10, 
-"siz":2,
-"acti_pos":1
-},
-"booster_bat":{
-"first":1, 
-"up":40, 
-"int":10, 
-"siz":2,
-"acti_pos":1
-}
-}
-    """
+    const val DAIBOO_POP_JSON_TEST = """{
+    "up_pop":1,
+    "booster_avti":1,
+    "ref_fer":0,
+    "booster_unl":{
+        "first":1,
+        "up":40,
+        "int":10,
+        "siz":2,
+        "acti_pos":1
+    },
+    "booster_time":{
+        "first":1,
+        "up":50,
+        "int":10,
+        "siz":2,
+        "acti_pos":1
+    },
+    "booster_uni":{
+        "first":1,
+        "up":40,
+        "int":10,
+        "siz":2,
+        "acti_pos":1
+    },
+    "booster_bat":{
+        "first":1,
+        "up":40,
+        "int":10,
+        "siz":2,
+        "acti_pos":1
+    }
+}"""
 }

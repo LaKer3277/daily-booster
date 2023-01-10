@@ -35,8 +35,8 @@ class NotificationActivity : BaseActivity<LayoutNotificationBigActBinding>() {
     override fun onBackPressed() {
     }
 
-    var workID = ""
-    var tanID = ""
+    private var workID = ""
+    private var tanID = ""
     override fun dailyData() {
         workID = intent?.getStringExtra(DBConfig.DAIBOO_KEY_WORK_ID) ?: ""
         tanID = intent?.getStringExtra(DBConfig.DAIBOO_KEY_NOTY_ID) ?: ""
@@ -51,17 +51,17 @@ class NotificationActivity : BaseActivity<LayoutNotificationBigActBinding>() {
     override fun dailyLoad() {
     }
 
-    fun setImageViewResource(resid: Int, imgId: Int) {
-        findViewById<ImageView>(resid).setImageResource(imgId)
-    }
+    private fun initView() {
 
-    fun setTextViewText(resid: Int, textStr: String) {
-        findViewById<TextView>(resid).apply {
-            text = textStr
+        fun setImageViewResource(resid: Int, imgId: Int) {
+            findViewById<ImageView>(resid).setImageResource(imgId)
         }
-    }
 
-    fun initView() {
+        fun setTextViewText(resid: Int, textStr: String) {
+            findViewById<TextView>(resid).apply {
+                text = textStr
+            }
+        }
 
         val item = PopCheckHelper.getPopItem(tanID)
         item?.let {
@@ -153,7 +153,7 @@ class NotificationActivity : BaseActivity<LayoutNotificationBigActBinding>() {
         }
     }
 
-    fun goBoost() {
+    private fun goBoost() {
         FiBLogEvent.up_ac_click(tanID)
         ActivityUtils.finishAllActivities()
         startActivity(Intent(App.ins, SplashActivity::class.java).apply {
@@ -166,7 +166,7 @@ class NotificationActivity : BaseActivity<LayoutNotificationBigActBinding>() {
     }
 
 
-    fun getCpuTemperature(): Int {
+    private fun getCpuTemperature(): Int {
         val intent = registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
         var temp = intent?.getIntExtra("temperature", 0) ?: 0 //电池温度
         if (temp == 0) {

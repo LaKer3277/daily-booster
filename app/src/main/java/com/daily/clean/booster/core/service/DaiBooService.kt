@@ -136,12 +136,12 @@ class DaiBooService : Service() {
             //屏幕亮起的时候
             Intent.ACTION_SCREEN_ON -> {
                 LogDB.dpop("ACTION_SCREEN_ON")
-                App.isReceiveerScreenOn = true
+                App.isReceiverScreenOn = true
 //                statrTimingAlertJob()
 
             }
             Intent.ACTION_SCREEN_OFF -> {
-                App.isReceiveerScreenOn = false
+                App.isReceiverScreenOn = false
                 LogDB.dpop("ACTION_SCREEN_OFF ----")
                 startOpen(DaiBooUIItem.Items.getPopList()[0].id, DBConfig.DAIBOO_NOTY_UNLOCK, true,0)
             }

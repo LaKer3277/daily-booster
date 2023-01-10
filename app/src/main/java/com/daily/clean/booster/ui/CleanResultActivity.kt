@@ -28,39 +28,24 @@ class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
         return ActivityResultBinding.inflate(layoutInflater)
     }
 
-    var extraStr = "0B"
-    var workId = DBConfig.DAIBOO_WORK_ID_BOOSTER
-    var isFirst = false
+    private var extraStr = "0B"
+    private var workId = DBConfig.DAIBOO_WORK_ID_BOOSTER
+    private var isFirst = false
     override fun dailyData() {
         extraStr = intent.getStringExtra(DBConfig.DAIBOO_KEY_CLEAN_SIZE) ?: "0B"
         workId = intent.getStringExtra(DBConfig.DAIBOO_KEY_WORK_ID) ?: DBConfig.DAIBOO_WORK_ID_BOOSTER
         isFirst = intent.getBooleanExtra(DBConfig.DAIBOO_KEY_IS_FIRST, false)
     }
 
-
-    lateinit var title_text: TextView
-    lateinit var tv_result_info: TextView
-    lateinit var title_back: ImageView
-    lateinit var recycler: RecyclerView
-
     @SuppressLint("StringFormatMatches")
     override fun dailyView() {
-        title_text = binding.titleText
-        tv_result_info = binding.tvResultInfo
-        title_back = binding.titleBack
-        recycler = binding.recycler
-
-
-        title_text.text = workId.getTitleText()
-
-        title_back.setOnClickListener {
+        binding.titleText.text = workId.getTitleText()
+        binding.titleBack.setOnClickListener {
             onBackPressed()
         }
-
         initList()
 
-
-        tv_result_info.text = when (workId) {
+        binding.tvResultInfo.text = when (workId) {
             DBConfig.DAIBOO_WORK_ID_CLEAN -> {
                 if ("0B" != extraStr) {
                     getString(R.string.des_complete_clean, extraStr)
@@ -79,7 +64,7 @@ class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
         log()
     }
 
-    fun log() {
+    private fun log() {
         if (DBConfig.DAIBOO_ACTION_FROM_POP_NOTY_POP == intent?.action) {
             FiBLogEvent.up_all_relust()
         }
@@ -91,7 +76,7 @@ class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
     }
 
 
-    fun initList() {
+    private fun initList() {
         val list = mutableListOf<DaiBooUIItem>()
         list.addAll(DaiBooUIItem.Items.list)
         val item = list.singleOrNull { it.id == workId }
@@ -138,12 +123,12 @@ class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
 
             }
 
-        recycler.addItemDecoration(object : RecyclerView.ItemDecoration() {
+        binding.recycler.addItemDecoration(object : RecyclerView.ItemDecoration() {
             override fun getItemOffsets(outRect: Rect, itemPosition: Int, parent: RecyclerView) {
                 outRect.bottom = 0.dip
             }
         })
-        recycler.adapter = mAdapter
+        binding.recycler.adapter = mAdapter
         mAdapter.setOnItemClickListener { adapter, view, position ->
             when (list[position].id) {
                 DBConfig.DAIBOO_WORK_ID_CLEAN -> {
@@ -165,7 +150,7 @@ class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
         }
     }
 
-    fun clickJunkBtn() {
+    private fun clickJunkBtn() {
         checkStoragePermission({
             goJunkCleanScanning()
             finish()
@@ -189,15 +174,12 @@ class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
 
     }
 
-    fun showBackAD(next: () -> Unit) {
-//        DaiBooADUtil.showAD(MainConfig.DAIBOO_AD_BACK_INT, this) {
+    private fun showBackAD(next: () -> Unit) {
         next()
-//        }
-
     }
 
 
-    fun loadResultAD() {
+    private fun loadResultAD() {
 //        DaiBooADUtil.load(MainConfig.DAIBOO_AD_BACK_INT, this)
         DaiBooADUtil.load(DBConfig.DAIBOO_AD_RESULT_NV, this, callLoading = {
             jobLoadAD?.cancel()
@@ -216,8 +198,8 @@ class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
 
     var jobShowAD: Job? = null
     var jobLoadAD: Job? = null
-    fun showAD() {
-        if (isPause) return
+    private fun showAD() {
+        if (isPaused) return
         jobShowAD?.cancel()
         jobShowAD = lifecycleScope.launch {
             delay(60)

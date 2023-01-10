@@ -27,14 +27,12 @@ object Heart {
         }
     }
 
-
     fun unrefister(context: Context){
         context.unregisterReceiver(alertReceiver)
         context.unregisterReceiver(packageRemoveReceiver)
     }
 
     fun registerReceivers(context: Context) {
-
         //屏幕点亮 和 关闭的监听
         context.registerReceiver(alertReceiver, IntentFilter().apply {
             addAction(Intent.ACTION_SCREEN_ON)
@@ -61,12 +59,12 @@ object Heart {
             //屏幕亮起的时候
             Intent.ACTION_SCREEN_ON -> {
                 LogDB.dpop("ACTION_SCREEN_ON")
-                App.isReceiveerScreenOn = true
-                statrTimingAlertJob()
+                App.isReceiverScreenOn = true
+                startTimingAlertJob()
 
             }
             Intent.ACTION_SCREEN_OFF -> {
-                App.isReceiveerScreenOn = false
+                App.isReceiverScreenOn = false
                 startOpen(DaiBooUIItem.Items.getPopList()[0].id, DBConfig.DAIBOO_NOTY_UNLOCK, true)
             }
             //充电
@@ -97,7 +95,7 @@ object Heart {
 
     var timingJob: Job? = null
     var times: Long = 0L
-    fun statrTimingAlertJob() {
+    fun startTimingAlertJob() {
         timingJob?.cancel()
         timingJob = GlobalScope.launch(Dispatchers.IO) {
             times = 0
@@ -131,12 +129,10 @@ object Heart {
     }
 
 
-    fun startOpen(workId: String, tanID: String, isListPop: Boolean = false, delayTime: Long = 1000) {
-
-
+    private fun startOpen(workId: String, tanID: String, isListPop: Boolean = false, delayTime: Long = 1000) {
         GlobalScope.launch {
             delay(delayTime)
-//            FireBLogEventUtils.logTanTrigger(tanID)
+            //FireBLogEventUtils.logTanTrigger(tanID)
             val isSuccess = PopCheckHelper.tryPop(workId, tanID)
             LogDB.dpop("try pop---workId=${workId}  tanID = ${tanID}  is success? = $isSuccess ")
             if (isSuccess && isListPop) {

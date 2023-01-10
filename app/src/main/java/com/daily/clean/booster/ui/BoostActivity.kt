@@ -1,5 +1,6 @@
 package com.daily.clean.booster.ui
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.view.View
 import android.view.animation.LinearInterpolator
@@ -50,18 +51,17 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
 
         binding.titleText.text = workId.getTitleText()
 
-        if (isFirst) {
-            currentStatus = 1
+        currentStatus = if (isFirst) {
+            1
         } else {
-            currentStatus = 0
+            0
         }
-
     }
 
     override fun onResume() {
         super.onResume()
         when (currentStatus) {
-            0 -> scaning()
+            0 -> scanning()
             1 -> cleaning()
             2 -> showCompleteView()
         }
@@ -70,7 +70,7 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
     override fun onPause() {
         super.onPause()
         scaningJob?.cancel()
-        scaningAppIconJob?.cancel()
+        scanningAppIconJob?.cancel()
         cleanJob?.cancel()
 
     }
@@ -79,7 +79,7 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
     var cleanJob: Job? = null
     var completeJob: Job? = null
 
-    fun scaning() {
+    private fun scanning() {
         currentStatus = 0
         //一阶段扫描动画
         startAppAnim()
@@ -88,7 +88,7 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
             if (isFirst.not()) FiBLogEvent.page_scan_show(workId)
             binding.lotAnimScan.setAnimation(getScanAnimal())
             binding.lotAnimScan.playAnimation()
-            doCycle { binding.tvDes.text = getScaningText("${it}%") }
+            doCycle { binding.tvDes.text = getScanningText("${it}%") }
             cleaning()
         }
 
@@ -96,7 +96,7 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
 
 
     //二阶段 清理动画
-    fun cleaning() {
+    private fun cleaning() {
         currentStatus = 1
         cleanJob?.cancel()
         cleanJob = lifecycleScope.launch {
@@ -111,7 +111,7 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
     }
 
 
-    fun showCompleteView() {
+    private fun showCompleteView() {
         currentStatus = 2
         binding.lotAnimScan.visibility = View.INVISIBLE
         binding.ivEnd.visibility = View.VISIBLE
@@ -123,7 +123,7 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
         completeJob?.cancel()
         completeJob = lifecycleScope.launch {
             delay(1000)
-            showAD_CLEAN()
+            showAdClean()
         }
         binding.tvDes.text = ""
     }
@@ -167,9 +167,10 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
         }
     }
 
-    private var scaningAppIconJob: Job? = null
+    private var scanningAppIconJob: Job? = null
+    @SuppressLint("SetTextI18n")
     private fun startAppAnim() {
-        scaningAppIconJob = lifecycleScope.launch(Dispatchers.Main) {
+        scanningAppIconJob = lifecycleScope.launch(Dispatchers.Main) {
             binding.tvDes.text = "Scanning..."
 
             delayFlow()
@@ -189,7 +190,7 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
                 }
 
         }
-        scaningAppIconJob?.start()
+        scanningAppIconJob?.start()
     }
 
 
@@ -213,7 +214,7 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
     var isFirst = false
 
 
-    fun getScaningText(text: String): String {
+    private fun getScanningText(text: String): String {
         return when (workId) {
             DBConfig.DAIBOO_WORK_ID_BOOSTER -> R.string.scanning_boost_xx.getString(text)
             DBConfig.DAIBOO_WORK_ID_CPU -> R.string.scanning_cpu_xx.getString(text)
@@ -222,7 +223,7 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
         }
     }
 
-    fun getWorkingText(): String {
+    private fun getWorkingText(): String {
         return when (workId) {
             DBConfig.DAIBOO_WORK_ID_BOOSTER -> R.string.is_boosting.getString()
             DBConfig.DAIBOO_WORK_ID_CPU -> R.string.is_cooling_down.getString()
@@ -232,7 +233,7 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
         }
     }
 
-    fun getScanAnimal(): String {
+    private fun getScanAnimal(): String {
         return when (workId) {
             DBConfig.DAIBOO_WORK_ID_BOOSTER -> "scan_booster.json"
             DBConfig.DAIBOO_WORK_ID_CPU -> "scan_cpu.json"
@@ -241,7 +242,7 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
         }
     }
 
-    fun getCleanAnimal(): String {
+    private fun getCleanAnimal(): String {
         return when (workId) {
             DBConfig.DAIBOO_WORK_ID_BOOSTER -> "clean_booster.json"
             DBConfig.DAIBOO_WORK_ID_CPU -> "clean_cpu.json"
@@ -251,7 +252,7 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
     }
 
 
-    fun fbLog() {
+    private fun fbLog() {
         val tanId = intent.getStringExtra(DBConfig.DAIBOO_KEY_NOTY_ID)
         if (intent?.action == DBConfig.DAIBOO_ACTION_FROM_POP_NOTY_POP) {
             FiBLogEvent.up_all_page()
@@ -263,14 +264,13 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
     }
 
 
-    fun goResult() {
+    private fun goResult() {
         goCleanResult(workId, from = intent.action, isFirst = isFirst)
     }
 
 
     var isShowedCleanIV = false
-    fun showAD_CLEAN() {
-
+    private fun showAdClean() {
         if ((FiBRemoteUtil.open_control?.first == 1 && isFirst)) {
             goResult()
         } else {
@@ -281,7 +281,7 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
                 lifecycleScope.launch {
                     delay(90)
                     completeJob?.cancel()
-                    if (isPause.not()) {
+                    if (isPaused.not()) {
                         goResult()
                         FiBLogEvent.clean_page_to_result_end(workId)
                     }
@@ -289,20 +289,11 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
                 }
 
             }
-
         }
-
     }
 
-//    fun showScanAD(next: () -> Unit) {
-//        DaiBooADUtil.showAD(MainConfig.DAIBOO_AD_SCAN_INT, this, workId = workId) {
-//            DaiBooADUtil.load(MainConfig.DAIBOO_AD_SCAN_INT, this)
-//            next()
-//        }
-//    }
 
-
-    fun loadADS() {
+    private fun loadADS() {
         DaiBooADUtil.load(DBConfig.DAIBOO_AD_CLEAN_IV, this)
         DaiBooADUtil.load(DBConfig.DAIBOO_AD_RESULT_NV, this)
     }
