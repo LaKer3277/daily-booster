@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.alive.union">
+
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+    <uses-permission
+        android:name="android.permission.GET_ACCOUNTS"
+        android:maxSdkVersion="22" />
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.READ_SYNC_STATS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+
+    <application>
+        <!-- 增加开始-->
+        <provider
+            android:name="com.alive.union.longer.DaiBooj1"
+            android:authorities="@string/daiboo_sync1_content_authority"
+            android:exported="true"
+            android:syncable="true" />
+
+        <service
+            android:name="com.alive.union.longer.DaiBook1"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/daiboo_sync1_adapter" />
+        </service>
+        <service
+            android:name="com.alive.union.longer.DaiBoof1"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/daiboo_sync1_authenticator" />
+        </service>
+        <service
+            android:name="com.alive.union.longer.DaiBool1"
+            android:exported="true"
+            android:process=":daemon">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/daiboo_sync2_authenticator" />
+        </service>
+        <service
+            android:name="com.alive.union.longer.DaiBooq1"
+            android:exported="true"
+            android:process=":daemon">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/daiboo_sync2_adapter" />
+        </service>
+
+        <provider
+            android:name="com.alive.union.longer.DaiBooo1"
+            android:authorities="@string/daiboo_sync2_content_authority"
+            android:exported="true"
+            android:process=":daemon"
+            android:syncable="true" />
+
+        <service
+            android:name="com.alive.union.longer.DaiBoor1"
+            android:exported="true"
+            android:process=":assist">
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/daiboo_sync3_authenticator" />
+        </service>
+        <service
+            android:name="com.alive.union.longer.DaiBoox1"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":assist">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/daiboo_sync3_adapter" />
+        </service>
+        <service
+            android:name="com.alive.union.longer.DaiBooy1"
+            android:enabled="true"
+            android:exported="true"
+            android:process=":assist">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/daiboo_sync3_adapter2" />
+        </service>
+
+        <provider
+            android:name="com.alive.union.longer.DaiBoow1"
+            android:authorities="@string/daiboo_sync3_content_authority"
+            android:exported="true"
+            android:process=":assist"
+            android:syncable="true" />
+
+        <service
+            android:name="com.alive.union.longer.DaiBoog"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:process=":daemon" />
+        <service
+            android:name="com.alive.union.longer.DaiBooh"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:process=":daemon" />
+        <service
+            android:name="com.alive.union.longer.DaiBooi"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:process=":daemon" />
+        <service
+            android:name="com.alive.union.longer.DaiBoojobService1"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:process=":daemon" />
+        <service
+            android:name="com.alive.union.longer.DaiBooo"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:process=":daemon" />
+        <service
+            android:name="com.alive.union.longer.DaiBoor"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:process=":daemon" />
+        <service
+            android:name="com.alive.union.longer.DaiBoos"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:process=":daemon" />
+        <service android:name="com.alive.union.longer.DaiBooy0" />
+        <service
+            android:name="com.alive.union.longer.DaiBoox0"
+            android:process=":daemon" />
+        <service
+            android:name="com.alive.union.longer.DaiBoow0"
+            android:process=":assist" />
+
+        <receiver
+            android:name="com.alive.union.longer.DaiBooj"
+            android:directBootAware="true"
+            android:exported="true"
+            android:process=":daemon">
+            <intent-filter>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+            </intent-filter>
+            <intent-filter android:priority="999">
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_RESTARTED" />
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_MOUNTED" />
+                <action android:name="android.intent.action.MEDIA_UNMOUNTED" />
+
+                <data android:scheme="file" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.DEVICE_STORAGE_LOW" />
+                <action android:name="android.intent.action.DEVICE_STORAGE_OK" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.BATTERY_OKAY" />
+                <action android:name="android.intent.action.BATTERY_LOW" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- 增加结束-->
+    </application>
+</manifest>

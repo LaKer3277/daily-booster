@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="55dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+
+
+
+    <LinearLayout
+        android:id="@+id/notify_booster"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/ic_tool_boost" />
+
+        <TextView
+            style="@style/text_notification1"
+            android:text="@string/booster" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/notify_cpu"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/ic_tool_cpu" />
+
+        <TextView
+            style="@style/text_notification1"
+            android:text="@string/cpu" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/notify_clean"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/ic_tool_clean" />
+
+        <TextView
+            style="@style/text_notification1"
+            android:text="@string/clean" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/notify_battery"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@mipmap/ic_tool_battery" />
+
+        <TextView
+            style="@style/text_notification1"
+            android:text="@string/battery" />
+
+    </LinearLayout>
+
+
+
+
+
+</LinearLayout>

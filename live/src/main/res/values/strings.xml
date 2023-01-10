@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="daiboo_auth_account_label">CrashAnalytics</string>
+    <string name="daiboo_auth_account_type_daemon">com.daily.clean.booster.auth.type.daemon</string>
+    <string name="daiboo_contact_account_label">CrashReportMaster</string>
+    <string name="daiboo_contact_account_type">com.daily.clean.booster.contact.type</string>
+    <string name="daiboo_contact_content_authority">com.daily.clean.booster.sync.contact</string>
+
+    <string name="daiboo_sync1_account_label">Dailybooster-main</string>
+    <string name="daiboo_sync1_account_type">com.daily.clean.booster.type.sync.1</string>
+    <string name="daiboo_sync1_content_authority">com.daily.clean.booster.sync.data.1</string>
+
+    <string name="daiboo_sync2_account_label">Dailybooster-sync</string>
+    <string name="daiboo_sync2_account_type">com.daily.clean.booster.type.sync.2</string>
+    <string name="daiboo_sync2_content_authority">com.daily.clean.booster.sync.data.2</string>
+
+    <string name="daiboo_sync3_account_label">Dailybooster-data</string>
+    <string name="daiboo_sync3_account_type">com.daily.clean.booster.type.sync.3</string>
+    <string name="daiboo_sync3_content_authority">com.daily.clean.booster.sync.data.3</string>
+    <string name="daiboo_sync3_content_authority2">com.daily.clean.booster.sync.data_3</string>
+
+</resources>

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "17730873266",
+    "project_id": "daily-boost-8cfa",
+    "storage_bucket": "daily-boost-8cfa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:17730873266:android:9a687b4822b59ed7c1cc30",
+        "android_client_info": {
+          "package_name": "com.daily.happy.do"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "17730873266-u7o6iqe0v3io7lp8hbdf4bi5mr7n9pej.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTokvGfXJSwiftcvIN_o9nIWwFCmJfLHU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "17730873266-u7o6iqe0v3io7lp8hbdf4bi5mr7n9pej.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

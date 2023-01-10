@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="common_filter_files">
+        <item>.tmp</item>
+        <item>.log</item>
+        <item>.dog3</item>
+    </string-array>
+    <string-array name="common_filter_folders">
+        <item>Logs</item>
+        <item>logs</item>
+        <item>temp</item>
+        <item>Temporary</item>
+        <item>temporary</item>
+    </string-array>
+    <string-array name="aggressive_folders">
+        <item>supersonicads</item>
+        <item>Cache</item>
+        <item>Analytics</item>
+        <item>thumbnails?</item>
+        <item>mobvista</item>
+        <item>UnityAdsVideoCache</item>
+        <item>albumthumbs?</item>
+        <item>LOST.DIR</item>
+        <item>.Trash</item>
+        <item>desktop.ini</item>
+        <item>leakcanary</item>
+        <item>.DS_Store</item>
+        <item>.spotlight-V100</item>
+        <item>fseventsd</item>
+        <item>Bugreport</item>
+        <item>bugreports</item>
+        <item>.Trash</item>
+        <item>cache</item>
+        <item>splashad</item>
+    </string-array>
+    <string-array name="aggressive_files">
+        <item>.exo</item>
+        <item>thumbs?.db</item>
+        <item>.thumb[0-9]</item>
+        <item>splashad</item>
+    </string-array>
+
+</resources>

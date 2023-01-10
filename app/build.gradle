@@ -1,0 +1,117 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'kotlin-parcelize'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
+}
+apply plugin: 'stringfog'
+
+stringfog {
+    // 必要：加解密库的实现类路径，需和上面配置的加解密算法库一致。
+    implementation 'com.github.megatronking.stringfog.xor.StringFogImpl'
+}
+
+android {
+    compileSdk 33
+    //pwd: 123123
+    defaultConfig {
+        applicationId "com.daily.happy.do"
+        minSdk 23
+        targetSdk 31
+        versionCode 103
+        versionName "1.0.3"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+    implementation project(path: ':live')
+    //adapter
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.7'
+
+    // UtilCodex https://github.com/Blankj/AndroidUtilCode/blob/master/lib/utilcode/README-CN.md
+    implementation 'com.blankj:utilcodex:1.31.0'
+    // https://github.com/getActivity/XXPermissions
+    implementation 'com.github.getActivity:XXPermissions:13.6'
+    implementation 'com.afollestad.material-dialogs:core:3.3.0'
+    implementation 'com.afollestad.material-dialogs:bottomsheets:3.3.0'
+    implementation 'com.airbnb.android:lottie:5.2.0'
+    implementation 'org.greenrobot:eventbus:3.3.1'
+    // https://github.com/aritraroy/PatternLockView
+    implementation 'com.tencent:mmkv:1.2.12'
+    implementation 'com.google.code.gson:gson:2.9.1'
+
+    implementation 'com.google.firebase:firebase-config-ktx:21.2.0'
+    implementation 'com.google.firebase:firebase-analytics-ktx:21.2.0'
+    implementation 'com.google.firebase:firebase-crashlytics:18.3.2'
+
+    implementation 'com.facebook.android:facebook-android-sdk:12.3.0'
+    implementation 'com.google.android.gms:play-services-ads:21.3.0'
+    implementation 'com.google.ads.mediation:facebook:6.12.0.0'
+    implementation 'com.google.ads.mediation:pangle:4.8.0.6.0'
+    implementation "com.android.installreferrer:installreferrer:2.2"
+
+    //https://developers.facebook.com/docs/audience-network/setting-up/platform-setup/android/add-sdk
+    implementation 'androidx.annotation:annotation:1.0.0'
+    implementation 'com.facebook.android:audience-network-sdk:6.+'
+
+    //https://dash.applovin.com/documentation/mediation/android/getting-started/integration
+    implementation 'com.applovin:applovin-sdk:+'
+    implementation 'com.applovin.mediation:google-adapter:+'
+    implementation 'com.applovin.mediation:facebook-adapter:+'
+    implementation 'com.applovin.mediation:bytedance-adapter:+'
+
+    //installreferrer
+    //retrofit + okHttp3
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.0.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.0'
+
+    //https://github.com/mtdhllf/RingProgressView
+    //动画库  https://github.com/550609334/DSLAnimator
+    //https://wizardforcel.gitbooks.io/guava-tutorial/content/1.html
+    implementation 'com.mtdhllf.widget:ring-progress:1.1.0'
+    implementation 'com.lzp.dslanimator:dslanimator:1.0.2'
+    implementation 'com.google.guava:guava:27.0.1-android'
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+
+    // Kotlin + coroutines
+    implementation "androidx.work:work-runtime-ktx:2.7.1"
+    // 这里要和上面选用的加解密算法库一致，用于运行时解密。
+    implementation 'com.github.megatronking.stringfog:xor:4.0.1'
+
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.2'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.5.2'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+}

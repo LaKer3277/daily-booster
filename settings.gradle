@@ -1,0 +1,20 @@
+/*pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}*/
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        jcenter()
+        maven { url 'https://jitpack.io' }
+        maven { url "https://artifact.bytedance.com/repository/pangle" }
+    }
+}
+rootProject.name = "DailyBooster"
+include ':app'
+include ':live'

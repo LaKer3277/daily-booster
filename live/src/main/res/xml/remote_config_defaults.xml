@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap>
+
+    <entry>
+        <key>db_ad_config</key>
+        <value>
+            {
+            "db_Open":[
+            {
+            "Network":"admob",
+            "Hierarchy":1,
+            "Form":"open",
+            "Id":"ca-app-pub-8450189680451769/7186430341"
+            }
+            ],
+            "main_NV":[
+            {
+            "Network":"admob",
+            "Hierarchy":1,
+            "Form":"native",
+            "Id":"ca-app-pub-8450189680451769/2125675355"
+            }
+            ],
+            "result_NV":[
+            {
+            "Network":"admob",
+            "Hierarchy":1,
+            "Form":"native",
+            "Id":"ca-app-pub-8450189680451769/8499512011"
+            }
+            ],
+            "clean_IV":[
+            {
+            "Network":"admob",
+            "Hierarchy":1,
+            "Form":"inter",
+            "Id":"ca-app-pub-8450189680451769/9621021996"
+            }
+            ]
+            }
+        </value>
+    </entry>
+
+
+</defaultsMap>

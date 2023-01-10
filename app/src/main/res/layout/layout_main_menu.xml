@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
+
+
+    <ImageView
+        android:id="@+id/iv_menu_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@mipmap/ic_menu_bg"
+        android:scaleType="fitXY"
+        tools:ignore="MissingConstraints" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:src="@mipmap/ic_logo"
+            android:layout_marginTop="50dp"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/text_daily_booster"
+            app:tint="@color/white" />
+
+
+        <LinearLayout
+            style="@style/fill_with"
+            android:orientation="vertical"
+            android:layout_marginTop="64dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <LinearLayout
+                android:id="@+id/ll_contact"
+                style="@style/menu_item_layout"
+                android:layout_marginTop="20dp">
+
+                <ImageView
+                    style="@style/menu_item_icon"
+                    android:src="@mipmap/icon_contact_us" />
+
+                <TextView
+                    style="@style/recom_item_text"
+                    android:textColor="@color/white"
+                    android:text="@string/contact_us" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_privacy"
+                style="@style/menu_item_layout">
+
+                <ImageView
+                    style="@style/menu_item_icon"
+                    android:src="@mipmap/icon_menu_privacy_p" />
+
+                <TextView
+                    style="@style/recom_item_text"
+                    android:textColor="@color/white"
+                    android:text="@string/privacy_policy" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_rate_us"
+                style="@style/menu_item_layout">
+
+                <ImageView
+                    style="@style/menu_item_icon"
+                    android:src="@mipmap/icon_menu_rate_us" />
+
+                <TextView
+                    style="@style/recom_item_text"
+                    android:textColor="@color/white"
+                    android:text="@string/rate_us" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_update"
+                style="@style/menu_item_layout">
+
+                <ImageView
+                    style="@style/menu_item_icon"
+                    android:src="@mipmap/icon_menu_update" />
+
+                <TextView
+                    style="@style/recom_item_text"
+                    android:textColor="@color/white"
+                    android:text="@string/update" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

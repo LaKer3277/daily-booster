@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_boost">
+
+
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lot_anim_scan"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:adjustViewBounds="true"
+        android:layout_marginTop="133dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="scan_booster.json"
+        app:lottie_imageAssetsFolder="images"
+        app:lottie_loop="true" />
+
+    <TextView
+        android:id="@+id/tv_textscan"
+        style="@style/text_18"
+        android:text="@string/scanning_boost_xx"
+        android:textColor="@color/white"
+        android:layout_marginTop="50dp"
+        app:layout_constraintEnd_toEndOf="@id/lot_anim_scan"
+        app:layout_constraintStart_toStartOf="@id/lot_anim_scan"
+        app:layout_constraintTop_toBottomOf="@id/lot_anim_scan" />
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

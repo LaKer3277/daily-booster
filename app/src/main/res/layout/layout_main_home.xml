@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:background="@color/home">
+
+
+    <ImageView
+        android:id="@+id/tittle"
+        style="@style/title_left"
+        android:layout_width="wrap_content"
+        android:src="@mipmap/ic_home_daily_booster"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/title_menu"
+        style="@style/wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:background="?selectableItemBackground"
+        android:src="@mipmap/ic_home_menu_icon"
+        app:layout_constraintBottom_toBottomOf="@id/tittle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tittle" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_ball"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tittle">
+
+        <ImageView
+            android:id="@+id/iv_ball"
+            android:layout_width="193dp"
+            android:layout_height="193dp"
+
+            android:src="@mipmap/ic_home_blue"
+            tools:ignore="MissingConstraints" />
+
+        <ImageView
+            android:id="@+id/iv_ball_orange"
+            android:layout_width="193dp"
+            android:layout_height="193dp"
+            android:layout_marginTop="63dp"
+            android:alpha="0"
+            android:src="@mipmap/ic_home_orange"
+            tools:ignore="MissingConstraints" />
+
+        <ImageView
+            android:id="@+id/iv_scan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_home_scan"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/iv_ball"
+            app:layout_constraintEnd_toEndOf="@id/iv_ball"
+            app:layout_constraintStart_toStartOf="@id/iv_ball"
+            app:layout_constraintTop_toTopOf="@id/iv_ball" />
+
+        <TextView
+            android:id="@+id/tv_junk_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textColor="#3390F9"
+            android:textSize="46sp"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintEnd_toEndOf="@id/iv_ball"
+            app:layout_constraintStart_toStartOf="@id/iv_ball"
+            app:layout_constraintTop_toTopOf="@id/iv_ball"
+            app:layout_constraintBottom_toTopOf="@id/view_trash"
+            />
+
+        <TextView
+            android:id="@+id/tv_junk_size_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="B"
+            android:textColor="#15213E"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_junk_size"
+            app:layout_constraintStart_toEndOf="@id/tv_junk_size" />
+
+        <TextView
+            android:id="@+id/view_trash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/view_trash_details"
+            android:textColor="#15213E"
+            android:textSize="12sp"
+            app:layout_constraintTop_toBottomOf="@id/tv_junk_size"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/view_junk"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="view_trash,tv_junk_size_unit,tv_junk_size" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <ImageView
+        android:id="@+id/iv_shadow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:src="@mipmap/ic_home_shadow"
+        app:layout_constraintEnd_toEndOf="@id/cl_ball"
+        app:layout_constraintStart_toStartOf="@id/cl_ball"
+        app:layout_constraintTop_toBottomOf="@id/cl_ball" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/layout_ad_home"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="12dp"
+        android:visibility="gone"
+        app:cardBackgroundColor="#f7f7f7"
+        app:cardCornerRadius="16dp"
+        app:cardUseCompatPadding="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="118dp"
+            android:scaleType="fitXY"
+            android:visibility="visible" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="58dp"
+        android:elevation="0dp"
+        android:clipChildren="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_shadow">
+
+        <LinearLayout
+            android:id="@+id/ll_line1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            android:clipChildren="false"
+            tools:ignore="MissingConstraints">
+
+            <com.daily.clean.booster.ui.view.CleanBtnLayout
+                android:id="@+id/card_clean"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clipChildren="false"
+                app:btn_icon="@mipmap/ic_home_clean"
+                app:btn_name="@string/clean" />
+
+            <com.daily.clean.booster.ui.view.CleanBtnLayout
+                android:id="@+id/card_boost"
+                android:layout_width="0dp"
+                android:layout_marginStart="10dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clipChildren="false"
+                app:btn_icon="@mipmap/ic_home_boost"
+                app:btn_name="@string/boost" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_line2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:clipChildren="false"
+            app:layout_constraintTop_toBottomOf="@id/ll_line1">
+
+            <com.daily.clean.booster.ui.view.CleanBtnLayout
+                android:id="@+id/card_cpu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clipChildren="false"
+                app:btn_icon="@mipmap/ic_home_cpu"
+                app:btn_name="@string/cpu_cooler" />
+
+            <com.daily.clean.booster.ui.view.CleanBtnLayout
+                android:id="@+id/card_battry"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clipChildren="false"
+                android:layout_marginStart="10dp"
+                app:btn_icon="@mipmap/ic_home_battery"
+                app:btn_name="@string/battery_saver" />
+
+
+        </LinearLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

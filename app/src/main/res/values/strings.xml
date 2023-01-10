@@ -1,0 +1,121 @@
+<resources>
+    <string name="app_name">Daily booster</string>
+
+<!--  TEST  -->
+<!--    <string name="facebook_app_id" translatable="false">111222333444555</string>-->
+<!--    <string name="admob_app_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>-->
+    <string name="max_ad_sdk_key" translatable="false">xxxxxxxxx1</string>
+
+<!--   RELEASE -->
+    <string name="facebook_app_id" translatable="false">1538770449905379</string>
+    <string name="admob_app_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
+
+
+    <string name="app_name_tools">Daily Booster Clean Tools</string>
+
+    <string name="press_again">Press again to exit</string>
+
+    <string name="need_open_storage_permission">Need open storage permission. </string>
+
+    <string name="contact_us">Contact us</string>
+    <string name="rate_us">Rate us</string>
+    <string name="privacy_policy">Privacy Policy</string>
+    <string name="toast_agree">Please agree the Privacy Policy and Terms of Service</string>
+    <string name="term_of_User">Term of User</string>
+    <string name="term_of_service">Term of Service</string>
+    <string name="update">Update</string>
+    <string name="share_app">Share APP</string>
+    <string name="i_have_reed_and_acknowledged">I Have reed and acknowledged</string>
+    <string name="terms_of_service">Terms of Service</string>
+    <string name="and">and</string>
+
+
+    <string name="is_boosting">Phone is boosting…</string>
+    <string name="is_cleaning">Cleaning up…</string>
+    <string name="is_cooling_down">Cpu is cooling down…</string>
+    <string name="is_optimizing">Battery is optimizing…</string>
+    <string name="is_notification_cleaning">Notifications is cleaning…</string>
+
+
+    <string name="optimized_up">OPTIMIZED</string>
+    <string name="cool_down_up">COOL DOWN</string>
+    <string name="clean_now_up">CLEAN NOW</string>
+    <string name="boost_up">BOOST NOW</string>
+
+
+    <string name="your_phone_already_cleaned">your phone is already cleaned.</string>
+    <string name="permission_request">Permission Request</string>
+    <string name="permission_dialog_des">Junk cleaning function\nwill not work normally without\n All Files Access permission.\n Grant now?</string>
+    <string name="access_storage_prompt">Please grant our app access to all your files, it might not work well without it.</string>
+    <string name="all_files_access">All files access</string>
+    <string name="cancel">Cancel</string>
+    <string name="grant">Grant</string>
+    <string name="ram_used">RAM Used</string>
+    <string name="free">Free</string>
+    <string name="used">Used</string>
+    <string name="boost_now">Boost Now</string>
+    <string name="boost_now_text">RAM usage is up %s,boost now!</string>
+
+    <string name="clean">Clean</string>
+    <string name="junk_clean">Junk Clean</string>
+    <string name="clean_junk_xx_up">CLEAN JUNK %s</string>
+    <string name="selected_xx">selected %s</string>
+    <string name="booster">Booster</string>
+    <string name="cpu">CPU</string>
+    <string name="battery">Battery</string>
+    <string name="cpu_cooler">CPU Cooler</string>
+    <string name="battery_saver">Battery Saver</string>
+
+    <string name="app_cache">App Cache</string>
+    <string name="apk_files">Apk Files</string>
+    <string name="app_residual">App Residual</string>
+    <string name="log_files">Log Files</string>
+    <string name="temp_files">Temp Files</string>
+    <string name="ad_junks">AD Junks</string>
+
+
+
+    <string name="des_recom_clean">%s of junk files detected, clean new!</string>
+    <string name="des_recom_boot">%s of memory is occupied, speed up now.</string>
+    <string name="des_recom_cpu">The CPU is overheating, click to cool down.</string>
+    <string name="des_recom_battery">Click to improve battery utilization</string>
+
+    <string name="des_complete_clean">%s \n cleaned</string>
+    <string name="des_complete_clean2">Your phone has been cleaned</string>
+    <string name="des_complete_notification">%s \n notification cleaned</string>
+    <string name="des_complete_boot">Complete the acceleration</string>
+    <string name="des_complete_cpu">CPU has cooled</string>
+    <string name="des_complete_battery">%s increase in battery utilization</string>
+
+
+    <string name="des_boot_tan">RAM has used %s of memory, phone is running slow!</string>
+    <string name="des_cpu_tan">CPU overheating %s, please cool down！</string>
+    <string name="des_battery_pop_time">Fast power consumption, manage to extend standby time！</string>
+    <string name="des_battery_pop_charge">Low charging efficiency, click to optimize charging speed.</string>
+    <string name="des_battery_pop_size">The phone battery is low, click to extend the standby time！</string>
+    <string name="des_clean_tan">%s junk files detected, please clean up now!</string>
+    <string name="des_uninstall">%s residual files detected, clean up</string>
+    <string name="view_trash_details">View trash Details ></string>
+    <string name="junk_suggest_to_cleanup">Junk suggest to cleanup</string>
+    <string name="manage">Manage</string>
+    <string name="boost">Boost</string>
+    <string name="optimize_up">OPTIMIZE</string>
+    <string name="cool_down">Cool Down</string>
+    <string name="clean_now">clean now</string>
+    <string name="extend_now">Extend Now</string>
+    <string name="phone_boost">Phone Boost</string>
+    <string name="scanning">Scanning the phone…</string>
+    <string name="scanning_boost_xx">Scanning…%s</string>
+    <string name="scanning_cpu_xx">Scanning CPU…%s</string>
+    <string name="scanning_battery_xx">Analyzing Battery Usage…%s</string>
+
+
+    <string name="nm_guide_tips1">Too many app notifications?</string>
+    <string name="nm_guide_tips2">Turn on notifications to block these annoying notifications</string>
+    <string name="filter_now">filter now</string>
+    <string name="notification_cleanup">Notification cleanup</string>
+    <string name="guide_button_des">Filter useless messages, clear notifications with one click</string>
+
+    <string name="manage_apps_you_want_to_hide">Manage apps you want to hide</string>
+
+</resources>

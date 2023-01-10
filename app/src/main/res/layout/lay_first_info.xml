@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_first_info">
+
+
+    <TextView
+        android:id="@+id/tv_skip"
+        style="@style/text_14"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="20dp"
+        android:paddingHorizontal="10dp"
+        android:text="SKIP"
+        android:textColor="@color/purple_500"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/img_circle_in"
+        android:layout_width="0dp"
+        android:layout_height="310dp"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginTop="114dp"
+        android:background="@drawable/bg_first_info2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <com.mtdhllf.widget.progress.RingProgressView
+        android:id="@+id/ringPro"
+        android:layout_width="144dp"
+        android:layout_height="144dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="55dp"
+        app:f_progress="0"
+        app:f_ringBgColor="#80F8F7FC"
+        app:f_ringColor="#F8F7FC"
+        app:f_roundWidth="15dp"
+        app:f_strokeCap="round"
+        app:layout_constraintEnd_toEndOf="@id/img_circle_in"
+        app:layout_constraintStart_toStartOf="@id/img_circle_in"
+        app:layout_constraintTop_toTopOf="@id/img_circle_in" />
+
+
+    <TextView
+        android:id="@+id/tv_arm_usd_per"
+        style="@style/text_16_333333"
+        android:text="0%"
+        android:textColor="#F8F7FB"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/RAM_USD"
+        app:layout_constraintEnd_toEndOf="@id/ringPro"
+        app:layout_constraintStart_toStartOf="@id/ringPro"
+        app:layout_constraintTop_toTopOf="@id/ringPro"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/RAM_USD"
+        style="@style/text_16"
+        android:layout_marginTop="5dp"
+        android:text="@string/ram_used"
+        android:textColor="#F8F7FB"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@id/ringPro"
+        app:layout_constraintEnd_toEndOf="@id/ringPro"
+        app:layout_constraintStart_toStartOf="@id/ringPro"
+        app:layout_constraintTop_toBottomOf="@id/tv_arm_usd_per" />
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/dot_free"
+        android:layout_width="13dp"
+        android:layout_height="13dp"
+        android:layout_marginEnd="29dp"
+        android:layout_marginBottom="36dp"
+        app:cardBackgroundColor="#8DB3F7"
+        app:cardCornerRadius="5dp"
+        app:layout_constraintBottom_toBottomOf="@id/img_circle_in"
+        app:layout_constraintEnd_toStartOf="@id/ringPro"
+        app:layout_goneMarginStart="30dp"
+        app:layout_goneMarginTop="70dp" />
+
+    <TextView
+        android:id="@+id/text_free"
+        style="@style/text_10_333333"
+        android:layout_marginStart="10dp"
+        android:text="@string/free"
+        android:textColor="#8DB3F7"
+        app:layout_constraintBottom_toBottomOf="@id/dot_free"
+        app:layout_constraintStart_toEndOf="@id/dot_free"
+        app:layout_constraintTop_toTopOf="@id/dot_free" />
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/dot_used"
+        android:layout_width="13dp"
+        android:layout_height="13dp"
+        android:layout_marginStart="82dp"
+        app:cardBackgroundColor="#F8F7FB"
+        app:cardCornerRadius="5dp"
+        app:layout_constraintStart_toStartOf="@id/ringPro"
+        app:layout_constraintTop_toTopOf="@id/dot_free" />
+
+    <TextView
+        android:id="@+id/text_used"
+        style="@style/text_10_333333"
+        android:layout_marginStart="12dp"
+        android:text="@string/used"
+        android:textColor="#F8F7FB"
+        app:layout_constraintBottom_toBottomOf="@id/dot_used"
+        app:layout_constraintStart_toEndOf="@id/dot_used"
+        app:layout_constraintTop_toTopOf="@id/dot_used" />
+
+    <TextView
+        android:id="@+id/tv_free"
+        style="@style/text_16"
+        android:layout_marginStart="12dp"
+        android:text="0GB"
+        android:textColor="#8DB3F7"
+        app:layout_constraintBottom_toBottomOf="@id/text_free"
+        app:layout_constraintStart_toEndOf="@id/text_free"
+        app:layout_constraintTop_toTopOf="@id/text_free" />
+
+    <TextView
+        android:id="@+id/tv_used"
+        style="@style/text_18"
+        android:layout_marginStart="12dp"
+        android:text="0GB"
+        android:textColor="#8DB3F7"
+        app:layout_constraintBottom_toBottomOf="@id/text_used"
+        app:layout_constraintStart_toEndOf="@id/text_used"
+        app:layout_constraintTop_toTopOf="@id/text_used" />
+
+
+    <TextView
+        android:id="@+id/tv_ram_usage_is_up"
+        style="@style/text_16"
+        android:layout_marginBottom="16dp"
+        android:text="@string/boost_now_text"
+        android:textColor="#707070"
+        app:layout_constraintBottom_toTopOf="@id/tv_boost_now"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/tv_boost_now"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginBottom="154dp"
+        android:foreground="?selectableItemBackground"
+        app:cardBackgroundColor="@color/purple_500"
+        app:cardCornerRadius="26dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            style="@style/text_16"
+            android:layout_gravity="center"
+            android:text="@string/boost_now" />
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

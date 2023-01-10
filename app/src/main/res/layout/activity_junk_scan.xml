@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f6f6f6"
+    >
+
+    <ImageView
+        android:id="@+id/iv_bg_top_blue"
+        android:layout_width="match_parent"
+        android:layout_height="205dp"
+        android:background="@mipmap/ic_junk_scan_bg_blue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_bg_top_red"
+        android:layout_width="match_parent"
+        android:layout_height="205dp"
+        android:alpha="0"
+        android:background="@mipmap/ic_junk_scan_bg_red"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+
+    <ImageView
+        android:id="@+id/iv_bg_complte"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_boost"
+        />
+
+    <TextView
+        android:id="@+id/title_text"
+        style="@style/title_text"
+        android:text="@string/junk_clean"
+        android:textColor="@color/white"
+        tools:ignore="MissingConstraints"
+        app:layout_constraintStart_toEndOf="@id/title_back"
+        app:layout_constraintTop_toTopOf="@id/title_back"
+        app:layout_constraintBottom_toBottomOf="@id/title_back"
+        />
+
+    <ImageView
+        android:id="@+id/title_back"
+        style="@style/title_left"
+        android:src="@mipmap/ic_arrow_back"
+        app:tint="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/tv_junk_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textColor="@android:color/white"
+        android:textSize="46sp"
+        android:text="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_text"
+        />
+
+    <TextView
+        android:id="@+id/tv_junk_size_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:layout_marginStart="8dp"
+        android:text="B"
+        app:layout_constraintTop_toTopOf="@id/tv_junk_size"
+        app:layout_constraintBottom_toBottomOf="@id/tv_junk_size"
+        app:layout_constraintStart_toEndOf="@id/tv_junk_size" />
+
+
+    <TextView
+        android:id="@+id/tv_selected"
+        style="@style/text_14"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_junk_size"
+
+        />
+
+    <ProgressBar
+        android:id="@+id/progress_scan"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="20dp"
+        android:max="100"
+        android:progress="0"
+        android:progressDrawable="@drawable/progress2"
+        app:layout_constraintBottom_toTopOf="@id/tv_file_path" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_file_path"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="#20FFFFFF"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:paddingHorizontal="15dp"
+        android:singleLine="true"
+        android:textColor="@color/white"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="@id/iv_bg_top_blue" />
+
+
+
+
+
+    <ScrollView
+        android:id="@+id/scroll_clean"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_file_path">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             android:background="@drawable/bg_white_r8"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="12dp"
+            android:orientation="vertical">
+
+            <com.daily.clean.booster.ui.view.ScanItemLayout
+                android:id="@+id/item_app_cache"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:item_icon="@mipmap/ic_clean_app_cache"
+                app:item_name="@string/app_cache"
+                />
+
+            <com.daily.clean.booster.ui.view.ScanItemLayout
+                android:id="@+id/item_apkfiles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:item_icon="@mipmap/ic_clean_apk_files"
+                app:item_name="@string/apk_files"
+                />
+
+            <com.daily.clean.booster.ui.view.ScanItemLayout
+                android:id="@+id/item_logfiles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:item_icon="@mipmap/ic_clean_log_files"
+                app:item_name="@string/log_files"
+                />
+            <com.daily.clean.booster.ui.view.ScanItemLayout
+                android:id="@+id/item_tempfiles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:item_icon="@mipmap/ic_clean_temp_files"
+                app:item_name="@string/temp_files"
+                />
+
+            <com.daily.clean.booster.ui.view.ScanItemLayout
+                android:id="@+id/item_adjunk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:item_icon="@mipmap/ic_clean_ad_junk"
+                app:item_name="@string/ad_junks"
+                />
+
+            <com.daily.clean.booster.ui.view.ScanItemLayout
+                android:id="@+id/item_appresidual"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:item_icon="@mipmap/ic_clean_app_residual"
+                app:item_name="@string/app_residual"
+                />
+
+            <com.daily.clean.booster.ui.view.ScanItemLayout
+                android:id="@+id/item_ramused"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:item_icon="@mipmap/ic_clean_ram_used"
+                app:item_name="@string/ram_used"
+                />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
+
+    <ImageView
+        android:id="@+id/iv_complete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleX="0"
+        android:scaleY="0"
+        android:src="@mipmap/ic_boost_end"
+        android:layout_marginTop="153dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_clean_complete"
+        android:text="@string/your_phone_already_cleaned"
+        android:textSize="18sp"
+        android:layout_marginTop="10dp"
+        style="@style/text_18"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_complete"
+        />
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_complete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="iv_bg_complte,tv_clean_complete,iv_complete"
+        />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group_scan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:constraint_referenced_ids="iv_bg_top_blue,iv_bg_top_red,tv_file_path,progress_scan,tv_junk_size,tv_junk_size_unit,scroll_clean"
+        />
+
+    <TextView
+        android:id="@+id/tv_clean"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        style="@style/text_15"
+        android:textStyle="bold"
+        android:scaleX="0"
+        android:scaleY="0"
+        android:layout_marginBottom="12dp"
+        android:text="@string/clean_junk_xx_up"
+        android:layout_marginHorizontal="48dp"
+        android:background="@drawable/bg_clean_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
