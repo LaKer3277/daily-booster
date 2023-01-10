@@ -24,8 +24,8 @@ import com.daily.clean.booster.utils.isSPlus
 
 object DaiBooNotifyPop {
 
-    val channelId = DBConfig.NOTIFY_CHANNEL_ID_POP
-    val notificationId = DBConfig.NOTIFY_POP_ID
+    private const val channelId = DBConfig.NOTIFY_CHANNEL_ID_POP
+    private const val notificationId = DBConfig.NOTIFY_POP_ID
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

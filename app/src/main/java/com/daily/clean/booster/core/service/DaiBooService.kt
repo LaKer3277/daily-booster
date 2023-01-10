@@ -28,21 +28,18 @@ class DaiBooService : Service() {
     var isChargeConnect = false
     override fun onCreate() {
         super.onCreate()
-        LogDB.dService("core  onCreate...")
         EventBus.getDefault().register(this)
         initNotification()
         registerReceivers()
-        statrTimingAlertJob()
+        startTimingAlertJob()
 
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        LogDB.dService("core  onStartCommand...")
         initNotification()
         registerReceivers()
-        statrTimingAlertJob()
+        startTimingAlertJob()
         return START_STICKY
-
     }
 
 
@@ -69,7 +66,6 @@ class DaiBooService : Service() {
 
     private fun clean(isKillProcess: Boolean) {
         GlobalScope.launch(Dispatchers.IO) {
-            LogDB.d("clean-----isKillProcess = $isKillProcess")
             if (isKillProcess) DaiBooRAMUtils.clearRAM()
             synchronized(CleanData.cache) {
                 CleanData.cache.forEach { cacheParent ->
@@ -135,43 +131,38 @@ class DaiBooService : Service() {
         when (intent?.action) {
             //屏幕亮起的时候
             Intent.ACTION_SCREEN_ON -> {
-                LogDB.dpop("ACTION_SCREEN_ON")
                 App.isReceiverScreenOn = true
-//                statrTimingAlertJob()
-
             }
+
             Intent.ACTION_SCREEN_OFF -> {
                 App.isReceiverScreenOn = false
-                LogDB.dpop("ACTION_SCREEN_OFF ----")
                 startOpen(DaiBooUIItem.Items.getPopList()[0].id, DBConfig.DAIBOO_NOTY_UNLOCK, true,0)
             }
             //充电
             Intent.ACTION_POWER_CONNECTED -> {
-                LogDB.dpop("ACTION_POWER_CONNECTED")
                 isChargeConnect = true
                 startOpen(DBConfig.DAIBOO_WORK_ID_BATTERY, DBConfig.DAIBOO_NOTY_CHARGE)
             }
+
             Intent.ACTION_POWER_DISCONNECTED -> {
                 isChargeConnect = false
             }
+
             //解锁
             Intent.ACTION_USER_PRESENT -> {
-                LogDB.dpop("ACTION_USER_PRESENT")
                 startOpen(DaiBooUIItem.Items.getPopList()[0].id, DBConfig.DAIBOO_NOTY_UNLOCK, true)
             }
+
             //卸载
             Intent.ACTION_PACKAGE_REMOVED -> {
-                LogDB.dpop("ACTION_PACKAGE_REMOVED")
                 startOpen(DBConfig.DAIBOO_WORK_ID_CLEAN, DBConfig.DAIBOO_NOTY_UNINSTALL)
             }
-
-
         }
     }
 
     var timingJob: Job? = null
     var times: Long = 0L
-    fun statrTimingAlertJob() {
+    fun startTimingAlertJob() {
         Heart.timingJob?.cancel()
         timingJob?.cancel()
         timingJob = GlobalScope.launch(Dispatchers.IO) {
@@ -179,7 +170,6 @@ class DaiBooService : Service() {
             while (true) {
                 delay(DBConfig.DAIBOO_POP_TIME_INTERVAL)
                 times++
-                LogDB.dpop("time task times = $times....")
                 if (times % DBConfig.DAIBOO_POP_TIME_INTERVAL_TIMES == 0L) {
                     launch(Dispatchers.Main) {
                         startOpen(DaiBooUIItem.Items.getPopList()[0].id, DBConfig.DAIBOO_NOTY_TIME, true)
@@ -189,9 +179,7 @@ class DaiBooService : Service() {
 
                 if (times % 2 == 0L) {
                     val manager: BatteryManager = getSystemService(BATTERY_SERVICE) as BatteryManager
-                    val currentLevel = manager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
-//                    LogDM.dAlert("Battery currentLevel = $currentLevel%")
-                    when (currentLevel) {
+                    when (manager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)) {
                         4, 9, 14, 19, 29, 39 -> {
                             if (isChargeConnect.not()) {
                                 startOpen(DBConfig.DAIBOO_WORK_ID_BATTERY, DBConfig.DAIBOO_NOTY_BATTERY)
@@ -199,21 +187,16 @@ class DaiBooService : Service() {
                         }
                     }
                 }
-
-
             }
         }
     }
 
 
-    fun startOpen(workId: String, tanID: String, isListPop: Boolean = false, delayTime: Long = 1000) {
-
-
+    private fun startOpen(workId: String, tanID: String, isListPop: Boolean = false, delayTime: Long = 1000) {
         GlobalScope.launch {
             delay(delayTime)
 //            FireBLogEventUtils.logTanTrigger(tanID)
             val isSuccess = PopCheckHelper.tryPop(workId, tanID)
-            LogDB.dpop("try pop---workId=${workId}  tanID = ${tanID}  is success? = $isSuccess ")
             if (isSuccess && isListPop) {
                 DaiBooUIItem.Items.listPop.removeFirst()
             }
