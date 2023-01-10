@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.daily.clean.booster.DBApp
+import com.daily.clean.booster.App
 import com.daily.clean.booster.R
 import com.daily.clean.booster.base.BaseActivity
 import com.daily.clean.booster.base.FiBLogEvent
@@ -40,7 +40,7 @@ class DaiBooNatImpl(var tag: String, itemBean: DaiBooAdItemBean) : DaiBooBaseAD(
 
         LogDB.dAD("--$tag----load---start--$adItem")
 
-        AdLoader.Builder(DBApp.ins, adItem.Id).forNativeAd {
+        AdLoader.Builder(App.ins, adItem.Id).forNativeAd {
             mAd = it
             isClicked = false
             LogDB.dAD("--$tag----load---success--" + it.hashCode())
@@ -121,7 +121,7 @@ class DaiBooNatImpl(var tag: String, itemBean: DaiBooAdItemBean) : DaiBooBaseAD(
         }
     }
 
-    private fun showNativeAD(context: BaseActivity, frameLayout: ViewGroup?, layoutId: Int) {
+    private fun showNativeAD(context: BaseActivity<*>, frameLayout: ViewGroup?, layoutId: Int) {
         val nativeAd = mAd
         val adView = context.layoutInflater.inflate(layoutId, null) as NativeAdView
         if (nativeAd != null) {

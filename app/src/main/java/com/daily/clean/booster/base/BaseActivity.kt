@@ -1,61 +1,49 @@
 package com.daily.clean.booster.base
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
-import android.util.DisplayMetrics
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.viewbinding.ViewBinding
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
-import com.daily.clean.booster.DBApp
+import com.daily.clean.booster.App
 import com.daily.clean.booster.R
 import com.daily.clean.booster.utils.isRPlus
 import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.Permission
 import com.hjq.permissions.XXPermissions
 
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity<T: ViewBinding> : AppCompatActivity() {
 
-    abstract fun daibooLayoutId(): View
+    abstract fun dailyBinding(): T
+    open lateinit var binding: T
 
-    /**
-     * 初始化数据
-     */
-    abstract fun daibooData()
-
-    /**
-     * 初始化 View
-     */
-    abstract fun daibooView()
-
-    /**
-     * 开始请求
-     */
-    abstract fun daibooLoad()
-
-    open fun daibooListener() {}
-    open fun daiboo_initService() {}
-    open fun daiboo_initReceiver() {}
+    abstract fun dailyData()
+    abstract fun dailyView()
+    abstract fun dailyLoad()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         //防止输入法顶起底部布局
 //        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         super.onCreate(savedInstanceState)
         //屏幕适配
-        daibooDensity()
+        dailyDensity()
         //设置状态栏透明
-        daibooStatusBar()
-        daibooData()
-        setContentView(daibooLayoutId())
-        daibooView()
-        daibooListener()
-        daibooLoad()
+        dailyStatusBar()
+
+        dailyData()
+        binding = dailyBinding()
+        setContentView(binding.root)
+        dailyView()
+        dailyLoad()
     }
 
     var isPause: Boolean = false
@@ -75,23 +63,18 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
 
-    private fun daibooDensity() {
-        val adm: DisplayMetrics = resources.displayMetrics
-        //density = px/dp
-        val td = adm.heightPixels / 760f
-        // px = dp * (dpi / 160)
-        val dpi = (160 * td).toInt()
-        //密度
-        adm.density = td
-        adm.scaledDensity = td
-
-        adm.densityDpi = dpi
+    private fun dailyDensity() {
+        resources.displayMetrics.apply {
+            val finalHeight = heightPixels / 745f
+            density = finalHeight
+            scaledDensity = finalHeight
+            densityDpi = (160 * finalHeight).toInt()
+        }
     }
 
 
-    fun daibooStatusBar() {
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) return
+    @SuppressLint("ObsoleteSdkInt")
+    fun dailyStatusBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
@@ -172,7 +155,7 @@ abstract class BaseActivity : AppCompatActivity() {
                 this.view.contentLayout.findViewById<AppCompatButton>(R.id.btnGrant)
                     .setOnClickListener {
                         dismiss()
-                        DBApp.isNotDoHotStart = true
+                        App.isNotDoHotStart = true
                         XXPermissions.with(this@BaseActivity)
                             .permission(Permission.MANAGE_EXTERNAL_STORAGE)
                             .request(object : OnPermissionCallback {

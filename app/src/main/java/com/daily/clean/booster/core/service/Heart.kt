@@ -4,11 +4,9 @@ import android.app.Service
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.Intent.EXTRA_REPLACING
 import android.content.IntentFilter
 import android.os.BatteryManager
-import com.blankj.utilcode.util.ActivityUtils
-import com.daily.clean.booster.DBApp
+import com.daily.clean.booster.App
 import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.core.pop.PopCheckHelper
 import com.daily.clean.booster.entity.DaiBooUIItem
@@ -63,12 +61,12 @@ object Heart {
             //屏幕亮起的时候
             Intent.ACTION_SCREEN_ON -> {
                 LogDB.dpop("ACTION_SCREEN_ON")
-                DBApp.isReceiveerScreenOn = true
+                App.isReceiveerScreenOn = true
                 statrTimingAlertJob()
 
             }
             Intent.ACTION_SCREEN_OFF -> {
-                DBApp.isReceiveerScreenOn = false
+                App.isReceiveerScreenOn = false
                 startOpen(DaiBooUIItem.Items.getPopList()[0].id, DBConfig.DAIBOO_NOTY_UNLOCK, true)
             }
             //充电
@@ -115,7 +113,7 @@ object Heart {
                 }
 
                 if (times % 2 == 0L) {
-                    val manager: BatteryManager = DBApp.ins.getSystemService(Service.BATTERY_SERVICE) as BatteryManager
+                    val manager: BatteryManager = App.ins.getSystemService(Service.BATTERY_SERVICE) as BatteryManager
                     val currentLevel = manager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
                     LogDB.dpop("heart-Battery currentLevel = $currentLevel%  $isChargeConnect")
                     when (currentLevel) {

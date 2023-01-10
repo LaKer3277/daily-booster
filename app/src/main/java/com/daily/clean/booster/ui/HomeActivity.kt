@@ -25,25 +25,23 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
 
-class HomeActivity : BaseActivity() {
+class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
-    private lateinit var binding: ActivityHomeBinding
-    override fun daibooLayoutId(): View {
-        binding = ActivityHomeBinding.inflate(layoutInflater)
-        return binding.root
+    override fun dailyBinding(): ActivityHomeBinding {
+        return ActivityHomeBinding.inflate(layoutInflater)
     }
 
 
-    override fun daibooData() {
+    override fun dailyData() {
         FiBLogEvent.page_home_show()
     }
 
-    override fun daibooView() {
+    override fun dailyView() {
         initHome()
         initMenu()
     }
 
-    override fun daibooLoad() {
+    override fun dailyLoad() {
     }
 
     override fun onResume() {

@@ -15,20 +15,18 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class FirstEnterActivity : BaseActivity() {
+class FirstEnterActivity : BaseActivity<ActivityFirstBinding>() {
 
-    private lateinit var binding: ActivityFirstBinding
-    override fun daibooLayoutId(): View {
-        binding = ActivityFirstBinding.inflate(layoutInflater)
-        return binding.root
+    override fun dailyBinding(): ActivityFirstBinding {
+        return ActivityFirstBinding.inflate(layoutInflater)
     }
 
 
-    override fun daibooData() {
+    override fun dailyData() {
         FiBLogEvent.start_first_()
     }
 
-    override fun daibooView() {
+    override fun dailyView() {
         //下划线
         binding.layStart.tvPrivacyPolicy.showBottomLine()
         binding.layStart.tvTermofservice.showBottomLine()
@@ -46,7 +44,7 @@ class FirstEnterActivity : BaseActivity() {
         }
     }
 
-    override fun daibooLoad() {
+    override fun dailyLoad() {
         HttpTBA.reportFirst()
         initLocalData()
     }

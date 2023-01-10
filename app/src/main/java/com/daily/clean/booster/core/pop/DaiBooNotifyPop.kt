@@ -9,7 +9,7 @@ import android.view.View
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.daily.clean.booster.DBApp
+import com.daily.clean.booster.App
 import com.daily.clean.booster.R
 import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.base.FiBLogEvent
@@ -40,7 +40,7 @@ object DaiBooNotifyPop {
                 enableLights(false)
                 enableVibration(false)
             }
-            (DBApp.ins.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(
+            (App.ins.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(
                 channel
             )
         }
@@ -49,7 +49,7 @@ object DaiBooNotifyPop {
 
 
     fun cancelAlertNotification() {
-        NotificationManagerCompat.from(DBApp.ins).cancel(notificationId)
+        NotificationManagerCompat.from(App.ins).cancel(notificationId)
     }
 
 
@@ -62,7 +62,7 @@ object DaiBooNotifyPop {
 
         val item: DaiBooPopItemBean? = PopCheckHelper.getPopItem(tanId)
 
-        val nBuilder = NotificationCompat.Builder(DBApp.ins, channelId)
+        val nBuilder = NotificationCompat.Builder(App.ins, channelId)
             .setSmallIcon(R.drawable.ic_daily_booster_logo)
             .setVisibility(Notification.VISIBILITY_PUBLIC)
             .setPriority(NotificationCompat.PRIORITY_HIGH)//设置该通知优先级
@@ -97,7 +97,7 @@ object DaiBooNotifyPop {
         //build
         val notification = nBuilder.build()
         //notify
-        with(NotificationManagerCompat.from(DBApp.ins)) {
+        with(NotificationManagerCompat.from(App.ins)) {
             LogDB.dpop("-notify---$notificationId")
             //保存
             PopCheckHelper.saveLastPopTime(tanId)
@@ -130,7 +130,7 @@ object DaiBooNotifyPop {
             else -> R.layout.layout_notification_big1
         }
 
-        val remoteViews = RemoteViews(DBApp.ins.packageName, layoutResId).apply {
+        val remoteViews = RemoteViews(App.ins.packageName, layoutResId).apply {
 
             if (isHideTitle) {
                 setViewVisibility(R.id.ll_title, View.GONE)
@@ -206,7 +206,7 @@ object DaiBooNotifyPop {
                                 R.id.tvAlertDescription,
                                 R.string.des_clean_tan.getString(
                                     DaiBooRAMUtils.getUsedMemoryString(
-                                        DBApp.ins
+                                        App.ins
                                     )
                                 )
                             )
@@ -224,8 +224,8 @@ object DaiBooNotifyPop {
 //        val intent = Intent()
         val bpiBroad: PendingIntent =
             PendingIntent.getBroadcast(
-                DBApp.ins, tanId.hashCode() + 20,
-                Intent(DBApp.ins, NotifyToolReceiver::class.java).apply {
+                App.ins, tanId.hashCode() + 20,
+                Intent(App.ins, NotifyToolReceiver::class.java).apply {
                     putExtra(DBConfig.DAIBOO_KEY_WORK_ID, workID)
                     putExtra(DBConfig.DAIBOO_KEY_NOTY_ID, tanId)
                     action = DBConfig.DAIBOO_ACTION_FROM_POP_NOTY_POP_FULLSCREEN
@@ -234,8 +234,8 @@ object DaiBooNotifyPop {
 
         val actIntent: PendingIntent =
             PendingIntent.getActivity(
-                DBApp.ins, tanId.hashCode() + 20,
-                Intent(DBApp.ins, NotificationActivity::class.java).apply {
+                App.ins, tanId.hashCode() + 20,
+                Intent(App.ins, NotificationActivity::class.java).apply {
                     putExtra(DBConfig.DAIBOO_KEY_WORK_ID, workID)
                     putExtra(DBConfig.DAIBOO_KEY_NOTY_ID, tanId)
                     action = DBConfig.DAIBOO_ACTION_FROM_POP_NOTY_POP_FULLSCREEN
@@ -249,12 +249,12 @@ object DaiBooNotifyPop {
     }
 
     private fun btnClickPending_exit(workID: String, tanId: String): PendingIntent {
-        val intent = Intent(DBApp.ins, NotifyToolReceiver::class.java).apply {
+        val intent = Intent(App.ins, NotifyToolReceiver::class.java).apply {
             putExtra(DBConfig.DAIBOO_KEY_WORK_ID, workID)
             putExtra(DBConfig.DAIBOO_KEY_NOTY_ID, tanId)
             action = DBConfig.DAIBOO_ACTION_FROM_POP_NOTY_POP_EXIT
         }
-        return PendingIntent.getBroadcast(DBApp.ins, tanId.hashCode() + 3, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        return PendingIntent.getBroadcast(App.ins, tanId.hashCode() + 3, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 
     }
 
@@ -278,9 +278,9 @@ object DaiBooNotifyPop {
 //            }
 //        } else {
         return PendingIntent.getActivity(
-            DBApp.ins,
+            App.ins,
             tanId.hashCode(),
-            Intent(DBApp.ins, SplashActivity::class.java).apply {
+            Intent(App.ins, SplashActivity::class.java).apply {
                 putExtra(DBConfig.DAIBOO_KEY_WORK_ID, workID)
                 putExtra(DBConfig.DAIBOO_KEY_NOTY_ID, tanId)
                 action = (DBConfig.DAIBOO_ACTION_FROM_POP_NOTY_POP)

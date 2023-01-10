@@ -7,7 +7,7 @@ import android.os.Build
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.daily.clean.booster.DBApp
+import com.daily.clean.booster.App
 import com.daily.clean.booster.R
 import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.ui.SplashActivity
@@ -34,24 +34,24 @@ object DaiBooNotifyTool {
                 enableVibration(false)
                 setShowBadge(false)
             }
-            (DBApp.ins.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(
+            (App.ins.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(
                 channel
             )
         }
     }
 
     private fun cancelNotification() {
-        NotificationManagerCompat.from(DBApp.ins).cancel(notificationId)
+        NotificationManagerCompat.from(App.ins).cancel(notificationId)
     }
 
     private fun clickPending(workID: String): PendingIntent? {
         val newIntent =
-            Intent(DBApp.ins, SplashActivity::class.java).apply {
+            Intent(App.ins, SplashActivity::class.java).apply {
                         putExtra(DBConfig.DAIBOO_KEY_WORK_ID, workID)
                         action = DBConfig.DAIBOO_ACTION_FROM_NOTIFYTOOL
                     }
 
-        val resultPendingIntent: PendingIntent? = TaskStackBuilder.create(DBApp.ins).run {
+        val resultPendingIntent: PendingIntent? = TaskStackBuilder.create(App.ins).run {
             addNextIntentWithParentStack(newIntent)
             getPendingIntent(workID.hashCode(), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         }
@@ -67,7 +67,7 @@ object DaiBooNotifyTool {
         }else{
             R.layout.layout_tool_64
         }
-        return RemoteViews(DBApp.ins.packageName, layoutId).apply {
+        return RemoteViews(App.ins.packageName, layoutId).apply {
             setOnClickPendingIntent(
                 R.id.notify_booster,
                 clickPending(DBConfig.DAIBOO_WORK_ID_BOOSTER)
@@ -90,7 +90,7 @@ object DaiBooNotifyTool {
     fun createNotification(): Notification {
         createNotificationChannel()
         cancelNotification()
-        val notificationBuilder = NotificationCompat.Builder(DBApp.ins, channelId)
+        val notificationBuilder = NotificationCompat.Builder(App.ins, channelId)
             .setSmallIcon(R.drawable.ic_daily_booster_logo)
             .setCustomContentView(customRemoteViews())
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)

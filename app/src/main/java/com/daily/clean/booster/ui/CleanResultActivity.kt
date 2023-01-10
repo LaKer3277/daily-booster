@@ -22,18 +22,16 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class CleanResultActivity : BaseActivity() {
+class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
 
-    open lateinit var binding: ActivityResultBinding
-    override fun daibooLayoutId(): View {
-        binding = ActivityResultBinding.inflate(layoutInflater)
-        return binding.root
+    override fun dailyBinding(): ActivityResultBinding {
+        return ActivityResultBinding.inflate(layoutInflater)
     }
 
     var extraStr = "0B"
     var workId = DBConfig.DAIBOO_WORK_ID_BOOSTER
     var isFirst = false
-    override fun daibooData() {
+    override fun dailyData() {
         extraStr = intent.getStringExtra(DBConfig.DAIBOO_KEY_CLEAN_SIZE) ?: "0B"
         workId = intent.getStringExtra(DBConfig.DAIBOO_KEY_WORK_ID) ?: DBConfig.DAIBOO_WORK_ID_BOOSTER
         isFirst = intent.getBooleanExtra(DBConfig.DAIBOO_KEY_IS_FIRST, false)
@@ -46,7 +44,7 @@ class CleanResultActivity : BaseActivity() {
     lateinit var recycler: RecyclerView
 
     @SuppressLint("StringFormatMatches")
-    override fun daibooView() {
+    override fun dailyView() {
         title_text = binding.titleText
         tv_result_info = binding.tvResultInfo
         title_back = binding.titleBack
@@ -77,7 +75,7 @@ class CleanResultActivity : BaseActivity() {
         }
     }
 
-    override fun daibooLoad() {
+    override fun dailyLoad() {
         log()
     }
 

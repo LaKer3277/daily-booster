@@ -27,7 +27,7 @@ import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkManager
 import com.applovin.adview.AppLovinFullscreenActivity
 import com.daily.clean.booster.BuildConfig
-import com.daily.clean.booster.DBApp
+import com.daily.clean.booster.App
 import com.daily.clean.booster.R
 import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.base.DBConfig.DAIBOO_KEY_IS_FIRST
@@ -90,11 +90,11 @@ val Number.GB
 
 
 fun Int.getString(): String {
-    return DBApp.ins.getString(this)
+    return App.ins.getString(this)
 }
 
 fun Int.getString(vararg formatArgs: Any?): String {
-    return DBApp.ins.getString(this, *formatArgs)
+    return App.ins.getString(this, *formatArgs)
 }
 
 suspend fun CoroutineScope.doCycle(back: (Int) -> Unit) {

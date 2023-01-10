@@ -38,10 +38,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
-class DBApp : Application(), Application.ActivityLifecycleCallbacks {
+class App : Application(), Application.ActivityLifecycleCallbacks {
 
     companion object {
-        lateinit var ins: DBApp
+        lateinit var ins: App
         const val app_name = BuildConfig.APPLICATION_ID
         var isReceiveerScreenOn = false
         var listActivity: MutableList<Activity>? = mutableListOf()
@@ -53,9 +53,7 @@ class DBApp : Application(), Application.ActivityLifecycleCallbacks {
         var timeOnAppStop = 0L
         var activityCount = 0
         var backJob: Job? = null
-
     }
-
 
     override fun onCreate() {
         super.onCreate()

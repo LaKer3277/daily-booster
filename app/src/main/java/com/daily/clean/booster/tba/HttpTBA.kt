@@ -13,7 +13,7 @@ import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
 import com.blankj.utilcode.util.RomUtils
 import com.daily.clean.booster.BuildConfig
-import com.daily.clean.booster.DBApp
+import com.daily.clean.booster.App
 import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.base.FiBRemoteUtil
 import com.daily.clean.booster.entity.DaiBooAdEvent
@@ -198,7 +198,7 @@ object HttpTBA {
             //用户是否启用了限制跟踪，0：没有限制，1：限制了；映射关系：{"lactate": 0, "maybe": 1}
             var lat = "lactate"
             try {
-                AdvertisingIdClient.getAdvertisingIdInfo(DBApp.ins).apply {
+                AdvertisingIdClient.getAdvertisingIdInfo(App.ins).apply {
                     gaid = this.id ?: ""
                     lat = if (isLimitAdTrackingEnabled) "maybe" else "lactate"
                 }
@@ -218,7 +218,7 @@ object HttpTBA {
             val distinct_id = uuid //用户排重字段，统计涉及到的排重用户数就是依据该字段，对接时需要和产品确认：事件公共字段
             if (DBConfig.DAIBOO_USE_SHOW_UUID) {
                 GlobalScope.launch(Dispatchers.Main) {
-                    Toast.makeText(DBApp.ins, "$distinct_id", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(App.ins, "$distinct_id", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -532,7 +532,7 @@ object HttpTBA {
     private fun getGSMCellLocationInfo(): String {
         try {
             val manager =
-                DBApp.ins.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+                App.ins.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
             val operator = manager.networkOperator
 
             /**通过operatorgetMCC 和MNC  */
@@ -546,18 +546,18 @@ object HttpTBA {
     }
 
     private fun getAndroidId(): String {
-        return Settings.System.getString(DBApp.ins.contentResolver, Settings.System.ANDROID_ID);
+        return Settings.System.getString(App.ins.contentResolver, Settings.System.ANDROID_ID);
     }
 
 
     private fun getLastUpdateIime() = try {
-        DBApp.ins.packageManager.getPackageInfo(DBApp.ins.packageName, 0).lastUpdateTime
+        App.ins.packageManager.getPackageInfo(App.ins.packageName, 0).lastUpdateTime
     } catch (e: Exception) {
         0L
     }
 
     private fun getFirstInstallTime() = try {
-        DBApp.ins.packageManager.getPackageInfo(DBApp.ins.packageName, 0).firstInstallTime
+        App.ins.packageManager.getPackageInfo(App.ins.packageName, 0).firstInstallTime
     } catch (e: Exception) {
         0L
     }
@@ -565,18 +565,18 @@ object HttpTBA {
 
     fun reportFirst() {
         userAgentStr = try {
-            WebSettings.getDefaultUserAgent(DBApp.ins)// app context can get
+            WebSettings.getDefaultUserAgent(App.ins)// app context can get
         } catch (e: Exception) {
             ""
         }
         referrerUrl = DaiBooMK.decode(DaiBooMK.MK_REFERRER_URL, "")
-        screen_dpi = "${DBApp.ins.resources.displayMetrics.density}"
-        val w = DBApp.ins.resources.displayMetrics.widthPixels
-        val h = DBApp.ins.resources.displayMetrics.heightPixels
+        screen_dpi = "${App.ins.resources.displayMetrics.density}"
+        val w = App.ins.resources.displayMetrics.widthPixels
+        val h = App.ins.resources.displayMetrics.heightPixels
         screen_res = "$w$h"
 
         doReport(EVENT_SESSION)
-        getReferrerInfo(DBApp.ins) { rf ->
+        getReferrerInfo(App.ins) { rf ->
             rf?.let {
                 FiBRemoteUtil.isByuser = it.contains("fb4a", false)
                         || rf.contains("gclid", false)

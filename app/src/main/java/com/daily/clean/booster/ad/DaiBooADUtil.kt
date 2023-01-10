@@ -1,8 +1,7 @@
 package com.daily.clean.booster.ad
 
 
-import androidx.lifecycle.lifecycleScope
-import com.daily.clean.booster.DBApp
+import com.daily.clean.booster.App
 import com.daily.clean.booster.base.BaseActivity
 import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.base.FiBLogEvent
@@ -11,8 +10,6 @@ import com.daily.clean.booster.entity.DaiBooAdItemBean
 import com.daily.clean.booster.utils.DaiBooMK
 import com.daily.clean.booster.utils.LogDB
 import com.files.document.ad.DaiBooNatMaxImpl
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -112,7 +109,7 @@ object DaiBooADUtil {
      */
     fun load(
         key: String,
-        activity: BaseActivity,
+        activity: BaseActivity<*>,
         callLoading: () -> Unit = {},
         callEnd: () -> Unit = {},
         callBack: (DaiBooBaseAD) -> Unit = {}
@@ -196,7 +193,7 @@ object DaiBooADUtil {
 
 
     private fun loadAD(
-        activity: BaseActivity,
+        activity: BaseActivity<*>,
         key: String,
         index: Int,
         ads: MutableList<DaiBooAdItemBean>?,
@@ -257,13 +254,13 @@ object DaiBooADUtil {
 
     fun showAD(
         key: String,
-        activity: BaseActivity,
+        activity: BaseActivity<*>,
         workId: String = "",
         block: (Boolean) -> Unit
     ) {
 
-        if (activity.isPause || DBApp.isAdActivityResume) {
-            LogDB.dAD("--$key----show---ishowing-- ${DBApp.isAdActivityResume}")
+        if (activity.isPause || App.isAdActivityResume) {
+            LogDB.dAD("--$key----show---ishowing-- ${App.isAdActivityResume}")
             return
         }
 

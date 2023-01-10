@@ -1,7 +1,7 @@
 package com.daily.clean.booster.ad
 
 import androidx.appcompat.app.AppCompatActivity
-import com.daily.clean.booster.DBApp
+import com.daily.clean.booster.App
 import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.entity.DaiBooAdEvent
 import com.daily.clean.booster.entity.DaiBooAdItemBean
@@ -32,7 +32,7 @@ class DaiBooOpInImpl(var tag: String, itemBean: DaiBooAdItemBean) : DaiBooBaseAD
                 "interstitial" -> {
 
                     InterstitialAd.load(
-                        DBApp.ins,
+                        App.ins,
                         adItem.Id,
                         getAdRequest(),
                         object : InterstitialAdLoadCallback() {
@@ -63,7 +63,7 @@ class DaiBooOpInImpl(var tag: String, itemBean: DaiBooAdItemBean) : DaiBooBaseAD
                 }
                 "open" -> {
                     AppOpenAd.load(
-                        DBApp.ins,
+                        App.ins,
                         adItem.Id,
                         getAdRequest(),
                         AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT,

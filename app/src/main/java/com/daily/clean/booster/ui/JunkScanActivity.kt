@@ -9,7 +9,7 @@ import android.view.animation.LinearInterpolator
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import com.daily.clean.booster.BuildConfig
-import com.daily.clean.booster.DBApp
+import com.daily.clean.booster.App
 import com.daily.clean.booster.R
 import com.daily.clean.booster.ad.DaiBooADUtil
 import com.daily.clean.booster.base.BaseActivity
@@ -28,20 +28,18 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.File
 
-class JunkScanActivity : BaseActivity() {
+class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
 
-    private lateinit var binding: ActivityJunkScanBinding
-    override fun daibooLayoutId(): View {
-        binding = ActivityJunkScanBinding.inflate(layoutInflater)
-        return binding.root
+    override fun dailyBinding(): ActivityJunkScanBinding {
+        return ActivityJunkScanBinding.inflate(layoutInflater)
     }
 
 
-    override fun daibooData() {
+    override fun dailyData() {
         log()
     }
 
-    override fun daibooView() {
+    override fun dailyView() {
 
         binding.titleBack.setOnClickListener {
             onBackPressed()
@@ -101,7 +99,7 @@ class JunkScanActivity : BaseActivity() {
 
     }
 
-    override fun daibooLoad() {
+    override fun dailyLoad() {
         checkStoragePermission({
             initView()
         }, {
@@ -377,12 +375,12 @@ class JunkScanActivity : BaseActivity() {
     private fun queryApps() {
         val intent =
             Intent(Intent.ACTION_MAIN, null).apply { addCategory(Intent.CATEGORY_LAUNCHER) }
-        val infoList = DBApp.ins.packageManager.queryIntentActivities(intent, 0)
+        val infoList = App.ins.packageManager.queryIntentActivities(intent, 0)
         CleanData.appList.clear()
         infoList.forEach {
             with(it) {
                 if (activityInfo.packageName != BuildConfig.APPLICATION_ID) {
-                    CleanData.appList.add(loadIcon(DBApp.ins.packageManager))
+                    CleanData.appList.add(loadIcon(App.ins.packageManager))
                 }
             }
         }

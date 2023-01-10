@@ -3,7 +3,7 @@ package com.daily.clean.booster.base
 
 import android.os.Bundle
 import com.blankj.utilcode.util.TimeUtils
-import com.daily.clean.booster.DBApp
+import com.daily.clean.booster.App
 import com.daily.clean.booster.entity.DaiBooLogEvent
 import com.daily.clean.booster.tba.HttpTBA
 import com.daily.clean.booster.utils.DaiBooMK
@@ -14,7 +14,7 @@ import java.util.*
 object FiBLogEvent {
 
     val firebaseAnalytics: FirebaseAnalytics by lazy {
-        FirebaseAnalytics.getInstance(DBApp.ins)
+        FirebaseAnalytics.getInstance(App.ins)
     }
 
     fun logEvent(key: String) {

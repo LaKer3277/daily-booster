@@ -5,7 +5,7 @@ import android.view.View
 import android.view.animation.LinearInterpolator
 import androidx.lifecycle.lifecycleScope
 import com.daily.clean.booster.BuildConfig
-import com.daily.clean.booster.DBApp
+import com.daily.clean.booster.App
 import com.daily.clean.booster.R
 import com.daily.clean.booster.ad.DaiBooADUtil
 import com.daily.clean.booster.base.BaseActivity
@@ -27,15 +27,13 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
-class BoostActivity : BaseActivity() {
+class BoostActivity : BaseActivity<ActivityBoostBinding>() {
 
-    private lateinit var binding: ActivityBoostBinding
-    override fun daibooLayoutId(): View {
-        binding = ActivityBoostBinding.inflate(layoutInflater)
-        return binding.root
+    override fun dailyBinding(): ActivityBoostBinding {
+        return ActivityBoostBinding.inflate(layoutInflater)
     }
 
-    override fun daibooData() {
+    override fun dailyData() {
         workId = intent.getStringExtra(DBConfig.DAIBOO_KEY_WORK_ID) ?: DBConfig.DAIBOO_WORK_ID_BOOSTER
         popId = intent.getStringExtra(DBConfig.DAIBOO_KEY_NOTY_ID)
         isFirst = intent.getBooleanExtra(DBConfig.DAIBOO_KEY_IS_FIRST, false)
@@ -45,7 +43,7 @@ class BoostActivity : BaseActivity() {
 
 
     var currentStatus = 0
-    override fun daibooView() {
+    override fun dailyView() {
         binding.titleBack.setOnClickListener {
             onBackPressed()
         }
@@ -130,7 +128,7 @@ class BoostActivity : BaseActivity() {
         binding.tvDes.text = ""
     }
 
-    override fun daibooLoad() {
+    override fun dailyLoad() {
         loadADS()
     }
 
@@ -198,12 +196,12 @@ class BoostActivity : BaseActivity() {
     private fun queryApps() {
         val intent =
             Intent(Intent.ACTION_MAIN, null).apply { addCategory(Intent.CATEGORY_LAUNCHER) }
-        val infoList = DBApp.ins.packageManager.queryIntentActivities(intent, 0)
+        val infoList = App.ins.packageManager.queryIntentActivities(intent, 0)
         CleanData.appList.clear()
         infoList.forEach {
             with(it) {
                 if (activityInfo.packageName != BuildConfig.APPLICATION_ID) {
-                    CleanData.appList.add(loadIcon(DBApp.ins.packageManager))
+                    CleanData.appList.add(loadIcon(App.ins.packageManager))
                 }
             }
         }

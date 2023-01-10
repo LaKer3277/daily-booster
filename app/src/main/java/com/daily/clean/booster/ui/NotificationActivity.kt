@@ -9,7 +9,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import com.blankj.utilcode.util.ActivityUtils
-import com.daily.clean.booster.DBApp
+import com.daily.clean.booster.App
 import com.daily.clean.booster.R
 import com.daily.clean.booster.base.BaseActivity
 import com.daily.clean.booster.base.DBConfig
@@ -19,19 +19,17 @@ import com.daily.clean.booster.databinding.LayoutNotificationBigActBinding
 import com.daily.clean.booster.utils.DaiBooRAMUtils
 import com.daily.clean.booster.utils.getString
 
-class NotificationActivity : BaseActivity() {
+class NotificationActivity : BaseActivity<LayoutNotificationBigActBinding>() {
 
-    private lateinit var binding: LayoutNotificationBigActBinding
-    override fun daibooLayoutId(): View {
-        binding = LayoutNotificationBigActBinding.inflate(layoutInflater)
-        return binding.root
+    override fun dailyBinding(): LayoutNotificationBigActBinding {
+        return LayoutNotificationBigActBinding.inflate(layoutInflater)
     }
 
     override fun onNewIntent(intentNew: Intent?) {
         super.onNewIntent(intent)
         intent = intentNew
-        daibooData()
-        daibooView()
+        dailyData()
+        dailyView()
     }
 
     override fun onBackPressed() {
@@ -39,18 +37,18 @@ class NotificationActivity : BaseActivity() {
 
     var workID = ""
     var tanID = ""
-    override fun daibooData() {
+    override fun dailyData() {
         workID = intent?.getStringExtra(DBConfig.DAIBOO_KEY_WORK_ID) ?: ""
         tanID = intent?.getStringExtra(DBConfig.DAIBOO_KEY_NOTY_ID) ?: ""
         FiBLogEvent.up_ac_show(tanID)
     }
 
-    override fun daibooView() {
+    override fun dailyView() {
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         initView()
     }
 
-    override fun daibooLoad() {
+    override fun dailyLoad() {
     }
 
     fun setImageViewResource(resid: Int, imgId: Int) {
@@ -134,7 +132,7 @@ class NotificationActivity : BaseActivity() {
                     else -> {
                         setTextViewText(
                             R.id.tvAlertDescription,
-                            R.string.des_clean_tan.getString(DaiBooRAMUtils.getUsedMemoryString(DBApp.ins))
+                            R.string.des_clean_tan.getString(DaiBooRAMUtils.getUsedMemoryString(App.ins))
                         )
                         setTextViewText(R.id.btnWake, R.string.clean.getString())
                     }
@@ -158,7 +156,7 @@ class NotificationActivity : BaseActivity() {
     fun goBoost() {
         FiBLogEvent.up_ac_click(tanID)
         ActivityUtils.finishAllActivities()
-        startActivity(Intent(DBApp.ins, SplashActivity::class.java).apply {
+        startActivity(Intent(App.ins, SplashActivity::class.java).apply {
             putExtra(DBConfig.DAIBOO_KEY_WORK_ID, workID)
             putExtra(DBConfig.DAIBOO_KEY_NOTY_ID, tanID)
             action = (DBConfig.DAIBOO_ACTION_FROM_POP_NOTY_POP)

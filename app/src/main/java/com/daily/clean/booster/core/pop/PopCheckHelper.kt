@@ -1,7 +1,7 @@
 package com.daily.clean.booster.core.pop
 
 import com.blankj.utilcode.util.NetworkUtils
-import com.daily.clean.booster.DBApp
+import com.daily.clean.booster.App
 import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.base.FiBRemoteUtil
@@ -85,8 +85,8 @@ object PopCheckHelper {
 
     private fun getFirstInstallTime(): Long {
         return try {
-            DBApp.ins.applicationContext.packageManager.getPackageInfo(
-                DBApp.ins.packageName,
+            App.ins.applicationContext.packageManager.getPackageInfo(
+                App.ins.packageName,
                 0
             ).firstInstallTime
         } catch (e: Exception) {
@@ -97,7 +97,7 @@ object PopCheckHelper {
 
     fun checkStaus(workId: String, tanId: String): Boolean {
 
-        if (DBConfig.DAIBOO_POP_IS_CHECK_CONFIG && tanId == DBConfig.DAIBOO_NOTY_TIME && (System.currentTimeMillis() - DBApp.timeOnAppStop < DBConfig.DOCMAN_POP_IN_BG_STAY_TIME)) {
+        if (DBConfig.DAIBOO_POP_IS_CHECK_CONFIG && tanId == DBConfig.DAIBOO_NOTY_TIME && (System.currentTimeMillis() - App.timeOnAppStop < DBConfig.DOCMAN_POP_IN_BG_STAY_TIME)) {
             LogDB.dpop("${tanId} canNotShow --- Background stay time not enough ")
             return false
         }
@@ -121,7 +121,7 @@ object PopCheckHelper {
 //            return false
 //        }
         //判断栈顶，是否在前台
-        val isAtTop = DBApp.ins.isAtForeground()
+        val isAtTop = App.ins.isAtForeground()
         if (isAtTop) {
             LogDB.dpop("${tanId} canNotShow  --- isAtTop")
             return false
@@ -140,7 +140,7 @@ object PopCheckHelper {
             return false
         }
         FiBLogEvent.pop_log(tanId, 0)
-        DaiBooNotifyPop.createNotificationAndPop(DBApp.ins, workId, tanId)
+        DaiBooNotifyPop.createNotificationAndPop(App.ins, workId, tanId)
         return true
     }
 

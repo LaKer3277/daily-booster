@@ -28,7 +28,7 @@
 
 
     <application
-        android:name=".DBApp"
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -38,31 +38,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Dailybooster">
 
-
-        <meta-data
-            android:name="ScopedStorage"
-            android:value="true" />
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
-
-        <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="@string/admob_app_id" />
-        <meta-data
-            android:name="applovin.sdk.key"
-            android:value="@string/max_ad_sdk_key" />
-
-        <service
-            android:name=".core.service.DaiBooService"
-            android:exported="false" />
-        <receiver
-            android:name=".core.pop.NotifyToolReceiver"
-            android:exported="false" />
-
         <activity
             android:name=".LaunchActivity"
+            android:launchMode="singleTask"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -79,7 +57,6 @@
             android:noHistory="true"
             android:taskAffinity=":wakeup"
             android:theme="@style/Theme.Notification.Window" />
-
 
         <activity
             android:name=".ui.HomeActivity"
@@ -110,6 +87,29 @@
         <activity
             android:name=".ui.JunkCleanActivity"
             android:exported="false" />
+
+        <service
+            android:name=".core.service.DaiBooService"
+            android:exported="false" />
+        <receiver
+            android:name=".core.pop.NotifyToolReceiver"
+            android:exported="false" />
+
+
+        <meta-data
+            android:name="ScopedStorage"
+            android:value="true" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <!-- Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713 -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/admob_app_id" />
+        <meta-data
+            android:name="applovin.sdk.key"
+            android:value="@string/max_ad_sdk_key" />
 
     </application>
 

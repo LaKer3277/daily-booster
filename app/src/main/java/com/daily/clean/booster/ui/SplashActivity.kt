@@ -1,10 +1,9 @@
 package com.daily.clean.booster.ui
 
-import android.view.View
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
-import com.daily.clean.booster.DBApp
+import com.daily.clean.booster.App
 import com.daily.clean.booster.ad.DaiBooADUtil
 import com.daily.clean.booster.base.BaseActivity
 import com.daily.clean.booster.base.FiBLogEvent
@@ -13,21 +12,18 @@ import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.databinding.ActivitySplashBinding
 import com.daily.clean.booster.tba.HttpTBA
 import com.daily.clean.booster.utils.*
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class SplashActivity : BaseActivity() {
+class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
-    private lateinit var binding: ActivitySplashBinding
-    override fun daibooLayoutId(): View {
-        binding = ActivitySplashBinding.inflate(layoutInflater)
-        return binding.root
+    override fun dailyBinding(): ActivitySplashBinding {
+        return ActivitySplashBinding.inflate(layoutInflater)
     }
 
 
-    override fun daibooData() {
+    override fun dailyData() {
 
         initLocalData()
 
@@ -35,7 +31,7 @@ class SplashActivity : BaseActivity() {
         val workID = intent.getStringExtra(DBConfig.DAIBOO_KEY_WORK_ID) ?: ""
         val action = intent?.action ?: ""
         if (action == DBConfig.DAIBOO_ACTION_FROM_POP_NOTY_POP ) {
-            NotificationManagerCompat.from(DBApp.ins).cancel(DBConfig.NOTIFY_POP_ID)
+            NotificationManagerCompat.from(App.ins).cancel(DBConfig.NOTIFY_POP_ID)
             FiBLogEvent.pop_log(tanId, 2)
             FiBLogEvent.up_all_start()
         }
@@ -49,13 +45,13 @@ class SplashActivity : BaseActivity() {
     }
 
 
-    override fun daibooView() {
+    override fun dailyView() {
 
         initStartView()
 
     }
 
-    override fun daibooLoad() {
+    override fun dailyLoad() {
 
         HttpTBA.reportFirst()
 
@@ -176,7 +172,7 @@ class SplashActivity : BaseActivity() {
                 DaiBooADUtil.load(DBConfig.DAIBOO_AD_OPEN, this@SplashActivity)
                 lifecycleScope.launch {
                     delay(120)
-                    if (DBApp.ins.isAtForeground() && isPause.not()) {
+                    if (App.ins.isAtForeground() && isPause.not()) {
                         goNextByIntent()
                     }
                     finish()

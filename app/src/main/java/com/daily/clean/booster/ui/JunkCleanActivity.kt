@@ -20,18 +20,16 @@ import com.lzp.dslanimator.animSet
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 
-class JunkCleanActivity : BaseActivity() {
+class JunkCleanActivity : BaseActivity<ActivityCleanBinding>() {
 
-    private lateinit var binding: ActivityCleanBinding
-    override fun daibooLayoutId(): View {
-        binding = ActivityCleanBinding.inflate(layoutInflater)
-        return binding.root
+    override fun dailyBinding(): ActivityCleanBinding {
+        return ActivityCleanBinding.inflate(layoutInflater)
     }
 
-    override fun daibooData() {
+    override fun dailyData() {
     }
 
-    override fun daibooView() {
+    override fun dailyView() {
 
         binding.titleText.text = getString(R.string.junk_clean)
         binding.titleBack.setOnClickListener {
@@ -39,7 +37,7 @@ class JunkCleanActivity : BaseActivity() {
         }
     }
 
-    override fun daibooLoad() {
+    override fun dailyLoad() {
         loadADs()
     }
 

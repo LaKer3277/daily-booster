@@ -8,9 +8,8 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
 import android.os.IBinder
-import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.FileUtils
-import com.daily.clean.booster.DBApp
+import com.daily.clean.booster.App
 import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.core.clean.CleanData
 import com.daily.clean.booster.core.pop.DaiBooNotifyTool
@@ -137,12 +136,12 @@ class DaiBooService : Service() {
             //屏幕亮起的时候
             Intent.ACTION_SCREEN_ON -> {
                 LogDB.dpop("ACTION_SCREEN_ON")
-                DBApp.isReceiveerScreenOn = true
+                App.isReceiveerScreenOn = true
 //                statrTimingAlertJob()
 
             }
             Intent.ACTION_SCREEN_OFF -> {
-                DBApp.isReceiveerScreenOn = false
+                App.isReceiveerScreenOn = false
                 LogDB.dpop("ACTION_SCREEN_OFF ----")
                 startOpen(DaiBooUIItem.Items.getPopList()[0].id, DBConfig.DAIBOO_NOTY_UNLOCK, true,0)
             }
