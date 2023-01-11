@@ -11,7 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import com.daily.clean.booster.BuildConfig
 import com.daily.clean.booster.App
 import com.daily.clean.booster.R
-import com.daily.clean.booster.ad.DaiBooADUtil
 import com.daily.clean.booster.ads.AdsLoader
 import com.daily.clean.booster.ads.conf.AdPos
 import com.daily.clean.booster.base.BaseActivity
@@ -87,9 +86,8 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
             binding.groupComplete.visibility = View.VISIBLE
             animComplete.start()
             animComplete.onEnd {
-                showAdOrNext(DBConfig.DAIBOO_AD_CLEAN_IV) {
-                    goCleanResult(DBConfig.DAIBOO_WORK_ID_CLEAN, extra = "0B", from = intent.action)
-                }
+                goCleanResult(DBConfig.DAIBOO_WORK_ID_CLEAN, extra = "0B", from = intent.action)
+                finish()
             }
         }
 
@@ -284,15 +282,6 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
             }
         }
         progressTimer?.start()
-    }
-
-    private fun showAdOrNext(adKey: String, next: () -> Unit) {
-        DaiBooADUtil.showAD(adKey, this, workId = DBConfig.DAIBOO_WORK_ID_CLEAN) {
-            DaiBooADUtil.load(adKey, this)
-            next()
-            finish()
-        }
-
     }
 
     private val animCleanBtn by lazy {

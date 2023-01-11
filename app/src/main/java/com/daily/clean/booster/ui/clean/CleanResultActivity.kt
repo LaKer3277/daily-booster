@@ -115,7 +115,7 @@ class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
                         DBConfig.DAIBOO_WORK_ID_BOOSTER -> {
                             des.text = getString(
                                 R.string.des_recom_boot,
-                                "${DaiBooRAMUtils.getUsedMemoryStringPer()}"
+                                DaiBooRAMUtils.getUsedMemoryStringPer()
                             )
                             btn.text = getString(R.string.boost_up)
                         }

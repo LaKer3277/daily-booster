@@ -4,9 +4,11 @@ import android.view.View
 import android.view.animation.LinearInterpolator
 import androidx.lifecycle.lifecycleScope
 import com.daily.clean.booster.R
-import com.daily.clean.booster.ad.DaiBooADUtil
+import com.daily.clean.booster.ads.AdsListener
 import com.daily.clean.booster.ads.AdsLoader
 import com.daily.clean.booster.ads.conf.AdPos
+import com.daily.clean.booster.ads.model.BaseAd
+import com.daily.clean.booster.ads.model.BaseIns
 import com.daily.clean.booster.base.BaseActivity
 import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.base.FiBLogEvent
@@ -34,16 +36,10 @@ class JunkCleanActivity : BaseActivity<ActivityCleanBinding>() {
     }
 
     override fun dailyLoad() {
-        loadADs()
+        AdsLoader.preloadAd(this, AdPos.InsClean)
+        AdsLoader.preloadAd(this, AdPos.NavResult)
+        cleanJob()
     }
-
-    override fun onResume() {
-        super.onResume()
-        if (isCleaned.not()) {
-            cleanJob()
-        }
-    }
-
 
     var jobClean: Job? = null
     var isCleaned = false
@@ -60,7 +56,6 @@ class JunkCleanActivity : BaseActivity<ActivityCleanBinding>() {
             showComplete()
         }
     }
-
 
     private fun showComplete() {
         binding.ivAnimal.visibility = View.INVISIBLE
@@ -119,27 +114,40 @@ class JunkCleanActivity : BaseActivity<ActivityCleanBinding>() {
         }
     }
 
-    private fun loadADs() {
-        AdsLoader.preloadAd(this, AdPos.InsClean)
-        AdsLoader.preloadAd(this, AdPos.NavResult)
-    }
-
 
     private fun showAdOrInvokeNext() {
         FiBLogEvent.clean_page_to_result_start(DBConfig.DAIBOO_WORK_ID_CLEAN)
-        DaiBooADUtil.showAD(DBConfig.DAIBOO_AD_CLEAN_IV, this@JunkCleanActivity, workId = DBConfig.DAIBOO_WORK_ID_CLEAN) {
-            DaiBooADUtil.load(DBConfig.DAIBOO_AD_CLEAN_IV, this@JunkCleanActivity)
-            lifecycleScope.launch {
-                delay(90)
-                if (isActivityPaused.not()) {
-                    val extra = intent.getStringExtra(DBConfig.DAIBOO_KEY_CLEAN_SIZE) ?: "0B"
-                    goCleanResult(DBConfig.DAIBOO_WORK_ID_CLEAN, extra = extra, from = intent.action)
-                    FiBLogEvent.clean_page_to_result_end(DBConfig.DAIBOO_WORK_ID_CLEAN)
+        AdsLoader.loadAd(this, AdPos.InsClean, object : AdsListener() {
+            override fun onLoaded(ad: BaseAd) {
+                if (isActivityPaused) {
+                    AdsLoader.add2Cache(AdPos.InsClean, ad)
+                    finish()
+                    return
                 }
-                finish()
+                if (ad !is BaseIns) {
+                    goNextPage()
+                    return
+                }
+                if (!ad.show(this@JunkCleanActivity)) {
+                    goNextPage()
+                }
             }
-        }
 
+            override fun onError(error: String) {
+                goNextPage()
+            }
+
+            override fun onDismiss() {
+                goNextPage()
+            }
+        }, onlyCache = true)
+    }
+
+    private fun goNextPage() {
+        val extra = intent.getStringExtra(DBConfig.DAIBOO_KEY_CLEAN_SIZE) ?: "0B"
+        goCleanResult(DBConfig.DAIBOO_WORK_ID_CLEAN, extra = extra, from = intent.action)
+        FiBLogEvent.clean_page_to_result_end(DBConfig.DAIBOO_WORK_ID_CLEAN)
+        finish()
     }
 }
 

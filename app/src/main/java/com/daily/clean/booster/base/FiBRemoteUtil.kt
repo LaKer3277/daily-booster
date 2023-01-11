@@ -3,7 +3,6 @@ package com.daily.clean.booster.base
 import com.daily.clean.booster.R
 import com.daily.clean.booster.ad.DaiBooADUtil
 import com.daily.clean.booster.entity.DaiBooAdAllBean
-import com.daily.clean.booster.entity.DaiBooOpenControlBean
 import com.daily.clean.booster.entity.DaiBooPopBean
 import com.daily.clean.booster.utils.LogDB
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -31,7 +30,6 @@ object FiBRemoteUtil {
 
     // 弹窗数据
     var daiBooPopBean: DaiBooPopBean? = null
-    var open_control: DaiBooOpenControlBean? = null
 
 
     fun updateAllData(tag: String) {
@@ -175,15 +173,6 @@ object FiBRemoteUtil {
         if (this.isNullOrEmpty()) return null
         return try {
             Gson().fromJson(this, DaiBooPopBean::class.java)
-        } catch (e: Exception) {
-            null
-        }
-    }
-
-    fun String.Json2OpenControl(): DaiBooOpenControlBean? {
-        if (this.isNullOrEmpty()) return null
-        return try {
-            Gson().fromJson(this, DaiBooOpenControlBean::class.java)
         } catch (e: Exception) {
             null
         }
