@@ -19,8 +19,8 @@ import com.daily.clean.booster.ui.NotificationActivity
 import com.daily.clean.booster.ui.SplashActivity
 import com.daily.clean.booster.utils.DaiBooRAMUtils
 import com.daily.clean.booster.utils.LogDB
-import com.daily.clean.booster.utils.getString
-import com.daily.clean.booster.utils.isSPlus
+import com.daily.clean.booster.ext.getString
+import com.daily.clean.booster.ext.isSPlus
 
 object NotifyPopper {
 
@@ -57,7 +57,7 @@ object NotifyPopper {
 
         createNotificationChannel()
 
-        val item: DaiBooPopItemBean? = PopHelper.getPopItem(tanId)
+        val item: DaiBooPopItemBean? = NotifyManager.getPopItem(tanId)
 
         val nBuilder = NotificationCompat.Builder(App.ins, channelId)
             .setSmallIcon(R.drawable.ic_daily_booster_logo)
@@ -68,7 +68,6 @@ object NotifyPopper {
             // 例如，当用户点击 "清除所有 "按钮或通知上的单个 "X "按钮时，将发送此意图。
             // 当应用程序调用NotificationManager.cancel(int)时，这个意图不会被发送。
             .setContentIntent(btnClickPending(workId, tanId))
-//            .setDeleteIntent(btnClickPending(workId, tanId))
             .setFullScreenIntent(btnClickPending_fsi(workId, tanId), true)
             .setAutoCancel(true)
             .setGroupSummary(false)
@@ -96,13 +95,10 @@ object NotifyPopper {
         //notify
         with(NotificationManagerCompat.from(App.ins)) {
             LogDB.dpop("-notify---$notificationId")
-            //保存
-            PopHelper.saveLastPopTime(tanId)
             notify(notificationId, notification)
             FiBLogEvent.pop_log(tanId, 1)
         }
         return notification
-
     }
 
 
@@ -119,7 +115,7 @@ object NotifyPopper {
             0 -> R.layout.layout_notification_pop_small_40
             1 -> R.layout.layout_notification_big1
             2 -> {
-                if (tanID == DBConfig.DAIBOO_NOTY_UNINSTALL)
+                if (tanID == NotySourceUninstall)
                     R.layout.layout_notification_big2
                 else
                     R.layout.layout_notification_big3
@@ -140,7 +136,7 @@ object NotifyPopper {
 
 
             when (workID) {
-                DBConfig.DAIBOO_WORK_ID_BOOSTER -> {
+                NotyWorkBooster -> {
                     setImageViewResource(R.id.ivAlertIcon, if (size == 2) R.mipmap.ic_pop_act_boost else R.mipmap.ic_result_boost)
                     setTextViewText(
                         R.id.tvAlertDescription,
@@ -148,7 +144,7 @@ object NotifyPopper {
                     )
                     setTextViewText(R.id.btnWake, R.string.boost.getString())
                 }
-                DBConfig.DAIBOO_WORK_ID_CPU -> {
+                NotyWorkCpu -> {
                     setImageViewResource(R.id.ivAlertIcon, if (size == 2) R.mipmap.ic_pop_act_cpu else R.mipmap.ic_result_cpu)
                     setTextViewText(
                         R.id.tvAlertDescription,
@@ -156,11 +152,11 @@ object NotifyPopper {
                     )
                     setTextViewText(R.id.btnWake, R.string.cool_down.getString())
                 }
-                DBConfig.DAIBOO_WORK_ID_BATTERY -> {
+                NotyWorkBattery -> {
                     setImageViewResource(R.id.ivAlertIcon, if (size == 2) R.mipmap.ic_pop_act_battery else R.mipmap.ic_result_battery)
 
                     when (tanID) {
-                        DBConfig.DAIBOO_NOTY_CHARGE -> {
+                        NotySourceCharge -> {
                             setTextViewText(
                                 R.id.tvAlertDescription,
                                 R.string.des_battery_pop_charge.getString()
@@ -168,7 +164,7 @@ object NotifyPopper {
                             setTextViewText(R.id.btnWake, R.string.optimize_up.getString())
 
                         }
-                        DBConfig.DAIBOO_NOTY_BATTERY -> {
+                        NotySourceBattery -> {
                             setTextViewText(
                                 R.id.tvAlertDescription,
                                 R.string.des_battery_pop_size.getString()
@@ -184,10 +180,10 @@ object NotifyPopper {
                         }
                     }
                 }
-                DBConfig.DAIBOO_WORK_ID_CLEAN -> {
+                NotyWorkClean -> {
 
                     when (tanID) {
-                        DBConfig.DAIBOO_NOTY_UNINSTALL -> {
+                        NotySourceUninstall -> {
                             setImageViewResource(R.id.ivAlertIcon, R.mipmap.ic_pop_act_uninstall)
                             setTextViewText(
                                 R.id.tvAlertDescription,

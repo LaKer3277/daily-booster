@@ -14,7 +14,9 @@ import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.core.CleanData
 import com.daily.clean.booster.core.DaiBooCleaner
 import com.daily.clean.booster.databinding.ActivityHomeBinding
+import com.daily.clean.booster.ext.*
 import com.daily.clean.booster.utils.*
+import com.daily.clean.booster.pop.*
 import com.lzp.dslanimator.PlayMode
 import com.lzp.dslanimator.animSet
 import kotlinx.coroutines.Dispatchers
@@ -65,33 +67,33 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
         binding.contentHome.cardClean.setOnClickListener {
             FiBLogEvent.page_home_clean2()
-            clean(DBConfig.DAIBOO_WORK_ID_CLEAN) }
+            clean(NotyWorkClean) }
         binding.contentHome.cardBattry.setOnClickListener {
             FiBLogEvent.page_home_battery()
-            clean(DBConfig.DAIBOO_WORK_ID_BATTERY) }
+            clean(NotyWorkBattery) }
         binding.contentHome.cardBoost.setOnClickListener {
             FiBLogEvent.page_home_boost()
-            clean(DBConfig.DAIBOO_WORK_ID_BOOSTER)
+            clean(NotyWorkBooster)
         }
         binding.contentHome.cardCpu.setOnClickListener {
             FiBLogEvent.page_home_cpu()
-            clean(DBConfig.DAIBOO_WORK_ID_CPU)
+            clean(NotyWorkCpu)
         }
         binding.contentHome.ivBall.setOnClickListener {
             FiBLogEvent.page_home_clean()
-            clean(DBConfig.DAIBOO_WORK_ID_CLEAN)
+            clean(NotyWorkClean)
         }
     }
 
     fun clean(workId: String) {
         when (workId) {
-            DBConfig.DAIBOO_WORK_ID_CLEAN -> {
+            NotyWorkClean -> {
                 work_junkClean()
             }
 
-            DBConfig.DAIBOO_WORK_ID_BOOSTER,
-            DBConfig.DAIBOO_WORK_ID_CPU,
-            DBConfig.DAIBOO_WORK_ID_BATTERY -> {
+            NotyWorkBooster,
+            NotyWorkCpu,
+            NotyWorkBattery -> {
                 work_boost(workId)
             }
         }

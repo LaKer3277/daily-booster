@@ -13,9 +13,12 @@ import com.daily.clean.booster.ads.model.BaseIns
 import com.daily.clean.booster.appIns
 import com.daily.clean.booster.base.*
 import com.daily.clean.booster.databinding.ActivitySplashBinding
+import com.daily.clean.booster.pop.*
 import com.daily.clean.booster.ext.currentTms
+import com.daily.clean.booster.ext.goBoosting
+import com.daily.clean.booster.ext.goJunkCleanScanning
+import com.daily.clean.booster.ext.goMain
 import com.daily.clean.booster.tba.HttpTBA
-import com.daily.clean.booster.utils.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -135,14 +138,13 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     private fun goNextByIntent() {
         val workId = intent?.getStringExtra(DBConfig.DAIBOO_KEY_WORK_ID) ?: ""
         when (workId) {
-            DBConfig.DAIBOO_WORK_ID_CLEAN -> {
+            NotyWorkClean -> {
                 goJunkCleanScanning(intent.action)
             }
 
-            DBConfig.DAIBOO_WORK_ID_BOOSTER,
-            DBConfig.DAIBOO_WORK_ID_CPU,
-            DBConfig.DAIBOO_WORK_ID_BATTERY,
-            DBConfig.DAIBOO_WORK_ID_ClEAN_NOTIFICATION -> {
+            NotyWorkBooster,
+            NotyWorkCpu,
+            NotyWorkBattery -> {
                 goBoosting(work_id = workId, actionStr = intent.action)
             }
 

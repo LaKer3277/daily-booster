@@ -9,6 +9,7 @@ import com.daily.clean.booster.tba.HttpTBA
 import com.daily.clean.booster.utils.DaiBooMK
 import com.daily.clean.booster.utils.LogDB
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.daily.clean.booster.pop.*
 import java.util.*
 
 object FiBLogEvent {
@@ -35,9 +36,9 @@ object FiBLogEvent {
     //100--->>>
     fun clean_page_to_result_start(workId: String) {
         val value = when (workId) {
-            DBConfig.DAIBOO_WORK_ID_BOOSTER -> "boost"
-            DBConfig.DAIBOO_WORK_ID_CPU -> "cpu"
-            DBConfig.DAIBOO_WORK_ID_BATTERY -> "battery"
+            NotyWorkBooster -> "boost"
+            NotyWorkCpu -> "cpu"
+            NotyWorkBattery -> "battery"
             else -> "clean"
         }
         logEvent("clean_ad_to_result_start", Bundle().apply { putString("process", value) })
@@ -45,9 +46,9 @@ object FiBLogEvent {
 
     fun clean_page_to_result_end(workId: String) {
         val value = when (workId) {
-            DBConfig.DAIBOO_WORK_ID_BOOSTER -> "boost"
-            DBConfig.DAIBOO_WORK_ID_CPU -> "cpu"
-            DBConfig.DAIBOO_WORK_ID_BATTERY -> "battery"
+            NotyWorkBooster -> "boost"
+            NotyWorkCpu -> "cpu"
+            NotyWorkBattery -> "battery"
             else -> "clean"
         }
         logEvent("clean_ad_to_result_end", Bundle().apply { putString("process", value) })
@@ -71,9 +72,9 @@ object FiBLogEvent {
     fun page_home_battery() = logEvent("page_home_battery")
     fun page_scan_show(workId: String) {
         val value = when (workId) {
-            DBConfig.DAIBOO_WORK_ID_BOOSTER -> "boost"
-            DBConfig.DAIBOO_WORK_ID_CPU -> "cpu"
-            DBConfig.DAIBOO_WORK_ID_BATTERY -> "battery"
+            NotyWorkBooster -> "boost"
+            NotyWorkCpu -> "cpu"
+            NotyWorkBattery -> "battery"
             else -> "clean"
         }
         logEvent("page_scan_show", Bundle().apply { putString("process", value) })
@@ -82,9 +83,9 @@ object FiBLogEvent {
     fun page_clean_show(workId: String) {
 
         val value = when (workId) {
-            DBConfig.DAIBOO_WORK_ID_BOOSTER -> "boost"
-            DBConfig.DAIBOO_WORK_ID_CPU -> "cpu"
-            DBConfig.DAIBOO_WORK_ID_BATTERY -> "battery"
+            NotyWorkBooster -> "boost"
+            NotyWorkCpu -> "cpu"
+            NotyWorkBattery -> "battery"
             else -> "clean"
         }
         logEvent("page_clean_show", Bundle().apply { putString("process", value) })
@@ -93,9 +94,9 @@ object FiBLogEvent {
     fun page_result_show(workId: String) {
 
         val value = when (workId) {
-            DBConfig.DAIBOO_WORK_ID_BOOSTER -> "boost"
-            DBConfig.DAIBOO_WORK_ID_CPU -> "cpu"
-            DBConfig.DAIBOO_WORK_ID_BATTERY -> "battery"
+            NotyWorkBooster -> "boost"
+            NotyWorkCpu -> "cpu"
+            NotyWorkBattery -> "battery"
             else -> "clean"
         }
         logEvent("page_result_show", Bundle().apply { putString("process", value) })
@@ -104,9 +105,9 @@ object FiBLogEvent {
     fun page_return_click(workId: String) {
 
         val value = when (workId) {
-            DBConfig.DAIBOO_WORK_ID_BOOSTER -> "boost"
-            DBConfig.DAIBOO_WORK_ID_CPU -> "cpu"
-            DBConfig.DAIBOO_WORK_ID_BATTERY -> "battery"
+            NotyWorkBooster -> "boost"
+            NotyWorkCpu -> "cpu"
+            NotyWorkBattery -> "battery"
             else -> "clean"
         }
         logEvent("page_return_click", Bundle().apply { putString("process", value) })
@@ -127,11 +128,11 @@ object FiBLogEvent {
     fun up_ac_show(popID: String) {
 
         val value = when (popID) {
-            DBConfig.DAIBOO_NOTY_TIME -> "time"
-            DBConfig.DAIBOO_NOTY_UNLOCK -> "unl"
-            DBConfig.DAIBOO_NOTY_UNINSTALL -> "uni"
-            DBConfig.DAIBOO_NOTY_CHARGE -> "cha"
-            DBConfig.DAIBOO_NOTY_BATTERY -> "bat"
+            NotySourceTime -> "time"
+            NotySourceUnlock -> "unl"
+            NotySourceUninstall -> "uni"
+            NotySourceCharge -> "cha"
+            NotySourceBattery -> "bat"
             else -> "time"
         }
         logEvent("up_ac_show", Bundle().apply { putString("show", value) })
@@ -140,11 +141,11 @@ object FiBLogEvent {
     fun up_ac_click(popID: String) {
 
         val value = when (popID) {
-            DBConfig.DAIBOO_NOTY_TIME -> "time"
-            DBConfig.DAIBOO_NOTY_UNLOCK -> "unl"
-            DBConfig.DAIBOO_NOTY_UNINSTALL -> "uni"
-            DBConfig.DAIBOO_NOTY_CHARGE -> "cha"
-            DBConfig.DAIBOO_NOTY_BATTERY -> "bat"
+            NotySourceTime -> "time"
+            NotySourceUnlock -> "unl"
+            NotySourceUninstall -> "uni"
+            NotySourceCharge -> "cha"
+            NotySourceBattery -> "bat"
             else -> "time"
         }
         logEvent("up_ac_click", Bundle().apply { putString("click", value) })
@@ -158,9 +159,9 @@ object FiBLogEvent {
     fun notifi_click(workId: String) {
 
         val value = when (workId) {
-            DBConfig.DAIBOO_WORK_ID_BOOSTER -> "boost"
-            DBConfig.DAIBOO_WORK_ID_CPU -> "cpu"
-            DBConfig.DAIBOO_WORK_ID_BATTERY -> "battery"
+            NotyWorkBooster -> "boost"
+            NotyWorkCpu -> "cpu"
+            NotyWorkBattery -> "battery"
             else -> "clean"
         }
         logEvent("notifi_click", Bundle().apply { putString("click", value) })
@@ -176,23 +177,23 @@ object FiBLogEvent {
         }
 
         when (tanId) {
-            DBConfig.DAIBOO_NOTY_BATTERY -> when (type) {
+            NotySourceBattery -> when (type) {
                 0 -> up_battery_invoke()
                 2 -> up_battery_click()
             }
-            DBConfig.DAIBOO_NOTY_UNINSTALL -> when (type) {
+            NotySourceUninstall -> when (type) {
                 0 -> up_unins_invoke()
                 2 -> up_unins_click()
             }
-            DBConfig.DAIBOO_NOTY_CHARGE -> when (type) {
+            NotySourceCharge -> when (type) {
                 0 -> up_charge_invoke()
                 2 -> up_charge_click()
             }
-            DBConfig.DAIBOO_NOTY_TIME -> when (type) {
+            NotySourceTime -> when (type) {
                 0 -> up_time_invoke()
                 2 -> up_time_click()
             }
-            DBConfig.DAIBOO_NOTY_UNLOCK -> when (type) {
+            NotySourceUnlock -> when (type) {
                 0 -> up_unlock_invoke()
                 2 -> up_unlock_click()
             }

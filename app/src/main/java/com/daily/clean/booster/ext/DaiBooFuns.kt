@@ -1,4 +1,4 @@
-package com.daily.clean.booster.utils
+package com.daily.clean.booster.ext
 
 import android.animation.ValueAnimator
 import android.app.Activity
@@ -31,7 +31,11 @@ import com.daily.clean.booster.App
 import com.daily.clean.booster.R
 import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.base.DBConfig.DAIBOO_KEY_IS_FIRST
-import com.daily.clean.booster.core.service.DaiBooService
+import com.daily.clean.booster.pop.NotyWorkBattery
+import com.daily.clean.booster.pop.NotyWorkBooster
+import com.daily.clean.booster.pop.NotyWorkClean
+import com.daily.clean.booster.pop.NotyWorkCpu
+import com.daily.clean.booster.service.KeepingService
 import com.daily.clean.booster.ui.*
 import com.daily.clean.booster.ui.clean.BoostActivity
 import com.daily.clean.booster.ui.clean.CleanResultActivity
@@ -143,7 +147,7 @@ fun Context.startCleanService() {
             WorkManager.getInstance(this)
                 .enqueue(request)
         } else {
-            ContextCompat.startForegroundService(this, Intent(this, DaiBooService::class.java))
+            ContextCompat.startForegroundService(this, Intent(this, KeepingService::class.java))
         }
 
     }
@@ -317,10 +321,10 @@ fun Context.toast(text: CharSequence) {
 
 fun String.getTitleText(): String {
     return when (this) {
-        DBConfig.DAIBOO_WORK_ID_BOOSTER -> R.string.phone_boost.getString()
-        DBConfig.DAIBOO_WORK_ID_CPU -> R.string.cpu_cooler.getString()
-        DBConfig.DAIBOO_WORK_ID_BATTERY -> R.string.battery_saver.getString()
-        DBConfig.DAIBOO_WORK_ID_CLEAN -> R.string.junk_clean.getString()
+        NotyWorkBooster -> R.string.phone_boost.getString()
+        NotyWorkCpu -> R.string.cpu_cooler.getString()
+        NotyWorkBattery -> R.string.battery_saver.getString()
+        NotyWorkClean -> R.string.junk_clean.getString()
         else -> ""
     }
 }

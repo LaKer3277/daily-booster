@@ -13,10 +13,11 @@ import com.daily.clean.booster.R
 import com.daily.clean.booster.base.BaseActivity
 import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.base.FiBLogEvent
-import com.daily.clean.booster.pop.PopHelper
+import com.daily.clean.booster.pop.NotifyManager
 import com.daily.clean.booster.databinding.LayoutNotificationBigActBinding
 import com.daily.clean.booster.utils.DaiBooRAMUtils
-import com.daily.clean.booster.utils.getString
+import com.daily.clean.booster.ext.getString
+import com.daily.clean.booster.pop.*
 
 class NotificationActivity : BaseActivity<LayoutNotificationBigActBinding>() {
 
@@ -62,7 +63,7 @@ class NotificationActivity : BaseActivity<LayoutNotificationBigActBinding>() {
             }
         }
 
-        val item = PopHelper.getPopItem(tanID)
+        val item = NotifyManager.getPopItem(tanID)
         item?.let {
             when (it.acti_pos) {
                 0 -> (binding.rlPage.layoutParams as FrameLayout.LayoutParams).gravity = Gravity.TOP
@@ -72,7 +73,7 @@ class NotificationActivity : BaseActivity<LayoutNotificationBigActBinding>() {
         }
 
         when (workID) {
-            DBConfig.DAIBOO_WORK_ID_BOOSTER -> {
+            NotyWorkBooster -> {
                 setImageViewResource(R.id.ivAlertIcon, R.mipmap.ic_pop_act_boost)
                 setTextViewText(
                     R.id.tvAlertDescription,
@@ -80,7 +81,7 @@ class NotificationActivity : BaseActivity<LayoutNotificationBigActBinding>() {
                 )
                 setTextViewText(R.id.btnWake, R.string.boost.getString())
             }
-            DBConfig.DAIBOO_WORK_ID_CPU -> {
+            NotyWorkCpu -> {
                 setImageViewResource(R.id.ivAlertIcon, R.mipmap.ic_pop_act_cpu)
                 setTextViewText(
                     R.id.tvAlertDescription,
@@ -88,11 +89,11 @@ class NotificationActivity : BaseActivity<LayoutNotificationBigActBinding>() {
                 )
                 setTextViewText(R.id.btnWake, R.string.cool_down.getString())
             }
-            DBConfig.DAIBOO_WORK_ID_BATTERY -> {
+            NotyWorkBattery -> {
                 setImageViewResource(R.id.ivAlertIcon, R.mipmap.ic_pop_act_battery)
 
                 when (tanID) {
-                    DBConfig.DAIBOO_NOTY_CHARGE -> {
+                    NotySourceCharge -> {
                         setTextViewText(
                             R.id.tvAlertDescription,
                             R.string.des_battery_pop_charge.getString()
@@ -100,7 +101,7 @@ class NotificationActivity : BaseActivity<LayoutNotificationBigActBinding>() {
                         setTextViewText(R.id.btnWake, R.string.optimize_up.getString())
                     }
 
-                    DBConfig.DAIBOO_NOTY_BATTERY -> {
+                    NotySourceBattery -> {
                         setTextViewText(
                             R.id.tvAlertDescription,
                             R.string.des_battery_pop_size.getString()
@@ -116,10 +117,10 @@ class NotificationActivity : BaseActivity<LayoutNotificationBigActBinding>() {
                     }
                 }
             }
-            DBConfig.DAIBOO_WORK_ID_CLEAN -> {
+            NotyWorkClean -> {
                 setImageViewResource(R.id.ivAlertIcon, R.mipmap.ic_pop_act_clean)
                 when (tanID) {
-                    DBConfig.DAIBOO_NOTY_UNINSTALL -> {
+                    NotySourceUninstall -> {
                         setTextViewText(
                             R.id.tvAlertDescription,
                             R.string.des_uninstall.getString("${(22..79).random()}MB")

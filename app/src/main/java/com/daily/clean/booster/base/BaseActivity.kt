@@ -16,7 +16,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.daily.clean.booster.App
 import com.daily.clean.booster.R
-import com.daily.clean.booster.utils.isRPlus
+import com.daily.clean.booster.ext.isRPlus
 import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.Permission
 import com.hjq.permissions.XXPermissions

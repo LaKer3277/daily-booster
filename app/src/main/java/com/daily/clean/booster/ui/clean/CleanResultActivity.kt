@@ -20,6 +20,8 @@ import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.core.CleanData
 import com.daily.clean.booster.databinding.ActivityResultBinding
 import com.daily.clean.booster.entity.DaiBooUIItem
+import com.daily.clean.booster.ext.*
+import com.daily.clean.booster.pop.*
 import com.daily.clean.booster.utils.*
 
 class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
@@ -29,11 +31,11 @@ class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
     }
 
     private var extraStr = "0B"
-    private var workId = DBConfig.DAIBOO_WORK_ID_BOOSTER
+    private var workId = NotyWorkBooster
     private var isFirst = false
     override fun dailyData() {
         extraStr = intent.getStringExtra(DBConfig.DAIBOO_KEY_CLEAN_SIZE) ?: "0B"
-        workId = intent.getStringExtra(DBConfig.DAIBOO_KEY_WORK_ID) ?: DBConfig.DAIBOO_WORK_ID_BOOSTER
+        workId = intent.getStringExtra(DBConfig.DAIBOO_KEY_WORK_ID) ?: NotyWorkBooster
         isFirst = intent.getBooleanExtra(DBConfig.DAIBOO_KEY_IS_FIRST, false)
         binding.titleText.text = workId.getTitleText()
         binding.titleBack.setOnClickListener {
@@ -42,16 +44,15 @@ class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
         initList()
 
         binding.tvResultInfo.text = when (workId) {
-            DBConfig.DAIBOO_WORK_ID_CLEAN -> {
+            NotyWorkClean -> {
                 if ("0B" != extraStr) {
                     getString(R.string.des_complete_clean, extraStr)
                 } else {
                     getString(R.string.des_complete_clean2)
                 }
             }
-            DBConfig.DAIBOO_WORK_ID_ClEAN_NOTIFICATION -> getString(R.string.des_complete_notification, extraStr)
-            DBConfig.DAIBOO_WORK_ID_CPU -> getString(R.string.des_complete_cpu)
-            DBConfig.DAIBOO_WORK_ID_BATTERY -> getString(R.string.des_complete_battery, "${(3..15).random()}%")
+            NotyWorkCpu -> getString(R.string.des_complete_cpu)
+            NotyWorkBattery -> getString(R.string.des_complete_battery, "${(3..15).random()}%")
             else -> getString(R.string.des_complete_boot)
         }
     }
@@ -108,22 +109,22 @@ class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
                     icon.setImageResource(item.icon_recom)
 
                     when (item.id) {
-                        DBConfig.DAIBOO_WORK_ID_CLEAN -> {
+                        NotyWorkClean -> {
                             des.text = getString(R.string.des_recom_clean, DaiBooRAMUtils.getUsedMemoryString())
                             btn.text = getString(R.string.clean_now_up)
                         }
-                        DBConfig.DAIBOO_WORK_ID_BOOSTER -> {
+                        NotyWorkBooster -> {
                             des.text = getString(
                                 R.string.des_recom_boot,
                                 DaiBooRAMUtils.getUsedMemoryStringPer()
                             )
                             btn.text = getString(R.string.boost_up)
                         }
-                        DBConfig.DAIBOO_WORK_ID_CPU -> {
+                        NotyWorkCpu -> {
                             btn.text = getString(R.string.cool_down_up)
                             des.text = getString(R.string.des_recom_cpu)
                         }
-                        DBConfig.DAIBOO_WORK_ID_BATTERY -> {
+                        NotyWorkBattery -> {
                             btn.text = getString(R.string.optimize_up)
                             des.text =
                                 (R.string.des_recom_battery.getString("${(3..CleanData.getAppSize()).random()}"))
@@ -140,19 +141,19 @@ class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
         binding.recycler.adapter = mAdapter
         mAdapter.setOnItemClickListener { adapter, view, position ->
             when (list[position].id) {
-                DBConfig.DAIBOO_WORK_ID_CLEAN -> {
+                NotyWorkClean -> {
                     clickJunkBtn()
                 }
-                DBConfig.DAIBOO_WORK_ID_BOOSTER -> {
-                    goBoosting(DBConfig.DAIBOO_WORK_ID_BOOSTER)
+                NotyWorkBooster -> {
+                    goBoosting(NotyWorkBooster)
                     finish()
                 }
-                DBConfig.DAIBOO_WORK_ID_CPU -> {
-                    goBoosting(DBConfig.DAIBOO_WORK_ID_CPU)
+                NotyWorkCpu -> {
+                    goBoosting(NotyWorkCpu)
                     finish()
                 }
-                DBConfig.DAIBOO_WORK_ID_BATTERY -> {
-                    goBoosting(DBConfig.DAIBOO_WORK_ID_BATTERY)
+                NotyWorkBattery -> {
+                    goBoosting(NotyWorkBattery)
                     finish()
                 }
             }

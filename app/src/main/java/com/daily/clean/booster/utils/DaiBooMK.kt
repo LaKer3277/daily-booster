@@ -3,6 +3,7 @@ package com.daily.clean.booster.utils
 import com.blankj.utilcode.util.TimeUtils
 import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.entity.DaiBooPopShowItem
+import com.daily.clean.booster.ext.ss
 import com.tencent.mmkv.MMKV
 import java.util.*
 

@@ -11,8 +11,8 @@ import com.daily.clean.booster.App
 import com.daily.clean.booster.R
 import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.ui.SplashActivity
-import com.daily.clean.booster.utils.getString
-import com.daily.clean.booster.utils.isSPlus
+import com.daily.clean.booster.ext.getString
+import com.daily.clean.booster.ext.isSPlus
 
 
 object NotifyTools {
@@ -40,7 +40,7 @@ object NotifyTools {
         }
     }
 
-    fun cancelPopNotification() {
+    private fun cancelPopNotification() {
         NotificationManagerCompat.from(App.ins).cancel(notificationId)
     }
 
@@ -70,19 +70,19 @@ object NotifyTools {
         return RemoteViews(App.ins.packageName, layoutId).apply {
             setOnClickPendingIntent(
                 R.id.notify_booster,
-                clickPending(DBConfig.DAIBOO_WORK_ID_BOOSTER)
+                clickPending(NotyWorkBooster)
             )
             setOnClickPendingIntent(
                 R.id.notify_cpu,
-                clickPending(DBConfig.DAIBOO_WORK_ID_CPU)
+                clickPending(NotyWorkCpu)
             )
             setOnClickPendingIntent(
                 R.id.notify_battery,
-                clickPending(DBConfig.DAIBOO_WORK_ID_BATTERY)
+                clickPending(NotyWorkBattery)
             )
             setOnClickPendingIntent(
                 R.id.notify_clean,
-                clickPending(DBConfig.DAIBOO_WORK_ID_CLEAN)
+                clickPending(NotyWorkClean)
             )
         }
     }

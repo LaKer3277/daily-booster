@@ -15,8 +15,9 @@ import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.databinding.ActivityCleanBinding
 import com.daily.clean.booster.entity.DaiBooCleanEvent
 import com.daily.clean.booster.utils.DaiBooMK
-import com.daily.clean.booster.utils.doCycle
-import com.daily.clean.booster.utils.goCleanResult
+import com.daily.clean.booster.ext.doCycle
+import com.daily.clean.booster.ext.goCleanResult
+import com.daily.clean.booster.pop.NotyWorkClean
 import com.lzp.dslanimator.PlayMode
 import com.lzp.dslanimator.animSet
 import kotlinx.coroutines.*
@@ -46,7 +47,7 @@ class JunkCleanActivity : BaseActivity<ActivityCleanBinding>() {
     private fun cleanJob() {
         jobClean?.cancel()
         jobClean = lifecycleScope.launch {
-            FiBLogEvent.page_clean_show(DBConfig.DAIBOO_WORK_ID_CLEAN)
+            FiBLogEvent.page_clean_show(NotyWorkClean)
             EventBus.getDefault().post(DaiBooCleanEvent(true))
             animClean.run { start() }
             doCycle {
@@ -116,7 +117,7 @@ class JunkCleanActivity : BaseActivity<ActivityCleanBinding>() {
 
 
     private fun showAdOrInvokeNext() {
-        FiBLogEvent.clean_page_to_result_start(DBConfig.DAIBOO_WORK_ID_CLEAN)
+        FiBLogEvent.clean_page_to_result_start(NotyWorkClean)
         AdsLoader.loadAd(this, AdPos.InsClean, object : AdsListener() {
             override fun onLoaded(ad: BaseAd) {
                 if (isActivityPaused) {
@@ -145,8 +146,8 @@ class JunkCleanActivity : BaseActivity<ActivityCleanBinding>() {
 
     private fun goNextPage() {
         val extra = intent.getStringExtra(DBConfig.DAIBOO_KEY_CLEAN_SIZE) ?: "0B"
-        goCleanResult(DBConfig.DAIBOO_WORK_ID_CLEAN, extra = extra, from = intent.action)
-        FiBLogEvent.clean_page_to_result_end(DBConfig.DAIBOO_WORK_ID_CLEAN)
+        goCleanResult(NotyWorkClean, extra = extra, from = intent.action)
+        FiBLogEvent.clean_page_to_result_end(NotyWorkClean)
         finish()
     }
 }

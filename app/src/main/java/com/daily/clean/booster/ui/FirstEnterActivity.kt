@@ -9,6 +9,8 @@ import com.daily.clean.booster.base.BaseActivity
 import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.databinding.ActivityFirstBinding
+import com.daily.clean.booster.ext.*
+import com.daily.clean.booster.pop.NotyWorkBooster
 import com.daily.clean.booster.tba.HttpTBA
 import com.daily.clean.booster.utils.*
 import kotlinx.coroutines.delay
@@ -97,7 +99,7 @@ class FirstEnterActivity : BaseActivity<ActivityFirstBinding>() {
                 usedPerStr
             ))
             binding.layInfo.tvBoostNow.setOnClickListener {
-                goBoosting(DBConfig.DAIBOO_WORK_ID_BOOSTER, isFirst = true, actionStr = DBConfig.DAIBOO_ACTION_FROM_FIRST)
+                goBoosting(NotyWorkBooster, isFirst = true, actionStr = DBConfig.DAIBOO_ACTION_FROM_FIRST)
                 finish()
             }
         }

@@ -106,8 +106,9 @@
             tools:ignore="LockedOrientationActivity" />
 
         <service
-            android:name=".core.service.DaiBooService"
-            android:exported="false" />
+            android:name=".service.KeepingService"
+            android:exported="false"
+            android:process=":bg" />
         <receiver
             android:name=".pop.NotifyToolReceiver"
             android:exported="false" />

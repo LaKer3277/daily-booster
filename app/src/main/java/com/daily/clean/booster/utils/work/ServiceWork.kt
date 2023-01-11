@@ -7,7 +7,7 @@ import androidx.work.ForegroundInfo
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.daily.clean.booster.pop.NotifyTools
-import com.daily.clean.booster.core.service.DaiBooService
+import com.daily.clean.booster.service.KeepingService
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.SettableFuture
 
@@ -16,7 +16,7 @@ class ServiceWork(appContext: Context, workerParams: WorkerParameters) : Worker(
     override fun doWork(): Result {
 
         kotlin.runCatching {
-            ContextCompat.startForegroundService(applicationContext, Intent(applicationContext, DaiBooService::class.java))
+            ContextCompat.startForegroundService(applicationContext, Intent(applicationContext, KeepingService::class.java))
         }
         return Result.success()
     }

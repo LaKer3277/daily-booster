@@ -49,12 +49,6 @@ object DBConfig {
     //配置名称
     const val DAIBOO_SPNAME = "daiboo"
 
-    const val DAIBOO_WORK_ID_CLEAN = "Clean"
-    const val DAIBOO_WORK_ID_BOOSTER = "Booster"
-    const val DAIBOO_WORK_ID_CPU = "CPU"
-    const val DAIBOO_WORK_ID_BATTERY = "Battery"
-    const val DAIBOO_WORK_ID_ClEAN_NOTIFICATION = "Notification"
-
 
     //Intent key
     const val DAIBOO_KEY_WORK_ID = "${DAIBOO_SPNAME}_work_id"
@@ -87,16 +81,6 @@ object DBConfig {
     const val DAIBOO_AD_CLICK_TIMES = "${DAIBOO_SPNAME}_adclit"
     const val DAIBOO_AD_SHOW_DATE = "${DAIBOO_SPNAME}_adsdate"
     const val DAIBOO_AD_LAST_SHOW_HOME_TIME = "${DAIBOO_SPNAME}_l_sadtim"
-
-
-    //tan key
-    const val DAIBOO_NOTY_TIME = "pop_time"
-    const val DAIBOO_NOTY_UNLOCK = "pop_unlock"
-    const val DAIBOO_NOTY_UNINSTALL = "pop_uninstall"
-    const val DAIBOO_NOTY_CHARGE = "pop_charge"
-    const val DAIBOO_NOTY_BATTERY = "pop_battery"
-    const val DAIBOO_NOTY_RAM = "pop_ram"
-
 
     //ads key
     const val DAIBOO_AD_OPEN = "db_Open"

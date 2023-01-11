@@ -78,3 +78,7 @@ fun intervalDays(date1: Long, date2: Long): Int {
 fun loggerApp(msg: String) {
     Log.i("loggerApp", msg)
 }
+
+fun loggerNotify(msg: String) {
+    Log.i("loggerNotify", msg)
+}

@@ -19,15 +19,14 @@ import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.ProcessUtils
 import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.base.FiBLogEvent
-import com.daily.clean.booster.base.FiBRemoteUtil
-import com.daily.clean.booster.core.service.Heart
+import com.daily.clean.booster.core.StartupReceiver
 import com.daily.clean.booster.datas.RemoteConfig
 import com.daily.clean.booster.ext.loggerApp
 import com.daily.clean.booster.ui.*
 import com.daily.clean.booster.ui.clean.JunkScanActivity
 import com.daily.clean.booster.utils.AudienceNetworkInitializeHelper
-import com.daily.clean.booster.utils.isADActivity
-import com.daily.clean.booster.utils.startCleanService
+import com.daily.clean.booster.ext.isADActivity
+import com.daily.clean.booster.ext.startCleanService
 import com.daily.clean.booster.utils.work.FiBLogWorker
 import com.google.android.gms.ads.AdActivity
 import com.google.android.gms.ads.MobileAds
@@ -68,10 +67,8 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
         DaiBooh2(this).it()
         
         if (isNotMainProcess()) return
-        kotlin.runCatching {
-            Heart.startTimingAlertJob()
-        }
         startCleanService()
+        StartupReceiver.registerReceivers(this)
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         MMKV.initialize(this)
 
@@ -131,6 +128,7 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
         Log.d("ActivityLife", "onActivityStarted: ---${activity::class.java.simpleName}  isHotStart = $isHotStart  isColdStar =${isColdStart}  action = ${activity.intent?.action} ")
         activityCount++
         backJob?.cancel()
+        StartupReceiver.cancelTimingJob()
         if (isHotStart) {
             isHotStart = false
             when (activity) {
@@ -152,12 +150,13 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
         Log.d("ActivityLife", "onActivityStopped: ---${activity::class.java.simpleName}  count=${activityCount} $isNotDoHotStart ")
         if (activityCount <= 0) {
             timeOnAppStop = System.currentTimeMillis()
+            StartupReceiver.startTimingAlertJob()
+
             backJob = GlobalScope.launch {
                 delay(3000L)
                 if (activity.isADActivity()) {
                     activity.finish()
                 }
-                delay(1000L)
                 if (activityCount <= 0
                     && isNotDoHotStart.not()
                     && activity !is FirstEnterActivity

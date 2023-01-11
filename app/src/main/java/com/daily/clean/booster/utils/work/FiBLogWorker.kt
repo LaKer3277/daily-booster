@@ -3,10 +3,10 @@ package com.daily.clean.booster.utils.work
 import android.content.Context
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.base.FiBLogEvent
-import com.daily.clean.booster.pop.PopHelper
+import com.daily.clean.booster.pop.NotifyManager
 import com.daily.clean.booster.entity.DaiBooUIItem
+import com.daily.clean.booster.pop.NotySourceUnlock
 import com.daily.clean.booster.utils.LogDB
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -18,7 +18,7 @@ class FiBLogWorker(appContext: Context, workerParams: WorkerParameters):
        // Do the work here--in this case, upload the images.
        // Indicate whether the work finished successfully with the Result
        FiBLogEvent.session_sttt()
-       startOpen(DaiBooUIItem.Items.getPopList()[0].id, DBConfig.DAIBOO_NOTY_UNLOCK)
+       startOpen(DaiBooUIItem.Items.getPopList()[0].id, NotySourceUnlock)
        return Result.success()
    }
 
@@ -26,7 +26,7 @@ class FiBLogWorker(appContext: Context, workerParams: WorkerParameters):
     fun startOpen(workId: String, tanID: String) {
         GlobalScope.launch {
             delay(1000)
-            val isSuccess = PopHelper.tryPop(workId,tanID)
+            val isSuccess = NotifyManager.tryPop(workId,tanID)
             if (isSuccess){
                 DaiBooUIItem.Items.listPop.removeFirst()
             }

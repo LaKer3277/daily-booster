@@ -18,7 +18,11 @@ import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.core.CleanData
 import com.daily.clean.booster.databinding.ActivityBoostBinding
-import com.daily.clean.booster.utils.*
+import com.daily.clean.booster.ext.doCycle
+import com.daily.clean.booster.ext.getString
+import com.daily.clean.booster.ext.getTitleText
+import com.daily.clean.booster.ext.goCleanResult
+import com.daily.clean.booster.pop.*
 import com.lzp.dslanimator.PlayMode
 import com.lzp.dslanimator.animSet
 import kotlinx.coroutines.Dispatchers
@@ -36,12 +40,12 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
         return ActivityBoostBinding.inflate(layoutInflater)
     }
 
-    private var workingMode = DBConfig.DAIBOO_WORK_ID_BOOSTER
+    private var workingMode = NotyWorkBooster
     private var popId: String? = null
     private var isFirst = false
 
     override fun dailyData() {
-        workingMode = intent.getStringExtra(DBConfig.DAIBOO_KEY_WORK_ID) ?: DBConfig.DAIBOO_WORK_ID_BOOSTER
+        workingMode = intent.getStringExtra(DBConfig.DAIBOO_KEY_WORK_ID) ?: NotyWorkBooster
         popId = intent.getStringExtra(DBConfig.DAIBOO_KEY_NOTY_ID)
         isFirst = intent.getBooleanExtra(DBConfig.DAIBOO_KEY_IS_FIRST, false)
 
@@ -165,37 +169,36 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
 
     private fun getScanningText(text: String): String {
         return when (workingMode) {
-            DBConfig.DAIBOO_WORK_ID_BOOSTER -> R.string.scanning_boost_xx.getString(text)
-            DBConfig.DAIBOO_WORK_ID_CPU -> R.string.scanning_cpu_xx.getString(text)
-            DBConfig.DAIBOO_WORK_ID_BATTERY -> R.string.scanning_battery_xx.getString(text)
+            NotyWorkBooster -> R.string.scanning_boost_xx.getString(text)
+            NotyWorkCpu -> R.string.scanning_cpu_xx.getString(text)
+            NotyWorkBattery -> R.string.scanning_battery_xx.getString(text)
             else -> ""
         }
     }
 
     private fun getWorkingText(): String {
         return when (workingMode) {
-            DBConfig.DAIBOO_WORK_ID_BOOSTER -> R.string.is_boosting.getString()
-            DBConfig.DAIBOO_WORK_ID_CPU -> R.string.is_cooling_down.getString()
-            DBConfig.DAIBOO_WORK_ID_BATTERY -> R.string.is_optimizing.getString()
-            DBConfig.DAIBOO_WORK_ID_ClEAN_NOTIFICATION -> R.string.is_notification_cleaning.getString()
+            NotyWorkBooster -> R.string.is_boosting.getString()
+            NotyWorkCpu -> R.string.is_cooling_down.getString()
+            NotyWorkBattery -> R.string.is_optimizing.getString()
             else -> ""
         }
     }
 
     private fun getScanAnimal(): String {
         return when (workingMode) {
-            DBConfig.DAIBOO_WORK_ID_BOOSTER -> "scan_booster.json"
-            DBConfig.DAIBOO_WORK_ID_CPU -> "scan_cpu.json"
-            DBConfig.DAIBOO_WORK_ID_BATTERY -> "scan_battery.json"
+            NotyWorkBooster -> "scan_booster.json"
+            NotyWorkCpu -> "scan_cpu.json"
+            NotyWorkBattery -> "scan_battery.json"
             else -> ""
         }
     }
 
     private fun getCleanAnimal(): String {
         return when (workingMode) {
-            DBConfig.DAIBOO_WORK_ID_BOOSTER -> "clean_booster.json"
-            DBConfig.DAIBOO_WORK_ID_CPU -> "clean_cpu.json"
-            DBConfig.DAIBOO_WORK_ID_BATTERY -> "clean_battery.json"
+            NotyWorkBooster -> "clean_booster.json"
+            NotyWorkCpu -> "clean_cpu.json"
+            NotyWorkBattery -> "clean_battery.json"
             else -> ""
         }
     }

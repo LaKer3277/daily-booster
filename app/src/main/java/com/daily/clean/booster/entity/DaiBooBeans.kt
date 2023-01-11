@@ -8,8 +8,8 @@ import android.os.Parcelable
 import android.text.format.Formatter
 import com.blankj.utilcode.util.TimeUtils
 import com.daily.clean.booster.R
-import com.daily.clean.booster.base.DBConfig
-import com.daily.clean.booster.utils.getString
+import com.daily.clean.booster.pop.*
+import com.daily.clean.booster.ext.getString
 import kotlinx.android.parcel.Parcelize
 import java.util.*
 
@@ -144,7 +144,6 @@ class DaiBooCleanParentBean(
             else -> R.mipmap.ic_clean_log_files
         }
     }
-
 }
 
 enum class CleanType(val code: String) {
@@ -167,32 +166,23 @@ class DaiBooCleanEvent(
  * 弹窗
  */
 data class DaiBooPopBean(
-    val up_pop: Int = 0,//是否开启体外弹窗0表示不弹窗，1表示弹窗；
-    val booster_avti: Int = 1,//是否展示activity弹窗，0表示不展示，1表示展示，默认值1；
-    val ref_fer: Int = 1,//是否触发展示通知/弹窗，0表示所有用户都展示，1表示仅买量用户展示；2表示仅FB买量用户展示，默认值1；
-    val booster_time: DaiBooPopItemBean,//定时弹窗
-    val booster_unl: DaiBooPopItemBean,//解锁屏幕弹窗
-    val booster_uni: DaiBooPopItemBean,//应用卸载弹窗
-    val booster_cha: DaiBooPopItemBean,//充电弹窗
-    val booster_bat: DaiBooPopItemBean,//电量弹窗
+    val up_pop: Int = 0,                            //是否开启体外弹窗0表示不弹窗，1表示弹窗；
+    val booster_avti: Int = 1,                      //是否展示activity弹窗，0表示不展示，1表示展示，默认值1；
+    val ref_fer: Int = 1,                           //是否触发展示通知/弹窗，0表示所有用户都展示，1表示仅买量用户展示；2表示仅FB买量用户展示，默认值1；
+    val booster_time: DaiBooPopItemBean,            //定时弹窗
+    val booster_unl: DaiBooPopItemBean,             //解锁屏幕弹窗
+    val booster_uni: DaiBooPopItemBean,             //应用卸载弹窗
+    val booster_cha: DaiBooPopItemBean,             //充电弹窗
+    val booster_bat: DaiBooPopItemBean,             //电量弹窗
 )
 
 
 data class DaiBooPopItemBean(
-    var first: Int = 0,////首次安装间隔多少小时后再展示弹窗，单位小时，0表示默认开始
-    var up: Int = 0,//当天展示次数上限，超过不展示，0无上限
-    var int: Int = 0, //间隔时间 单位分钟
-    var siz: Int = 2, //通知高度尺寸，0=64dp，1=160dp，2=256dp;默认值2
-    var acti_pos: Int = 1, //activity弹窗位置，0在顶部，1在中间，2在底部，默认值1
-)
-
-data class DaiBooOpenControlBean(
-    //0 第一次启动保持原有逻辑不改动，进入展示启动页和开屏广告；
-    //1，第一次启动进入启动页快速启动，不展示开屏广告，且第一次boost流程不展示插屏广告；
-    var first: Int = 0,
-    //0，保持原有逻辑不改动，进入展示启动页和开屏广告；
-    //1，热启动的情况下，从通知进入应用，不展示启动页和开屏广告，直接展示对应功能界面；
-    var notify: Int = 0,
+    var first: Int = 0,                             //首次安装间隔多少小时后再展示弹窗，单位小时，0表示默认开始
+    var up: Int = 0,                                //当天展示次数上限，超过不展示，0无上限
+    var int: Int = 0,                               //间隔时间 单位分钟
+    var siz: Int = 2,                               //通知高度尺寸，0=64dp，1=160dp，2=256dp;默认值2
+    var acti_pos: Int = 1,                          //activity弹窗位置，0在顶部，1在中间，2在底部，默认值1
 )
 
 @Parcelize
@@ -236,7 +226,7 @@ sealed class DaiBooUIItem(
 
     object Clean :
         DaiBooUIItem(
-            DBConfig.DAIBOO_WORK_ID_CLEAN,
+            NotyWorkClean,
             R.string.clean.getString(),
             R.mipmap.ic_home_clean,
             R.mipmap.ic_result_junk,
@@ -244,21 +234,21 @@ sealed class DaiBooUIItem(
             )
 
     object Boost : DaiBooUIItem(
-        DBConfig.DAIBOO_WORK_ID_BOOSTER,
+        NotyWorkBooster,
         R.string.booster.getString(),
         R.mipmap.ic_home_boost,
         R.mipmap.ic_result_boost,
     )
 
     object CPU : DaiBooUIItem(
-        DBConfig.DAIBOO_WORK_ID_CPU,
+        NotyWorkCpu,
         R.string.cpu.getString(),
         R.mipmap.ic_home_cpu,
         R.mipmap.ic_result_cpu,
     )
 
     object Battery : DaiBooUIItem(
-        DBConfig.DAIBOO_WORK_ID_BATTERY,
+        NotyWorkBattery,
         R.string.battery.getString(),
         R.mipmap.ic_home_battery,
         R.mipmap.ic_result_battery,

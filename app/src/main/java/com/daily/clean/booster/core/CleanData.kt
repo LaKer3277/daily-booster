@@ -3,7 +3,7 @@ package com.daily.clean.booster.core
 import android.graphics.drawable.Drawable
 import com.daily.clean.booster.R
 import com.daily.clean.booster.entity.DaiBooCleanParentBean
-import com.daily.clean.booster.utils.getString
+import com.daily.clean.booster.ext.getString
 
 object CleanData {
 

@@ -9,6 +9,8 @@ import com.daily.clean.booster.entity.CleanType
 import com.daily.clean.booster.entity.DaiBooCleanChildBean
 import com.daily.clean.booster.entity.DaiBooCleanDatas
 import com.daily.clean.booster.entity.DaiBooCleanParentBean
+import com.daily.clean.booster.ext.MB
+import com.daily.clean.booster.ext.mm
 import com.daily.clean.booster.utils.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope

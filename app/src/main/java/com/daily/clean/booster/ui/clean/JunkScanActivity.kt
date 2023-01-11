@@ -19,6 +19,8 @@ import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.core.CleanData
 import com.daily.clean.booster.core.DaiBooCleaner
 import com.daily.clean.booster.databinding.ActivityJunkScanBinding
+import com.daily.clean.booster.ext.*
+import com.daily.clean.booster.pop.NotyWorkClean
 import com.daily.clean.booster.ui.view.ScanItemLayout
 import com.daily.clean.booster.utils.*
 import com.lzp.dslanimator.PlayMode
@@ -40,7 +42,7 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
         if (intent?.action == DBConfig.DAIBOO_ACTION_FROM_POP_NOTY_POP) {
             FiBLogEvent.up_all_page()
         }
-        FiBLogEvent.page_scan_show(DBConfig.DAIBOO_WORK_ID_CLEAN)
+        FiBLogEvent.page_scan_show(NotyWorkClean)
         binding.titleBack.setOnClickListener { onBackPressed() }
 
         pathLiveData.observe(this) {
@@ -131,7 +133,7 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
             binding.groupComplete.visibility = View.VISIBLE
             animComplete.start()
             animComplete.onEnd {
-                goCleanResult(DBConfig.DAIBOO_WORK_ID_CLEAN, extra = "0B", from = intent.action)
+                goCleanResult(NotyWorkClean, extra = "0B", from = intent.action)
                 finish()
             }
         }
