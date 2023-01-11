@@ -281,7 +281,7 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
                 lifecycleScope.launch {
                     delay(90)
                     completeJob?.cancel()
-                    if (isPaused.not()) {
+                    if (isActivityPaused.not()) {
                         goResult()
                         FiBLogEvent.clean_page_to_result_end(workId)
                     }

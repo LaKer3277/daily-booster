@@ -40,8 +40,10 @@
 
         <activity
             android:name=".LaunchActivity"
+            android:exported="true"
             android:launchMode="singleTask"
-            android:exported="true">
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -55,38 +57,53 @@
             android:hardwareAccelerated="true"
             android:launchMode="singleTop"
             android:noHistory="true"
+            android:screenOrientation="portrait"
             android:taskAffinity=":wakeup"
-            android:theme="@style/Theme.Notification.Window" />
+            android:theme="@style/Theme.Notification.Window"
+            tools:ignore="LockedOrientationActivity" />
 
         <activity
             android:name=".ui.HomeActivity"
             android:exported="false"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
 
         <activity
             android:name=".ui.WebActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".ui.FirstEnterActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".ui.SplashActivity"
             android:exported="false"
-            android:parentActivityName=".ui.HomeActivity" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".ui.CleanResultActivity"
             android:exported="false"
-            android:parentActivityName=".ui.HomeActivity" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".ui.BoostActivity"
             android:exported="false"
-            android:parentActivityName=".ui.HomeActivity" />
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".ui.JunkScanActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
         <activity
             android:name=".ui.JunkCleanActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
 
         <service
             android:name=".core.service.DaiBooService"

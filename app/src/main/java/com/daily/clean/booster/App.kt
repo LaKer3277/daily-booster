@@ -41,7 +41,7 @@ import java.util.concurrent.TimeUnit
 
 
 val isDebugMode = BuildConfig.DEBUG
-
+lateinit var appIns: App
 class App : Application(), Application.ActivityLifecycleCallbacks {
 
     companion object {
@@ -62,6 +62,7 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
     override fun onCreate() {
         super.onCreate()
         ins = this
+        appIns = this
         DaiBooh2(this).it()
         
         if (isNotMainProcess()) return

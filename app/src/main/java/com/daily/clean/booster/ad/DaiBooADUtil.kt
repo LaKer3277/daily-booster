@@ -264,7 +264,7 @@ object DaiBooADUtil {
         block: (Boolean) -> Unit
     ) {
 
-        if (activity.isPaused || App.isAdActivityResume) {
+        if (activity.isActivityPaused || App.isAdActivityResume) {
             LogDB.dAD("--$key----show---ishowing-- ${App.isAdActivityResume}")
             return
         }

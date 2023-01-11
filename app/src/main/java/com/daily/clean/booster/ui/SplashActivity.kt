@@ -1,18 +1,22 @@
 package com.daily.clean.booster.ui
 
+import android.animation.Animator
+import android.animation.ValueAnimator
 import androidx.core.app.NotificationManagerCompat
-import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
 import com.daily.clean.booster.App
 import com.daily.clean.booster.ad.DaiBooADUtil
-import com.daily.clean.booster.base.BaseActivity
-import com.daily.clean.booster.base.FiBLogEvent
-import com.daily.clean.booster.base.FiBRemoteUtil
-import com.daily.clean.booster.base.DBConfig
+import com.daily.clean.booster.ads.AdsListener
+import com.daily.clean.booster.ads.AdsLoader
+import com.daily.clean.booster.ads.conf.AdPos
+import com.daily.clean.booster.ads.model.BaseAd
+import com.daily.clean.booster.ads.model.BaseIns
+import com.daily.clean.booster.appIns
+import com.daily.clean.booster.base.*
 import com.daily.clean.booster.databinding.ActivitySplashBinding
+import com.daily.clean.booster.ext.currentTms
 import com.daily.clean.booster.tba.HttpTBA
 import com.daily.clean.booster.utils.*
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -22,10 +26,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         return ActivitySplashBinding.inflate(layoutInflater)
     }
 
-
     override fun dailyData() {
-        initLocalData()
-
         val tanId = intent.getStringExtra(DBConfig.DAIBOO_KEY_NOTY_ID) ?: ""
         val workID = intent.getStringExtra(DBConfig.DAIBOO_KEY_WORK_ID) ?: ""
         val action = intent?.action ?: ""
@@ -40,150 +41,118 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         }
         FiBLogEvent.start_page()
         FiBLogEvent.user_rent()
-    }
-
-    override fun dailyView() {
-        isShowedAD = false
-        currentProgress
-    }
-
-    override fun dailyLoad() {
         HttpTBA.reportFirst()
     }
 
-    var isShowedAD = false
-    override fun onResume() {
-        super.onResume()
-        if (isShowedAD.not()) {
-            loadADS()
-            startJob()
+    override fun dailyLoad() {
+        val openNextLogic = {
+            goNextByIntent()
         }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        jobToHome?.cancel()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        jobLoadOpen?.cancel()
-    }
-
-
-    var jobToHome: Job? = null
-    var currentProgress = 0f
-    private fun startJob(faster: Boolean = false) {
-        jobToHome?.cancel()
-        var delayTime = 20L
-        delayTime = if (!DaiBooADUtil.isReachLimit()) {
-            70L
-        } else {
-            20L
-        }
-        if (faster) delayTime = 10L
-        var startProcess = currentProgress
-
-        LogDB.d("Process= $startProcess  $delayTime")
-
-        jobToHome = lifecycleScope.launch {
-            while (startProcess < 100) {
-                delay(delayTime)
-                startProcess++
-                binding.progressbar.progress = startProcess.toInt()
-                currentProgress = startProcess
+        runAnim(10_000L) {
+            if (isAdImpression) return@runAnim
+            if (isActivityPaused) {
+                return@runAnim
             }
-            if (startProcess == 100f) {
-                LogDB.d("showAD")
-                showAD()
-            }
+            openNextLogic.invoke()
         }
-    }
-
-
-    override fun onBackPressed() {
-    }
-
-    private fun initLocalData() {
-        FiBRemoteUtil.initFireBaseData {
-            startJob()
-            loadADS()
-        }
-    }
-
-
-    var isCacheOpenAd = false
-    var jobLoadOpen: Job? = null
-    var loadTimes = 0
-    private fun loadADS() {
-        loadTimes = 0
-        DaiBooADUtil.load(DBConfig.DAIBOO_AD_RESULT_NV, this)
-        DaiBooADUtil.load(DBConfig.DAIBOO_AD_CLEAN_IV, this)
-        isCacheOpenAd = false
-        jobLoadOpen?.cancel()
-        jobLoadOpen = lifecycle.coroutineScope.launch {
-            while (isCacheOpenAd.not()) {
-                delay(300)
-                DaiBooADUtil.load(
-                    DBConfig.DAIBOO_AD_OPEN,
-                    this@SplashActivity,
-                    callLoading = {
-                    },
-                    callEnd = {
-                        loadTimes++
-                        if (loadTimes > 1) {
-                            jobLoadOpen?.cancel()
-                            startJob(true)
-                        }
-                    },
-                    callBack = {
-                        isCacheOpenAd = true
-                        jobToHome?.cancel()
-                        startJob(true)
-                    }
-                )
-            }
-        }
-    }
-
-
-    private fun showAD() {
         lifecycleScope.launch {
-            DaiBooADUtil.showAD(DBConfig.DAIBOO_AD_OPEN, this@SplashActivity) {
-                isShowedAD = it
-                DaiBooADUtil.load(DBConfig.DAIBOO_AD_OPEN, this@SplashActivity)
-                lifecycleScope.launch {
-                    delay(120)
-                    if (App.ins.isAtForeground() && isPaused.not()) {
-                        goNextByIntent()
-                    }
-                    finish()
+            delay(200L)
+            openAdLogic() {
+                openNextLogic.invoke()
+            }
+            delay(600L)
+            DaiBooADUtil.load(DBConfig.DAIBOO_AD_RESULT_NV, this@SplashActivity)
+            DaiBooADUtil.load(DBConfig.DAIBOO_AD_CLEAN_IV, this@SplashActivity)
+        }
+    }
+
+    override fun onBackPressed() {}
+
+    private var valueAni: ValueAnimator? = null
+    private fun runAnim(long: Long, action: () -> Unit) {
+        valueAni?.cancel()
+        valueAni = ValueAnimator.ofInt(binding.progressbar.progress, 100)
+        valueAni?.duration = long
+        valueAni?.addUpdateListener(object : ValueAnimator.AnimatorUpdateListener{
+            override fun onAnimationUpdate(p0: ValueAnimator) {
+                (p0.animatedValue as? Int)?.apply {
+                    binding.progressbar.progress = this
                 }
             }
-        }
+        })
+        valueAni?.addListener(object : AnimatorListener() {
+            private var isCanceled = false
+            override fun onAnimationCancel(animation: Animator) {
+                isCanceled = true
+            }
 
+            override fun onAnimationEnd(animation: Animator) {
+                if (!isCanceled) {
+                    action.invoke()
+                }
+            }
+        })
+        valueAni?.start()
     }
 
+    private var startTms = 0L
+    private var isAdImpression = false
+    private fun openAdLogic(adNextAction: () -> Unit) {
+        isAdImpression = false
+        startTms = currentTms()
+
+        fun preloadOpen() {
+            AdsLoader.preloadAd(appIns, AdPos.Open)
+        }
+
+        AdsLoader.loadAd(appIns, AdPos.Open, object : AdsListener() {
+            override fun onLoaded(ad: BaseAd) {
+                if (isActivityPaused) {
+                    AdsLoader.add2Cache(AdPos.Open, ad)
+                    return
+                }
+                preloadOpen()
+                if (ad !is BaseIns || !ad.show(this@SplashActivity)) {
+                    adNextAction.invoke()
+                }
+            }
+
+            override fun onError(msg: String) {
+                preloadOpen()
+                if (isActivityPaused) return
+                adNextAction.invoke()
+            }
+
+            override fun onDismiss() {
+                if (appIns.isAtForeground()) adNextAction.invoke() else finish()
+            }
+
+            override fun onShown() {
+                isAdImpression = true
+            }
+        })
+    }
 
     private fun goNextByIntent() {
         val workId = intent?.getStringExtra(DBConfig.DAIBOO_KEY_WORK_ID) ?: ""
-        LogDB.d("workId---$workId")
         when (workId) {
             DBConfig.DAIBOO_WORK_ID_CLEAN -> {
                 goJunkCleanScanning(intent.action)
             }
+
             DBConfig.DAIBOO_WORK_ID_BOOSTER,
             DBConfig.DAIBOO_WORK_ID_CPU,
             DBConfig.DAIBOO_WORK_ID_BATTERY,
-            DBConfig.DAIBOO_WORK_ID_ClEAN_NOTIFICATION,
-            -> {
+            DBConfig.DAIBOO_WORK_ID_ClEAN_NOTIFICATION -> {
                 goBoosting(work_id = workId, actionStr = intent.action)
             }
+
             else -> {
                 goMain(DBConfig.DAIBOO_ACTION_FROM_SPLASH)
-//                        MediationTestSuite.launch(this@SplashActivity)
             }
         }
+
+        finish()
 
     }
 

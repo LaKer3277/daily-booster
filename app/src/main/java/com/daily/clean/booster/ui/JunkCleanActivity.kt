@@ -132,7 +132,7 @@ class JunkCleanActivity : BaseActivity<ActivityCleanBinding>() {
             DaiBooADUtil.load(DBConfig.DAIBOO_AD_CLEAN_IV, this@JunkCleanActivity)
             lifecycleScope.launch {
                 delay(90)
-                if (isPaused.not()) {
+                if (isActivityPaused.not()) {
                     val extra = intent.getStringExtra(DBConfig.DAIBOO_KEY_CLEAN_SIZE) ?: "0B"
                     goCleanResult(DBConfig.DAIBOO_WORK_ID_CLEAN, extra = extra, from = intent.action)
                     FiBLogEvent.clean_page_to_result_end(DBConfig.DAIBOO_WORK_ID_CLEAN)

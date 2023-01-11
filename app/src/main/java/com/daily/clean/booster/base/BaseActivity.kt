@@ -27,7 +27,6 @@ abstract class BaseActivity<T: ViewBinding> : AppCompatActivity() {
     open lateinit var binding: T
 
     abstract fun dailyData()
-    abstract fun dailyView()
     abstract fun dailyLoad()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,28 +37,27 @@ abstract class BaseActivity<T: ViewBinding> : AppCompatActivity() {
         dailyDensity()
         //设置状态栏透明
         dailyStatusBar()
-
-        dailyData()
         binding = dailyBinding()
         setContentView(binding.root)
-        dailyView()
+
+        dailyData()
         dailyLoad()
     }
 
-    var isPaused: Boolean = false
+    var isActivityPaused: Boolean = false
     override fun onResume() {
         super.onResume()
-        isPaused = false
+        isActivityPaused = false
     }
 
     override fun onPause() {
         super.onPause()
-        isPaused = true
+        isActivityPaused = true
     }
 
     override fun onStop() {
         super.onStop()
-        isPaused = true
+        isActivityPaused = true
     }
 
 

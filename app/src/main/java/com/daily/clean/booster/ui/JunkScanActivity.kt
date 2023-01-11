@@ -81,7 +81,7 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
     }
 
     private fun goClean() {
-        if (isPaused) return
+        if (isActivityPaused) return
         if (DaiBooMK.isNeedClean()) {
 //            showAdOrNext(MainConfig.DAIBOO_AD_SCAN_INT) {
                 goJunkCleanPage(selectSizeStr, intent?.action)

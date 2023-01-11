@@ -199,7 +199,7 @@ class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
     var jobShowAD: Job? = null
     var jobLoadAD: Job? = null
     private fun showAD() {
-        if (isPaused) return
+        if (isActivityPaused) return
         jobShowAD?.cancel()
         jobShowAD = lifecycleScope.launch {
             delay(60)

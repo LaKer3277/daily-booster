@@ -25,8 +25,7 @@ class FirstEnterActivity : BaseActivity<ActivityFirstBinding>() {
         FiBLogEvent.start_first_()
     }
 
-    override fun dailyView() {
-        //下划线
+    override fun dailyLoad() {//下划线
         binding.layStart.tvPrivacyPolicy.showBottomLine()
         binding.layStart.tvTermofservice.showBottomLine()
 
@@ -41,9 +40,6 @@ class FirstEnterActivity : BaseActivity<ActivityFirstBinding>() {
         binding.layStart.btnStart.setOnClickListener {
             showAD { goScan() }
         }
-    }
-
-    override fun dailyLoad() {
         HttpTBA.reportFirst()
         initLocalData()
     }
