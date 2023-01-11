@@ -16,7 +16,7 @@ import com.daily.clean.booster.ads.model.BaseIns
 import com.daily.clean.booster.base.BaseActivity
 import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.base.FiBLogEvent
-import com.daily.clean.booster.core.clean.CleanData
+import com.daily.clean.booster.core.CleanData
 import com.daily.clean.booster.databinding.ActivityBoostBinding
 import com.daily.clean.booster.utils.*
 import com.lzp.dslanimator.PlayMode

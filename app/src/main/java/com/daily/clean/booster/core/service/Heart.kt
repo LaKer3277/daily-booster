@@ -8,7 +8,7 @@ import android.content.IntentFilter
 import android.os.BatteryManager
 import com.daily.clean.booster.App
 import com.daily.clean.booster.base.DBConfig
-import com.daily.clean.booster.core.pop.PopCheckHelper
+import com.daily.clean.booster.pop.PopHelper
 import com.daily.clean.booster.entity.DaiBooUIItem
 import com.daily.clean.booster.utils.LogDB
 import kotlinx.coroutines.*
@@ -133,7 +133,7 @@ object Heart {
         GlobalScope.launch {
             delay(delayTime)
             //FireBLogEventUtils.logTanTrigger(tanID)
-            val isSuccess = PopCheckHelper.tryPop(workId, tanID)
+            val isSuccess = PopHelper.tryPop(workId, tanID)
             LogDB.dpop("try pop---workId=${workId}  tanID = ${tanID}  is success? = $isSuccess ")
             if (isSuccess && isListPop) {
                 DaiBooUIItem.Items.listPop.removeFirst()

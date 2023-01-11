@@ -1,4 +1,4 @@
-package com.daily.clean.booster.core.pop
+package com.daily.clean.booster.pop
 
 import android.annotation.SuppressLint
 import android.app.*
@@ -22,7 +22,7 @@ import com.daily.clean.booster.utils.LogDB
 import com.daily.clean.booster.utils.getString
 import com.daily.clean.booster.utils.isSPlus
 
-object DaiBooNotifyPop {
+object NotifyPopper {
 
     private const val channelId = DBConfig.NOTIFY_CHANNEL_ID_POP
     private const val notificationId = DBConfig.NOTIFY_POP_ID
@@ -44,14 +44,11 @@ object DaiBooNotifyPop {
                 channel
             )
         }
-
     }
-
 
     fun cancelAlertNotification() {
         NotificationManagerCompat.from(App.ins).cancel(notificationId)
     }
-
 
     @SuppressLint("WrongConstant")
     fun createNotificationAndPop(context: Context, workId: String, tanId: String): Notification {
@@ -60,7 +57,7 @@ object DaiBooNotifyPop {
 
         createNotificationChannel()
 
-        val item: DaiBooPopItemBean? = PopCheckHelper.getPopItem(tanId)
+        val item: DaiBooPopItemBean? = PopHelper.getPopItem(tanId)
 
         val nBuilder = NotificationCompat.Builder(App.ins, channelId)
             .setSmallIcon(R.drawable.ic_daily_booster_logo)
@@ -100,7 +97,7 @@ object DaiBooNotifyPop {
         with(NotificationManagerCompat.from(App.ins)) {
             LogDB.dpop("-notify---$notificationId")
             //保存
-            PopCheckHelper.saveLastPopTime(tanId)
+            PopHelper.saveLastPopTime(tanId)
             notify(notificationId, notification)
             FiBLogEvent.pop_log(tanId, 1)
         }
@@ -221,7 +218,6 @@ object DaiBooNotifyPop {
 
 
     private fun btnClickPending_fsi(workID: String, tanId: String): PendingIntent {
-//        val intent = Intent()
         val bpiBroad: PendingIntent =
             PendingIntent.getBroadcast(
                 App.ins, tanId.hashCode() + 20,
@@ -259,24 +255,6 @@ object DaiBooNotifyPop {
     }
 
     private fun btnClickPending(workID: String, tanId: String): PendingIntent {
-
-//        if (1 == FireBRemoteUtil.open_control?.notify) {
-//            // Create the TaskStackBuilder
-//            val clz = if (workID == DBConfig.DAIBOO_WORK_ID_CLEAN) {
-//                JunkScanActivity::class.java
-//            } else {
-//                BoostActivity::class.java
-//            }
-//            return TaskStackBuilder.create(DBApp.ins).run {
-//                //不展示开屏 ,直接进入流程
-//                addNextIntentWithParentStack(Intent(DBApp.ins, clz).apply {
-//                    putExtra(DBConfig.DAIBOO_KEY_WORK_ID, workID)
-//                    putExtra(DBConfig.DAIBOO_KEY_NOTY_ID, tanId)
-//                    action = DBConfig.DAIBOO_ACTION_FROM_POP_NOTY_POP
-//                })
-//                getPendingIntent(tanId.hashCode() + 2, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-//            }
-//        } else {
         return PendingIntent.getActivity(
             App.ins,
             tanId.hashCode(),
@@ -288,9 +266,6 @@ object DaiBooNotifyPop {
             },
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
-//        }
-
-
     }
 
     private fun checkIsMIUI(): Boolean {

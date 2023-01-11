@@ -1,4 +1,4 @@
-package com.daily.clean.booster.core.pop
+package com.daily.clean.booster.pop
 
 import android.app.*
 import android.content.Context
@@ -15,10 +15,10 @@ import com.daily.clean.booster.utils.getString
 import com.daily.clean.booster.utils.isSPlus
 
 
-object DaiBooNotifyTool {
+object NotifyTools {
 
-    private const val channelId = DBConfig.NOTIFY_CHANNEL_ID_TOOL
-    const val notificationId = DBConfig.NOTIFY_TOOL_ID
+    private const val channelId = NOTIFY_CHANNEL_ID_TOOL
+    const val notificationId = NOTIFY_TOOL_ID
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -40,7 +40,7 @@ object DaiBooNotifyTool {
         }
     }
 
-    private fun cancelNotification() {
+    fun cancelPopNotification() {
         NotificationManagerCompat.from(App.ins).cancel(notificationId)
     }
 
@@ -89,7 +89,7 @@ object DaiBooNotifyTool {
 
     fun createNotification(): Notification {
         createNotificationChannel()
-        cancelNotification()
+        cancelPopNotification()
         val notificationBuilder = NotificationCompat.Builder(App.ins, channelId)
             .setSmallIcon(R.drawable.ic_daily_booster_logo)
             .setCustomContentView(customRemoteViews())

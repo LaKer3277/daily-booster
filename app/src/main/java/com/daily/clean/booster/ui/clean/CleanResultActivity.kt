@@ -17,7 +17,7 @@ import com.daily.clean.booster.ads.model.BaseNav
 import com.daily.clean.booster.base.BaseActivity
 import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.base.FiBLogEvent
-import com.daily.clean.booster.core.clean.CleanData
+import com.daily.clean.booster.core.CleanData
 import com.daily.clean.booster.databinding.ActivityResultBinding
 import com.daily.clean.booster.entity.DaiBooUIItem
 import com.daily.clean.booster.utils.*

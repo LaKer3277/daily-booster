@@ -16,8 +16,8 @@ import com.daily.clean.booster.ads.conf.AdPos
 import com.daily.clean.booster.base.BaseActivity
 import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.base.DBConfig
-import com.daily.clean.booster.core.clean.CleanData
-import com.daily.clean.booster.core.clean.DaiBooCleaner
+import com.daily.clean.booster.core.CleanData
+import com.daily.clean.booster.core.DaiBooCleaner
 import com.daily.clean.booster.databinding.ActivityJunkScanBinding
 import com.daily.clean.booster.ui.view.ScanItemLayout
 import com.daily.clean.booster.utils.*

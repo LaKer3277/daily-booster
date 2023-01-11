@@ -13,7 +13,7 @@ import com.daily.clean.booster.R
 import com.daily.clean.booster.base.BaseActivity
 import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.base.FiBLogEvent
-import com.daily.clean.booster.core.pop.PopCheckHelper
+import com.daily.clean.booster.pop.PopHelper
 import com.daily.clean.booster.databinding.LayoutNotificationBigActBinding
 import com.daily.clean.booster.utils.DaiBooRAMUtils
 import com.daily.clean.booster.utils.getString
@@ -62,7 +62,7 @@ class NotificationActivity : BaseActivity<LayoutNotificationBigActBinding>() {
             }
         }
 
-        val item = PopCheckHelper.getPopItem(tanID)
+        val item = PopHelper.getPopItem(tanID)
         item?.let {
             when (it.acti_pos) {
                 0 -> (binding.rlPage.layoutParams as FrameLayout.LayoutParams).gravity = Gravity.TOP

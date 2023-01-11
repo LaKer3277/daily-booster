@@ -1,4 +1,4 @@
-package com.daily.clean.booster.core.pop
+package com.daily.clean.booster.pop
 
 import com.blankj.utilcode.util.NetworkUtils
 import com.daily.clean.booster.App
@@ -10,7 +10,7 @@ import com.daily.clean.booster.utils.DaiBooMK
 import com.daily.clean.booster.utils.LogDB
 
 
-object PopCheckHelper {
+object PopHelper {
 
 
     fun getPopItem(tanId: String): DaiBooPopItemBean? {
@@ -140,7 +140,7 @@ object PopCheckHelper {
             return false
         }
         FiBLogEvent.pop_log(tanId, 0)
-        DaiBooNotifyPop.createNotificationAndPop(App.ins, workId, tanId)
+        NotifyPopper.createNotificationAndPop(App.ins, workId, tanId)
         return true
     }
 

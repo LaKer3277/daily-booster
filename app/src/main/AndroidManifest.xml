@@ -109,7 +109,7 @@
             android:name=".core.service.DaiBooService"
             android:exported="false" />
         <receiver
-            android:name=".core.pop.NotifyToolReceiver"
+            android:name=".pop.NotifyToolReceiver"
             android:exported="false" />
 
 

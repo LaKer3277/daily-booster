@@ -76,10 +76,6 @@ object DBConfig {
 
     const val DAIBOO_KEY_CLEAN_SIZE = "${DAIBOO_SPNAME}_clean_size"
 
-
-    const val NOTIFY_CHANNEL_ID_TOOL = "${DAIBOO_SPNAME}_clean_channel"
-    const val NOTIFY_TOOL_ID = 1000
-
     const val NOTIFY_CHANNEL_ID_POP = "${DAIBOO_SPNAME}_worker_channel"
     const val NOTIFY_POP_ID = 1021
 

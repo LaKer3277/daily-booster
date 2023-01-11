@@ -1,4 +1,4 @@
-package com.daily.clean.booster.core.pop
+package com.daily.clean.booster.pop
 
 import android.content.BroadcastReceiver
 import android.content.Context

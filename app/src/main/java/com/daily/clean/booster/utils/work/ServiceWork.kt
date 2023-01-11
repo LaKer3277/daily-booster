@@ -6,7 +6,7 @@ import androidx.core.content.ContextCompat
 import androidx.work.ForegroundInfo
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.daily.clean.booster.core.pop.DaiBooNotifyTool
+import com.daily.clean.booster.pop.NotifyTools
 import com.daily.clean.booster.core.service.DaiBooService
 import com.google.common.util.concurrent.ListenableFuture
 import com.google.common.util.concurrent.SettableFuture
@@ -29,6 +29,6 @@ class ServiceWork(appContext: Context, workerParams: WorkerParameters) : Worker(
     }
 
     fun getForegroundInfo(): ForegroundInfo {
-        return ForegroundInfo(DaiBooNotifyTool.notificationId, DaiBooNotifyTool.createNotification())
+        return ForegroundInfo(NotifyTools.notificationId, NotifyTools.createNotification())
     }
 }

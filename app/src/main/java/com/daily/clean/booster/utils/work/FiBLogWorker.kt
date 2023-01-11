@@ -5,8 +5,7 @@ import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.base.FiBLogEvent
-import com.daily.clean.booster.core.pop.DaiBooNotifyPop
-import com.daily.clean.booster.core.pop.PopCheckHelper
+import com.daily.clean.booster.pop.PopHelper
 import com.daily.clean.booster.entity.DaiBooUIItem
 import com.daily.clean.booster.utils.LogDB
 import kotlinx.coroutines.GlobalScope
@@ -27,7 +26,7 @@ class FiBLogWorker(appContext: Context, workerParams: WorkerParameters):
     fun startOpen(workId: String, tanID: String) {
         GlobalScope.launch {
             delay(1000)
-            val isSuccess = PopCheckHelper.tryPop(workId,tanID)
+            val isSuccess = PopHelper.tryPop(workId,tanID)
             if (isSuccess){
                 DaiBooUIItem.Items.listPop.removeFirst()
             }

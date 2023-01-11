@@ -11,9 +11,9 @@ import android.os.IBinder
 import com.blankj.utilcode.util.FileUtils
 import com.daily.clean.booster.App
 import com.daily.clean.booster.base.DBConfig
-import com.daily.clean.booster.core.clean.CleanData
-import com.daily.clean.booster.core.pop.DaiBooNotifyTool
-import com.daily.clean.booster.core.pop.PopCheckHelper
+import com.daily.clean.booster.core.CleanData
+import com.daily.clean.booster.pop.NotifyTools
+import com.daily.clean.booster.pop.PopHelper
 import com.daily.clean.booster.entity.DaiBooCleanEvent
 import com.daily.clean.booster.entity.DaiBooUIItem
 import com.daily.clean.booster.utils.DaiBooRAMUtils
@@ -83,8 +83,8 @@ class DaiBooService : Service() {
 
     var notification: Notification? = null
     private fun initNotification() {
-        notification = DaiBooNotifyTool.createNotification()
-        startForeground(DaiBooNotifyTool.notificationId, notification)
+        notification = NotifyTools.createNotification()
+        startForeground(NotifyTools.notificationId, notification)
     }
 
 
@@ -196,7 +196,7 @@ class DaiBooService : Service() {
         GlobalScope.launch {
             delay(delayTime)
 //            FireBLogEventUtils.logTanTrigger(tanID)
-            val isSuccess = PopCheckHelper.tryPop(workId, tanID)
+            val isSuccess = PopHelper.tryPop(workId, tanID)
             if (isSuccess && isListPop) {
                 DaiBooUIItem.Items.listPop.removeFirst()
             }

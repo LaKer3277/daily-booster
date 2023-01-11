@@ -1,4 +1,4 @@
-package com.daily.clean.booster.core.clean
+package com.daily.clean.booster.core
 
 import android.content.pm.PackageManager
 import android.text.TextUtils
