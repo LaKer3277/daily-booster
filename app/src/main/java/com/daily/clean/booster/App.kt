@@ -21,6 +21,7 @@ import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.base.FiBRemoteUtil
 import com.daily.clean.booster.core.service.Heart
+import com.daily.clean.booster.datas.RemoteConfig
 import com.daily.clean.booster.ext.loggerApp
 import com.daily.clean.booster.ui.*
 import com.daily.clean.booster.ui.clean.JunkScanActivity
@@ -79,7 +80,7 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
             Firebase.initialize(this)
         initAds()
 
-        FiBRemoteUtil.initFireBaseData()
+        RemoteConfig.ins.fetchInit()
         FiBLogEvent.app_active()
         FiBLogEvent.user_rent()
         initWork(this)

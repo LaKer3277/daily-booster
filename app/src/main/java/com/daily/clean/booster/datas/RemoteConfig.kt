@@ -27,6 +27,7 @@ class RemoteConfig {
     }
 
     fun fetchInit() {
+        LoaderConf.tryParseLocal()
         remoteConfig.fetchAndActivate().addOnCompleteListener {
             if (it.isSuccessful) {
                 LoaderConf.tryParseRelease()

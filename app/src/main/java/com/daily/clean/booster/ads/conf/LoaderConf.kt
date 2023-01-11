@@ -83,20 +83,6 @@ open class LoaderConf {
             "Form":"open",
             "out":7200,
             "Hierarchy":2
-        },
-        {
-            "Id":"ca-app-pub-3940256099942544/3419835294",
-            "Network":"admob",
-            "Form":"open",
-            "out":7200,
-            "Hierarchy":3
-        },
-        {
-            "Id":"ca-app-pub-3940256099942544/3419835294",
-            "Network":"admob",
-            "Form":"open",
-            "out":7200,
-            "Hierarchy":1
         }
     ],
     "clean_IV":[
@@ -113,13 +99,6 @@ open class LoaderConf {
             "Form":"interstitial",
             "out":3000,
             "Hierarchy":1
-        },
-        {
-            "Id":"ca-app-pub-3940256099942544/1033173712",
-            "Network":"admob",
-            "Form":"interstitial",
-            "out":3000,
-            "Hierarchy":3
         }
     ],
     "result_NV":[
@@ -129,20 +108,6 @@ open class LoaderConf {
             "Form":"native",
             "out":3000,
             "Hierarchy":2
-        },
-        {
-            "Id":"ca-app-pub-3940256099942544/2247696110",
-            "Network":"admob",
-            "Form":"native",
-            "out":3000,
-            "Hierarchy":1
-        },
-        {
-            "Id":"ca-app-pub-3940256099942544/2247696110",
-            "Network":"admob",
-            "Form":"native",
-            "out":3000,
-            "Hierarchy":3
         }
     ]
 }"""
