@@ -33,6 +33,10 @@ import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.base.DBConfig.DAIBOO_KEY_IS_FIRST
 import com.daily.clean.booster.core.service.DaiBooService
 import com.daily.clean.booster.ui.*
+import com.daily.clean.booster.ui.clean.BoostActivity
+import com.daily.clean.booster.ui.clean.CleanResultActivity
+import com.daily.clean.booster.ui.clean.JunkCleanActivity
+import com.daily.clean.booster.ui.clean.JunkScanActivity
 import com.daily.clean.booster.utils.work.ServiceWork
 import com.google.android.gms.ads.AdActivity
 import kotlinx.coroutines.CoroutineScope

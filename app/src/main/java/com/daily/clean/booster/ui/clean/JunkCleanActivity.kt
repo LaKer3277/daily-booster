@@ -1,10 +1,12 @@
-package com.daily.clean.booster.ui
+package com.daily.clean.booster.ui.clean
 
 import android.view.View
 import android.view.animation.LinearInterpolator
 import androidx.lifecycle.lifecycleScope
 import com.daily.clean.booster.R
 import com.daily.clean.booster.ad.DaiBooADUtil
+import com.daily.clean.booster.ads.AdsLoader
+import com.daily.clean.booster.ads.conf.AdPos
 import com.daily.clean.booster.base.BaseActivity
 import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.base.FiBLogEvent
@@ -118,8 +120,8 @@ class JunkCleanActivity : BaseActivity<ActivityCleanBinding>() {
     }
 
     private fun loadADs() {
-        DaiBooADUtil.load(DBConfig.DAIBOO_AD_CLEAN_IV, this)
-        DaiBooADUtil.load(DBConfig.DAIBOO_AD_RESULT_NV, this)
+        AdsLoader.preloadAd(this, AdPos.InsClean)
+        AdsLoader.preloadAd(this, AdPos.NavResult)
     }
 
 

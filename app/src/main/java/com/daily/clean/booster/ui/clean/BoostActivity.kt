@@ -1,4 +1,4 @@
-package com.daily.clean.booster.ui
+package com.daily.clean.booster.ui.clean
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -9,6 +9,8 @@ import com.daily.clean.booster.BuildConfig
 import com.daily.clean.booster.App
 import com.daily.clean.booster.R
 import com.daily.clean.booster.ad.DaiBooADUtil
+import com.daily.clean.booster.ads.AdsLoader
+import com.daily.clean.booster.ads.conf.AdPos
 import com.daily.clean.booster.base.BaseActivity
 import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.base.FiBLogEvent
@@ -290,8 +292,8 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
 
 
     private fun loadADS() {
-        DaiBooADUtil.load(DBConfig.DAIBOO_AD_CLEAN_IV, this)
-        DaiBooADUtil.load(DBConfig.DAIBOO_AD_RESULT_NV, this)
+        AdsLoader.preloadAd(this, AdPos.InsClean)
+        AdsLoader.preloadAd(this, AdPos.NavResult)
     }
 
 

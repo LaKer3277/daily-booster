@@ -3,7 +3,6 @@ package com.daily.clean.booster.ui
 import android.content.Intent
 import android.content.IntentFilter
 import android.view.Gravity
-import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
@@ -43,7 +42,7 @@ class NotificationActivity : BaseActivity<LayoutNotificationBigActBinding>() {
         FiBLogEvent.up_ac_show(tanID)
     }
 
-    override fun dailyView() {
+    private fun dailyView() {
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         initView()
     }

@@ -102,9 +102,9 @@ class DaiBooNatMaxImpl(val activity: AppCompatActivity, var tag: String, conf: A
         val layoutId = when (tag) {
 //            MainConfig.DAIBOO_AD_HOME_NAT -> R.layout.layout_ad_max_home
 //            MainConfig.DAIBOO_AD_CLEAN_NAT -> R.layout.layout_admob_clean
-            DBConfig.DAIBOO_AD_RESULT_NV -> R.layout.layout_ad_max_result
+            DBConfig.DAIBOO_AD_RESULT_NV -> R.layout.ad_max_middle
 //            MainConfig.DAIBOO_AD_SCAN_NAT-> R.layout.layout_ad_max_scan
-            else -> R.layout.layout_ad_max_result
+            else -> R.layout.ad_max_middle
         }
         val binder: MaxNativeAdViewBinder = MaxNativeAdViewBinder.Builder(layoutId)
             .setTitleTextViewId(R.id.ad_head)

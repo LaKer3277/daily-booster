@@ -23,6 +23,7 @@ import com.daily.clean.booster.base.FiBRemoteUtil
 import com.daily.clean.booster.core.service.Heart
 import com.daily.clean.booster.ext.loggerApp
 import com.daily.clean.booster.ui.*
+import com.daily.clean.booster.ui.clean.JunkScanActivity
 import com.daily.clean.booster.utils.AudienceNetworkInitializeHelper
 import com.daily.clean.booster.utils.isADActivity
 import com.daily.clean.booster.utils.startCleanService

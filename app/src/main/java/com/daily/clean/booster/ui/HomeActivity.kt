@@ -33,9 +33,6 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
     override fun dailyData() {
         FiBLogEvent.page_home_show()
-    }
-
-    override fun dailyView() {
         initHome()
         initMenu()
     }
@@ -105,14 +102,10 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     private fun main() = this@HomeActivity
 
     private fun work_junkClean() {
-        DaiBooADUtil.load(DBConfig.DAIBOO_AD_RESULT_NV, main())
-        DaiBooADUtil.load(DBConfig.DAIBOO_AD_CLEAN_IV, main())
         main().goJunkCleanScanning(DBConfig.DAIBOO_ACTION_FROM_MAIN)
     }
 
     private fun work_boost(id: String) {
-        DaiBooADUtil.load(DBConfig.DAIBOO_AD_RESULT_NV, main())
-        DaiBooADUtil.load(DBConfig.DAIBOO_AD_CLEAN_IV, main())
         main().goBoosting(id, actionStr = DBConfig.DAIBOO_ACTION_FROM_MAIN)
     }
 

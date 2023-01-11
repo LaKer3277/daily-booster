@@ -16,7 +16,7 @@ import com.daily.clean.booster.entity.DaiBooAdEvent
 import com.daily.clean.booster.entity.AdConf
 import com.daily.clean.booster.utils.LogDB
 import com.daily.clean.booster.tba.HttpTBA
-import com.daily.clean.booster.ui.CleanResultActivity
+import com.daily.clean.booster.ui.clean.CleanResultActivity
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdLoader
 import com.google.android.gms.ads.AdRequest
@@ -114,7 +114,7 @@ class DaiBooNatImpl(var tag: String, conf: AdConf) : BaseLoader(conf) {
                 is CleanResultActivity -> showNativeAD(
                     activity,
                     activity.binding.resultNatAdLayout,
-                    R.layout.layout_admob_result
+                    R.layout.ad_admob_standard
                 )
 //                is JunkSelectActivity -> showNativeAD(activity, activity.scan_nat_ad_layout, R.layout.layout_admob_scan)
             }

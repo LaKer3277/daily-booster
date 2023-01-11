@@ -54,6 +54,10 @@ class AdmobNative(val adPos: AdPos, adCong: AdConf): BaseNav(adPos, adCong), OnP
         }
     }
 
+    override fun adLayoutId(): Int {
+        return R.layout.ad_admob_standard
+    }
+
     override fun show(activity: Activity, rootLayout: ViewGroup, inflateLayout: Int): Boolean {
         return showNativeAD(activity, rootLayout, inflateLayout)
     }

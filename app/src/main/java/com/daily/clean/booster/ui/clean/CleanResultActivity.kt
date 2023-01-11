@@ -1,16 +1,19 @@
-package com.daily.clean.booster.ui
+package com.daily.clean.booster.ui.clean
 
 import android.annotation.SuppressLint
 import android.graphics.Rect
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.daily.clean.booster.R
-import com.daily.clean.booster.ad.DaiBooADUtil
+import com.daily.clean.booster.ads.AdsListener
+import com.daily.clean.booster.ads.AdsLoader
+import com.daily.clean.booster.ads.conf.AdPos
+import com.daily.clean.booster.ads.model.BaseAd
+import com.daily.clean.booster.ads.model.BaseNav
 import com.daily.clean.booster.base.BaseActivity
 import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.base.FiBLogEvent
@@ -18,9 +21,6 @@ import com.daily.clean.booster.core.clean.CleanData
 import com.daily.clean.booster.databinding.ActivityResultBinding
 import com.daily.clean.booster.entity.DaiBooUIItem
 import com.daily.clean.booster.utils.*
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
 
@@ -58,6 +58,21 @@ class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
 
     override fun dailyLoad() {
         log()
+        loadNavAd()
+    }
+
+    private fun loadNavAd() {
+        binding.resultNatAdLayout.visibility = View.VISIBLE
+        AdsLoader.loadAd(this, AdPos.NavResult, object :AdsListener() {
+            override fun onLoaded(ad: BaseAd) {
+                if (isActivityPaused) {
+                    AdsLoader.add2Cache(AdPos.NavResult, ad)
+                    return
+                }
+                if (ad !is BaseNav) return
+                ad.show(this@CleanResultActivity, binding.resultNatAdLayout)
+            }
+        })
     }
 
     private fun log() {
@@ -84,7 +99,7 @@ class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
 
                 @SuppressLint("SetTextI18n", "StringFormatInvalid")
                 override fun convert(holder: BaseViewHolder, item: DaiBooUIItem) {
-//                    val root = holder.getView<LinearLayout>(R.id.item_root)
+                    //val root = holder.getView<LinearLayout>(R.id.item_root)
                     val name = holder.getView<TextView>(R.id.tv_item_name)
                     val des = holder.getView<TextView>(R.id.tv_item_info)
                     val icon = holder.getView<ImageView>(R.id.iv_item_icon)
@@ -112,11 +127,9 @@ class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
                             btn.text = getString(R.string.optimize_up)
                             des.text =
                                 (R.string.des_recom_battery.getString("${(3..CleanData.getAppSize()).random()}"))
-
                         }
                     }
                 }
-
             }
 
         binding.recycler.addItemDecoration(object : RecyclerView.ItemDecoration() {
@@ -163,57 +176,8 @@ class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
         }else{
             FiBLogEvent.page_return_click(workId)
         }
-        showBackAD {
-            goMain()
-            finish()
-        }
-
-    }
-
-    private fun showBackAD(next: () -> Unit) {
-        next()
-    }
-
-
-    private fun loadResultAD() {
-//        DaiBooADUtil.load(MainConfig.DAIBOO_AD_BACK_INT, this)
-        DaiBooADUtil.load(DBConfig.DAIBOO_AD_RESULT_NV, this, callLoading = {
-            jobLoadAD?.cancel()
-            jobLoadAD = lifecycleScope.launch {
-                delay(1000)
-                loadResultAD()
-            }
-        }) {
-            it?.let {
-                binding.resultNatAdLayout.visibility = View.VISIBLE
-                showAD()
-            }
-        }
-
-    }
-
-    var jobShowAD: Job? = null
-    var jobLoadAD: Job? = null
-    private fun showAD() {
-        if (isActivityPaused) return
-        jobShowAD?.cancel()
-        jobShowAD = lifecycleScope.launch {
-            delay(60)
-            DaiBooADUtil.showAD(DBConfig.DAIBOO_AD_RESULT_NV, this@CleanResultActivity) {
-                DaiBooADUtil.load(DBConfig.DAIBOO_AD_RESULT_NV, this@CleanResultActivity)
-            }
-        }
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-        loadResultAD()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        DaiBooADUtil.getShowingAD(DBConfig.DAIBOO_AD_RESULT_NV)?.destroy()
+        goMain()
+        finish()
     }
 
 

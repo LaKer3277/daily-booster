@@ -13,13 +13,10 @@ class WebActivity : BaseActivity<ActivityWebBinding>() {
         return ActivityWebBinding.inflate(layoutInflater)
     }
 
-    var url: String = ""
-    lateinit var webview: WebView
+    private var url: String = ""
+    private lateinit var webview: WebView
     override fun dailyData() {
         url = intent.getStringExtra(DBConfig.DAIBOO_KEY_WEB_URL) ?: ""
-    }
-
-    override fun dailyView() {
         webview = binding.webview
     }
 
