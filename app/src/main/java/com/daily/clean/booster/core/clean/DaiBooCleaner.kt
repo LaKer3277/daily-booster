@@ -45,11 +45,10 @@ class DaiBooCleaner(private val parent: File) {
                 }
 
                 formatScanCache()
-//                LogClnopt.dScan("scan---complete！！")
-                callback?.onScanStopped()
+                callback?.onScanFinished()
                 DaiBooMK.reSetScanTime()
             } catch (e: Exception) {
-                callback?.onScanStopped()
+                callback?.onScanFinished()
             }
 
         }
@@ -367,7 +366,7 @@ class DaiBooCleaner(private val parent: File) {
     interface OnScanCallback {
         fun onScanFiles(file: File?)
         fun onJunkFiles(file: File?)
-        fun onScanStopped()
+        fun onScanFinished()
     }
 }
 

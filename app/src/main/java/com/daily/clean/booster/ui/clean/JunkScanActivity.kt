@@ -36,17 +36,18 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
     }
 
     override fun dailyData() {
-        log()
-        binding.titleBack.setOnClickListener {
-            onBackPressed()
+        val tanId = intent.getStringExtra(DBConfig.DAIBOO_KEY_NOTY_ID)
+        if (intent?.action == DBConfig.DAIBOO_ACTION_FROM_POP_NOTY_POP) {
+            FiBLogEvent.up_all_page()
         }
+        FiBLogEvent.page_scan_show(DBConfig.DAIBOO_WORK_ID_CLEAN)
+        binding.titleBack.setOnClickListener { onBackPressed() }
 
         pathLiveData.observe(this) {
             binding.tvFilePath.text = it
         }
         //所有大小
         sizeLiveData.observe(this) { size ->
-
             if (size> 500.MB){
                 animBg.start()
             }
@@ -56,41 +57,9 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
                 binding.tvJunkSize.text = it.substring(0, it.length - 2)
                 binding.tvJunkSizeUnit.text = it.substring(it.length - 2, it.length)
             }
-
         }
-        sacnFileLiveData.observe(this) {
-            completeAnim()
-        }
-    }
-
-    private fun log() {
-//        if (intent?.action == DBConfig.DAIBOO_ACTION_FROM_NOTIFYTOOL) {
-//
-//        }
-        val tanId = intent.getStringExtra(DBConfig.DAIBOO_KEY_NOTY_ID)
-        if (intent?.action == DBConfig.DAIBOO_ACTION_FROM_POP_NOTY_POP) {
-            FiBLogEvent.up_all_page()
-        }
-
-        FiBLogEvent.page_scan_show(DBConfig.DAIBOO_WORK_ID_CLEAN)
-    }
-
-    private fun goClean() {
-        if (isActivityPaused) return
-        if (DaiBooMK.isNeedClean()) {
-//            showAdOrNext(MainConfig.DAIBOO_AD_SCAN_INT) {
-                goJunkCleanPage(selectSizeStr, intent?.action)
-//            }
-        } else {
-            binding.groupScan.visibility = View.GONE
-            binding.groupComplete.visibility = View.VISIBLE
-            animComplete.start()
-            animComplete.onEnd {
-                goCleanResult(DBConfig.DAIBOO_WORK_ID_CLEAN, extra = "0B", from = intent.action)
-                finish()
-            }
-        }
-
+        AdsLoader.preloadAd(this, AdPos.InsClean)
+        AdsLoader.preloadAd(this, AdPos.NavResult)
     }
 
     override fun dailyLoad() {
@@ -104,7 +73,6 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
         })
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
         daiBooCleaner?.release()
@@ -113,16 +81,13 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
 
     private var pathLiveData = MutableLiveData<String>()
     private var sizeLiveData = MutableLiveData<Long>()
-    private var sacnFileLiveData = MutableLiveData<Boolean>()
     private var isInScanning = true
 
     private var curTotalSize = 0L
     private var selectSizeStr = "0B"
-
     private var items = mutableListOf<ScanItemLayout>()
 
     private fun initView() {
-
         items.add(binding.itemAppCache)
         items.add(binding.itemApkfiles)
         items.add(binding.itemLogfiles)
@@ -133,7 +98,7 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
         //先查寻 app
         queryApps()
 
-        if (DaiBooMK.isNeedClean().not()) {
+        if (!DaiBooMK.isNeedClean()) {
             goClean()
             return
         }
@@ -152,7 +117,24 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
                 }
             }
         }
+    }
 
+    private fun goClean() {
+        if (isActivityPaused) {
+            finish()
+            return
+        }
+        if (DaiBooMK.isNeedClean()) {
+            goJunkCleanPage(selectSizeStr, intent?.action)
+        } else {
+            binding.groupScan.visibility = View.GONE
+            binding.groupComplete.visibility = View.VISIBLE
+            animComplete.start()
+            animComplete.onEnd {
+                goCleanResult(DBConfig.DAIBOO_WORK_ID_CLEAN, extra = "0B", from = intent.action)
+                finish()
+            }
+        }
     }
 
     private fun updateSelectedView() {
@@ -183,7 +165,8 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
         items.forEach { it.startLoad() }
     }
 
-    var daiBooCleaner: DaiBooCleaner? = null
+    private var scanJob: Job? = null
+    private var daiBooCleaner: DaiBooCleaner? = null
     private fun startScan() {
         isInScanning = true
         scanJob = lifecycleScope.launch(Dispatchers.IO) {
@@ -202,7 +185,6 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
                     //垃圾文件
                     override fun onJunkFiles(file: File?) {
                         try {
-//                            LogClnopt.dScan("${file?.absolutePath}")
                             curTotalSize += (file?.length() ?: 0L)
                             sizeLiveData.postValue(curTotalSize)
                         } catch (e: Exception) {
@@ -210,19 +192,17 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
                         }
                     }
 
-                    override fun onScanStopped() {
+                    override fun onScanFinished() {
                         val appCacheSize = CleanData.getAppCacheFileSize()
                         curTotalSize += appCacheSize
                         sizeLiveData.postValue(curTotalSize)
-                        sacnFileLiveData.postValue(true)
+                        completeAnim()
                     }
                 })
                 scanFiles()
             }
         }
     }
-
-    var scanJob: Job? = null
 
     private fun completeAnim() {
         lifecycleScope.launch {
@@ -258,12 +238,10 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
                 goClean()
             }
         }
-
     }
 
 
     private var progressTimer: ValueAnimator? = null
-
     private fun cancelProgressTimer() {
         progressTimer?.cancel()
         progressTimer = null
@@ -324,7 +302,6 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
                 LogDB.d("boost complete...")
             }
         }
-
     }
 
     private val animComplete by lazy {
@@ -347,7 +324,6 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
                 LogDB.d("boost complete...")
             }
         }
-
     }
 
 
@@ -363,10 +339,5 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
                 }
             }
         }
-    }
-
-    fun loadAD() {
-        AdsLoader.preloadAd(this, AdPos.InsClean)
-        AdsLoader.preloadAd(this, AdPos.NavResult)
     }
 }

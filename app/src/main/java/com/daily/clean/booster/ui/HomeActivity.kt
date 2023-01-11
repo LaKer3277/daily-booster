@@ -159,7 +159,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
                         curTotalSize += (file?.length() ?: 0L)
                     }
 
-                    override fun onScanStopped() {
+                    override fun onScanFinished() {
                         launch(Dispatchers.Main) {
                             lastScanTime = System.currentTimeMillis()
                             val all = curTotalSize + CleanData.getAppCacheFileSize() + CleanData.getRAMUseD()
