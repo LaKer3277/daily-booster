@@ -39,6 +39,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
+
+val isDebugMode = BuildConfig.DEBUG
+
 class App : Application(), Application.ActivityLifecycleCallbacks {
 
     companion object {
@@ -83,13 +86,12 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
     }
 
     private fun initAds() {
-        if (!DBConfig.DAIBOO_USE_AD) return
         MobileAds.initialize(this)
-        val testDeviceIds = listOf("", "", "")
+
+        val testDeviceIds = listOf("")
         val configuration = RequestConfiguration.Builder().setTestDeviceIds(testDeviceIds).build()
         MobileAds.setRequestConfiguration(configuration)
     }
-
 
     fun initMaxAD() {
         // Make sure to set the mediation provider value to "max" to ensure proper functionality
