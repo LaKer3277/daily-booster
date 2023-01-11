@@ -5,7 +5,6 @@ import android.animation.ValueAnimator
 import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.lifecycleScope
 import com.daily.clean.booster.App
-import com.daily.clean.booster.ad.DaiBooADUtil
 import com.daily.clean.booster.ads.AdsListener
 import com.daily.clean.booster.ads.AdsLoader
 import com.daily.clean.booster.ads.conf.AdPos
@@ -61,8 +60,8 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
                 openNextLogic.invoke()
             }
             delay(600L)
-            DaiBooADUtil.load(DBConfig.DAIBOO_AD_RESULT_NV, this@SplashActivity)
-            DaiBooADUtil.load(DBConfig.DAIBOO_AD_CLEAN_IV, this@SplashActivity)
+            AdsLoader.preloadAd(this@SplashActivity, AdPos.NavResult)
+            AdsLoader.preloadAd(this@SplashActivity, AdPos.InsClean)
         }
     }
 

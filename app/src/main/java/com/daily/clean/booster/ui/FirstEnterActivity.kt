@@ -3,15 +3,14 @@ package com.daily.clean.booster.ui
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import com.daily.clean.booster.R
-import com.daily.clean.booster.ad.DaiBooADUtil
+import com.daily.clean.booster.ads.AdsLoader
+import com.daily.clean.booster.ads.conf.AdPos
 import com.daily.clean.booster.base.BaseActivity
-import com.daily.clean.booster.base.FiBRemoteUtil
 import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.databinding.ActivityFirstBinding
 import com.daily.clean.booster.tba.HttpTBA
 import com.daily.clean.booster.utils.*
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -38,15 +37,14 @@ class FirstEnterActivity : BaseActivity<ActivityFirstBinding>() {
         }
         //点击
         binding.layStart.btnStart.setOnClickListener {
-            showAD { goScan() }
+            goScan()
         }
         HttpTBA.reportFirst()
-        initLocalData()
-    }
 
-    private fun initLocalData() {
-        FiBRemoteUtil.initFireBaseData {
-            loadADS()
+        lifecycleScope.launch {
+            delay(1000)
+            AdsLoader.preloadAd(this@FirstEnterActivity, AdPos.NavResult)
+            AdsLoader.preloadAd(this@FirstEnterActivity, AdPos.InsClean)
         }
     }
 
@@ -105,39 +103,6 @@ class FirstEnterActivity : BaseActivity<ActivityFirstBinding>() {
         }
     }
 
-
-    override fun onDestroy() {
-        super.onDestroy()
-        jobLoadOpen?.cancel()
-    }
-
-    var jobLoadOpen: Job? = null
-    var loadTimes = 0
-    private fun loadADS() {
-        loadTimes = 0
-
-        lifecycleScope.launch {
-            DaiBooADUtil.load(DBConfig.DAIBOO_AD_OPEN, this@FirstEnterActivity)
-            delay(2000)
-            DaiBooADUtil.load(DBConfig.DAIBOO_AD_RESULT_NV, this@FirstEnterActivity)
-            DaiBooADUtil.load(DBConfig.DAIBOO_AD_CLEAN_IV, this@FirstEnterActivity)
-        }
-    }
-
-    var isShowedAD = false
-    private fun showAD(next: () -> Unit) {
-        lifecycleScope.launch {
-            delay(100)
-            DaiBooADUtil.showAD(DBConfig.DAIBOO_AD_OPEN, this@FirstEnterActivity) {
-                DaiBooADUtil.load(DBConfig.DAIBOO_AD_OPEN, this@FirstEnterActivity)
-                isShowedAD = it
-                next.invoke()
-            }
-        }
-    }
-
-
-    override fun onBackPressed() {
-    }
+    override fun onBackPressed() {}
 
 }

@@ -25,9 +25,6 @@ class JunkCleanActivity : BaseActivity<ActivityCleanBinding>() {
     }
 
     override fun dailyData() {
-    }
-
-    override fun dailyView() {
         binding.titleText.text = getString(R.string.junk_clean)
         binding.titleBack.setOnClickListener {
             finish()

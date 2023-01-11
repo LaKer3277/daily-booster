@@ -34,17 +34,13 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
         return ActivityBoostBinding.inflate(layoutInflater)
     }
 
+    private var currentStatus = 0
     override fun dailyData() {
         workId = intent.getStringExtra(DBConfig.DAIBOO_KEY_WORK_ID) ?: DBConfig.DAIBOO_WORK_ID_BOOSTER
         popId = intent.getStringExtra(DBConfig.DAIBOO_KEY_NOTY_ID)
         isFirst = intent.getBooleanExtra(DBConfig.DAIBOO_KEY_IS_FIRST, false)
         queryApps()
         fbLog()
-    }
-
-
-    var currentStatus = 0
-    override fun dailyView() {
         binding.titleBack.setOnClickListener {
             onBackPressed()
         }

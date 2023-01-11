@@ -34,13 +34,8 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
         return ActivityJunkScanBinding.inflate(layoutInflater)
     }
 
-
     override fun dailyData() {
         log()
-    }
-
-    override fun dailyView() {
-
         binding.titleBack.setOnClickListener {
             onBackPressed()
         }
@@ -65,7 +60,6 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
         sacnFileLiveData.observe(this) {
             completeAnim()
         }
-
     }
 
     private fun log() {

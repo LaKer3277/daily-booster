@@ -35,10 +35,6 @@ class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
         extraStr = intent.getStringExtra(DBConfig.DAIBOO_KEY_CLEAN_SIZE) ?: "0B"
         workId = intent.getStringExtra(DBConfig.DAIBOO_KEY_WORK_ID) ?: DBConfig.DAIBOO_WORK_ID_BOOSTER
         isFirst = intent.getBooleanExtra(DBConfig.DAIBOO_KEY_IS_FIRST, false)
-    }
-
-    @SuppressLint("StringFormatMatches")
-    override fun dailyView() {
         binding.titleText.text = workId.getTitleText()
         binding.titleBack.setOnClickListener {
             onBackPressed()
