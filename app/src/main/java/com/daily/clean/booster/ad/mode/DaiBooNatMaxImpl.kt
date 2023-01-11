@@ -1,4 +1,4 @@
-package com.files.document.ad
+package com.daily.clean.booster.ad.mode
 
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -9,28 +9,28 @@ import com.applovin.mediation.nativeAds.MaxNativeAdLoader
 import com.applovin.mediation.nativeAds.MaxNativeAdView
 import com.applovin.mediation.nativeAds.MaxNativeAdViewBinder
 import com.daily.clean.booster.R
-import com.daily.clean.booster.ad.ClnoptADCallBack
-import com.daily.clean.booster.ad.DaiBooBaseAD
+import com.daily.clean.booster.ad.base.IAdShowCallBack
+import com.daily.clean.booster.ad.base.BaseLoader
 import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.entity.DaiBooAdEvent
-import com.daily.clean.booster.entity.DaiBooAdItemBean
+import com.daily.clean.booster.entity.AdConf
 import com.daily.clean.booster.tba.HttpTBA
 import com.daily.clean.booster.utils.LogDB
 import java.util.*
 
 
-class DaiBooNatMaxImpl(val activity: AppCompatActivity, var tag: String, itemBean: DaiBooAdItemBean) : DaiBooBaseAD(itemBean) {
+class DaiBooNatMaxImpl(val activity: AppCompatActivity, var tag: String, conf: AdConf) : BaseLoader(conf) {
 
 
-    var ADCallBack: ClnoptADCallBack? = null
+    var ADCallBack: IAdShowCallBack? = null
 
     private var nativeAdLoader: MaxNativeAdLoader? = null
     private var mAd: MaxAd? = null
     private var mNativeAdView: MaxNativeAdView? = null
 
 
-    override fun load(success: (DaiBooBaseAD) -> Unit, failed: () -> Unit) {
+    override fun load(success: (BaseLoader) -> Unit, failed: () -> Unit) {
 
         LogDB.dAD("--$tag-MAX---load---start--$adItem")
 
@@ -85,7 +85,7 @@ class DaiBooNatMaxImpl(val activity: AppCompatActivity, var tag: String, itemBea
     /**
      * Shows the ad if one isn't already showing.
      */
-    override fun show(activity: AppCompatActivity, callback: ClnoptADCallBack?) {
+    override fun show(activity: AppCompatActivity, callback: IAdShowCallBack?) {
         this.ADCallBack = callback
         LogDB.dAD("--$tag-MAX---show---start--")
         when (activity) {

@@ -1,10 +1,12 @@
-package com.daily.clean.booster.ad
+package com.daily.clean.booster.ad.mode
 
 import androidx.appcompat.app.AppCompatActivity
 import com.daily.clean.booster.App
+import com.daily.clean.booster.ad.base.IAdShowCallBack
+import com.daily.clean.booster.ad.base.BaseLoader
 import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.entity.DaiBooAdEvent
-import com.daily.clean.booster.entity.DaiBooAdItemBean
+import com.daily.clean.booster.entity.AdConf
 import com.daily.clean.booster.tba.HttpTBA
 import com.daily.clean.booster.utils.LogDB
 import com.google.android.gms.ads.AdError
@@ -17,14 +19,14 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import java.util.*
 
 
-class DaiBooOpInImpl(var tag: String, itemBean: DaiBooAdItemBean) : DaiBooBaseAD(itemBean) {
+class DaiBooOpInImpl(var tag: String, conf: AdConf) : BaseLoader(conf) {
     //    var mAd_inter: InterstitialAd? = null
 //    var mAd_open: AppOpenAd? = null
     var mAd: Any? = null
 
     private fun getAdRequest() = AdRequest.Builder().build();
 
-    override fun load(success: (DaiBooBaseAD) -> Unit, failed: () -> Unit) {
+    override fun load(success: (BaseLoader) -> Unit, failed: () -> Unit) {
         LogDB.dAD("--$tag----load---start--$adItem")
 
         adItem?.let {
@@ -102,7 +104,7 @@ class DaiBooOpInImpl(var tag: String, itemBean: DaiBooAdItemBean) : DaiBooBaseAD
     /**
      * Shows the ad if one isn't already showing.
      */
-    override fun show(activity: AppCompatActivity, callback: ClnoptADCallBack?) {
+    override fun show(activity: AppCompatActivity, callback: IAdShowCallBack?) {
         LogDB.dAD("--$tag----show---start--")
         if (isAdAvailable()) {
             val fullScreenContentCallback: FullScreenContentCallback =

@@ -2,14 +2,19 @@ package com.daily.clean.booster.ad
 
 
 import com.daily.clean.booster.App
+import com.daily.clean.booster.ad.base.IAdShowCallBack
+import com.daily.clean.booster.ad.base.BaseLoader
+import com.daily.clean.booster.ad.mode.DaiBooNatImpl
+import com.daily.clean.booster.ad.mode.DaiBooOpInImpl
+import com.daily.clean.booster.ad.mode.DaiBooOpenMaxImpl
 import com.daily.clean.booster.base.BaseActivity
 import com.daily.clean.booster.base.DBConfig
 import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.entity.DaiBooAdAllBean
-import com.daily.clean.booster.entity.DaiBooAdItemBean
+import com.daily.clean.booster.entity.AdConf
 import com.daily.clean.booster.utils.DaiBooMK
 import com.daily.clean.booster.utils.LogDB
-import com.files.document.ad.DaiBooNatMaxImpl
+import com.daily.clean.booster.ad.mode.DaiBooNatMaxImpl
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -54,7 +59,7 @@ object DaiBooADUtil {
         )
     }
 
-    private val cache: MutableMap<String, MutableList<DaiBooBaseAD>> by lazy {
+    private val cache: MutableMap<String, MutableList<BaseLoader>> by lazy {
         mutableMapOf(
             Pair(DBConfig.DAIBOO_AD_OPEN, mutableListOf()),
             Pair(DBConfig.DAIBOO_AD_CLEAN_IV, mutableListOf()),
@@ -62,7 +67,7 @@ object DaiBooADUtil {
         )
     }
 
-    private val showingAD: MutableMap<String, DaiBooBaseAD?> by lazy {
+    private val showingAD: MutableMap<String, BaseLoader?> by lazy {
         mutableMapOf(
             Pair(DBConfig.DAIBOO_AD_OPEN, null),
             Pair(DBConfig.DAIBOO_AD_CLEAN_IV, null),
@@ -70,12 +75,12 @@ object DaiBooADUtil {
         )
     }
 
-    fun getShowingAD(key: String): DaiBooBaseAD? {
+    fun getShowingAD(key: String): BaseLoader? {
         return showingAD[key]
     }
 
 
-    fun getlistByKey(key: String): MutableList<DaiBooAdItemBean>? {
+    fun getlistByKey(key: String): MutableList<AdConf>? {
         return when (key) {
             DBConfig.DAIBOO_AD_OPEN -> baseAD?.db_Open
             DBConfig.DAIBOO_AD_RESULT_NV -> baseAD?.result_NV
@@ -86,7 +91,7 @@ object DaiBooADUtil {
         }
     }
 
-    private fun getCacheAD(key: String): DaiBooBaseAD? {
+    private fun getCacheAD(key: String): BaseLoader? {
         var list = cache[key]
         list?.let {
             var iter = list.iterator()
@@ -112,7 +117,7 @@ object DaiBooADUtil {
         activity: BaseActivity<*>,
         callLoading: () -> Unit = {},
         callEnd: () -> Unit = {},
-        callBack: (DaiBooBaseAD) -> Unit = {}
+        callBack: (BaseLoader) -> Unit = {}
     ) {
 
         if (!isInit) {
@@ -196,9 +201,9 @@ object DaiBooADUtil {
         activity: BaseActivity<*>,
         key: String,
         index: Int,
-        ads: MutableList<DaiBooAdItemBean>?,
+        ads: MutableList<AdConf>?,
         startTime: Long = 0,
-        callBack: (DaiBooBaseAD) -> Unit = {},
+        callBack: (BaseLoader) -> Unit = {},
         callEnd: () -> Unit = {},
     ) {
 
@@ -217,7 +222,7 @@ object DaiBooADUtil {
             callEnd()
         } else {
 
-            val ad: DaiBooAdItemBean = ads[index]
+            val ad: AdConf = ads[index]
             if (ad == null) {
                 //失败，请求下一个
                 loadAD(activity, key, index + 1, ads, startTime, callBack, callEnd)
@@ -288,7 +293,7 @@ object DaiBooADUtil {
 
             FiBLogEvent.ad_chance(key)
 
-            baseAd.show(activity, object : ClnoptADCallBack {
+            baseAd.show(activity, object : IAdShowCallBack {
 
                 override fun onAdShowed(result: Boolean) {
                     if (result) {
@@ -307,16 +312,16 @@ object DaiBooADUtil {
 
                 }
 
-                override fun onAdDismiss(baseAd: DaiBooBaseAD?) {
-                    if (baseAd?.adItem?.isOpenOrInter() == true) {
+                override fun onAdDismiss(baseLoader: BaseLoader?) {
+                    if (baseLoader?.adItem?.isOpenOrInter() == true) {
                         //显示之后删除缓存
-                        cache[key]?.remove(baseAd)
+                        cache[key]?.remove(baseLoader)
                         LogDB.dAD("--$key----show---remove cache--${cache[key]?.size}")
                         block(true)
                     }
                 }
 
-                override fun onAdClicked(baseAd: DaiBooBaseAD?) {
+                override fun onAdClicked(baseLoader: BaseLoader?) {
                     addClickTimes()
                 }
 

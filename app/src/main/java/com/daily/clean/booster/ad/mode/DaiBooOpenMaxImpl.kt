@@ -1,26 +1,28 @@
-package com.daily.clean.booster.ad
+package com.daily.clean.booster.ad.mode
 
 import androidx.appcompat.app.AppCompatActivity
 import com.applovin.mediation.MaxAd
 import com.applovin.mediation.MaxAdListener
 import com.applovin.mediation.MaxError
 import com.applovin.mediation.ads.MaxInterstitialAd
+import com.daily.clean.booster.ad.base.IAdShowCallBack
+import com.daily.clean.booster.ad.base.BaseLoader
 import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.entity.DaiBooAdEvent
-import com.daily.clean.booster.entity.DaiBooAdItemBean
+import com.daily.clean.booster.entity.AdConf
 import com.daily.clean.booster.tba.HttpTBA
 import com.daily.clean.booster.utils.LogDB
 import java.util.*
 
-class DaiBooOpenMaxImpl(var activity: AppCompatActivity, var tag: String, itemBean: DaiBooAdItemBean) : DaiBooBaseAD(itemBean) {
+class DaiBooOpenMaxImpl(var activity: AppCompatActivity, var tag: String, conf: AdConf) : BaseLoader(conf) {
 
     private var retryAttempt = 0.0
     private lateinit var interstitialAd: MaxInterstitialAd
     var mAd: MaxAd? = null
-    var mAdShowCallBack: ClnoptADCallBack? = null
+    var mAdShowCallBack: IAdShowCallBack? = null
 
     //
-    override fun show(activity: AppCompatActivity, callback: ClnoptADCallBack?) {
+    override fun show(activity: AppCompatActivity, callback: IAdShowCallBack?) {
         if (isAdAvailable().not()) return
         mAdShowCallBack = callback
         interstitialAd?.run {
@@ -28,7 +30,7 @@ class DaiBooOpenMaxImpl(var activity: AppCompatActivity, var tag: String, itemBe
         }
     }
 
-    override fun load(success: (DaiBooBaseAD) -> Unit, failed: () -> Unit) {
+    override fun load(success: (BaseLoader) -> Unit, failed: () -> Unit) {
         LogDB.dAD("--$tag-MAX---load---start--$adItem")
         interstitialAd = MaxInterstitialAd(adItem.Id, activity)
         interstitialAd?.setRevenueListener {

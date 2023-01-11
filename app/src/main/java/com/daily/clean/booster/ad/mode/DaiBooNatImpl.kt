@@ -1,4 +1,4 @@
-package com.daily.clean.booster.ad
+package com.daily.clean.booster.ad.mode
 
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
@@ -8,10 +8,12 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.daily.clean.booster.App
 import com.daily.clean.booster.R
+import com.daily.clean.booster.ad.base.IAdShowCallBack
+import com.daily.clean.booster.ad.base.BaseLoader
 import com.daily.clean.booster.base.BaseActivity
 import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.entity.DaiBooAdEvent
-import com.daily.clean.booster.entity.DaiBooAdItemBean
+import com.daily.clean.booster.entity.AdConf
 import com.daily.clean.booster.utils.LogDB
 import com.daily.clean.booster.tba.HttpTBA
 import com.daily.clean.booster.ui.CleanResultActivity
@@ -27,16 +29,16 @@ import com.google.android.gms.ads.nativead.NativeAdView
 import java.util.*
 
 
-class DaiBooNatImpl(var tag: String, itemBean: DaiBooAdItemBean) : DaiBooBaseAD(itemBean) {
+class DaiBooNatImpl(var tag: String, conf: AdConf) : BaseLoader(conf) {
 
     var mAd: NativeAd? = null
 
-    var ADCallBack: ClnoptADCallBack? = null
+    var ADCallBack: IAdShowCallBack? = null
 
 
     private fun getAdRequest() = AdRequest.Builder().build()
 
-    override fun load(success: (DaiBooBaseAD) -> Unit, failed: () -> Unit) {
+    override fun load(success: (BaseLoader) -> Unit, failed: () -> Unit) {
 
         LogDB.dAD("--$tag----load---start--$adItem")
 
@@ -97,7 +99,7 @@ class DaiBooNatImpl(var tag: String, itemBean: DaiBooAdItemBean) : DaiBooBaseAD(
     /**
      * Shows the ad if one isn't already showing.
      */
-    override fun show(activity: AppCompatActivity, callback: ClnoptADCallBack?) {
+    override fun show(activity: AppCompatActivity, callback: IAdShowCallBack?) {
         this.ADCallBack = callback
         LogDB.dAD("--$tag----show---start--")
 

@@ -22,12 +22,12 @@ data class DaiBooIpBean(
 
 
 data class DaiBooAdAllBean(
-    val db_Open: MutableList<DaiBooAdItemBean>,
-    val result_NV: MutableList<DaiBooAdItemBean>,
-    val clean_IV: MutableList<DaiBooAdItemBean>,
+    val db_Open: MutableList<AdConf>,
+    val result_NV: MutableList<AdConf>,
+    val clean_IV: MutableList<AdConf>,
 )
 
-data class DaiBooAdItemBean(
+data class AdConf(
     val Network: String,//平台 Admob 和 Max
     val Hierarchy: Int,//优先级
     val Form: String,//类型
@@ -58,7 +58,7 @@ data class DaiBooAdEvent(
     val daiboo_ad_network: String = "admob",
     var daiboo_impression: Int = 0,
     var daiboo_load_on: Int = 0,
-    val daiboo_ad_item: DaiBooAdItemBean,
+    val daiboo_ad_item: AdConf,
     var daiboo_value_micros: Long = 0L,
     var daiboo_precision_type: String = ""
 )
