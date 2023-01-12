@@ -40,10 +40,11 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
 
     override fun dailyData() {
         val tanId = intent.getStringExtra(Noty_KEY_SOURCE)
-        if (intent?.action == DB_ACTION_FROM_POP_NOTY_POP) {
+        if (intent?.action == DB_ACTION_FROM_POP_NOTY) {
             FiBLogEvent.up_all_page()
         }
         FiBLogEvent.page_scan_show(NotyWorkClean)
+
         binding.titleBack.setOnClickListener { onBackPressed() }
 
         pathLiveData.observe(this) {

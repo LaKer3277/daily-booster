@@ -12,9 +12,8 @@ const val DB_USE_FB = true  //使用Firebase 功能
 const val DB_USE_LOG_DEBUG: Boolean = false//日志
 
 
-//    remote 配置 广告
+//remote 配置 广告
 const val DB_REMOTE_NAME_AD = "db_ad_config"
-
 //remote配置 弹窗
 const val DB_REMOTE_NAME_POP = "booster_up"
 
@@ -33,15 +32,16 @@ const val DB_KEY_IS_FIRST = "${DB_NAME}_is_first"
 const val DB_KEY_FROM = "${DB_NAME}_from"
 const val DB_KEY_WEB_URL = "${DB_NAME}_weburl"
 
-const val DB_ACTION_FROM_POP_NOTY_POP = "${DB_NAME}_from_pop"
-const val DB_ACTION_FROM_POP_NOTY_POP_EXIT = "${DB_NAME}_from_pop_exit"
-const val DB_ACTION_FROM_POP_NOTY_POP_FULLSCREEN = "${DB_NAME}_from_pop_fullscreen"
-const val DB_ACTION_FROM_NOTIFYTOOL = "${DB_NAME}_from_notify"
-const val DB_ACTION_FROM_NOTIFY_NM = "${DB_NAME}_from_notify_manager"
-const val DB_ACTION_FROM_MAIN = "${DB_NAME}_from_main"
-const val DB_ACTION_FROM_SPLASH = "${DB_NAME}_from_splash"
-const val DB_ACTION_FROM_RESUTL = "${DB_NAME}_from_result"
-const val DB_ACTION_FROM_FIRST = "${DB_NAME}_from_first"
+const val DB_ACTION_FROM_POP_NOTY = "${DB_NAME}_from_pop"
+const val DB_ACTION_FROM_POP_NOTY_EXIT = "${DB_NAME}_from_pop_exit"
+const val DB_ACTION_FROM_POP_NOTY_FULLSCREEN = "${DB_NAME}_from_pop_fullscreen"
+const val DB_ACTION_FROM_NOTY_RESIDENT = "${DB_NAME}_from_notify"
+
+
+const val DB_PAGE_FROM_MAIN = "${DB_NAME}_from_main"
+const val DB_PAGE_FROM_SPLASH = "${DB_NAME}_from_splash"
+const val DB_PAGE_FROM_RESULT = "${DB_NAME}_from_result"
+const val DB_PAGE_FROM_FIRST = "${DB_NAME}_from_first"
 
 
 const val DB_KEY_CLEAN_SIZE = "${DB_NAME}_clean_size"

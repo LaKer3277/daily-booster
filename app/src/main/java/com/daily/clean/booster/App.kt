@@ -134,8 +134,7 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
             when (activity) {
                 is SplashActivity, is AdActivity, is AppLovinFullscreenActivity, is NotificationActivity -> {}
                 else -> {
-                    if (activity.intent?.action == DB_ACTION_FROM_NOTIFY_NM) return
-                    if (activity.intent?.action == DB_ACTION_FROM_POP_NOTY_POP) return
+                    if (activity.intent?.action == DB_ACTION_FROM_POP_NOTY) return
                     if (isScreenOn().not()) return
                     ActivityUtils.startActivity(SplashActivity::class.java)
                 }

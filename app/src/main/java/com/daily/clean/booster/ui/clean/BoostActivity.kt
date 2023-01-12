@@ -41,12 +41,12 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
     }
 
     private var workingMode = NotyWorkBooster
-    private var popId: String? = null
+    private var popSource: String? = null
     private var isFirst = false
 
     override fun dailyData() {
         workingMode = intent.getStringExtra(Noty_KEY_WORK) ?: NotyWorkBooster
-        popId = intent.getStringExtra(Noty_KEY_SOURCE)
+        popSource = intent.getStringExtra(Noty_KEY_SOURCE)
         isFirst = intent.getBooleanExtra(DB_KEY_IS_FIRST, false)
 
         queryApps()
@@ -206,7 +206,7 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
 
     private fun fbLog() {
         val tanId = intent.getStringExtra(Noty_KEY_SOURCE)
-        if (intent?.action == DB_ACTION_FROM_POP_NOTY_POP) {
+        if (intent?.action == DB_ACTION_FROM_POP_NOTY) {
             FiBLogEvent.up_all_page()
         }
 

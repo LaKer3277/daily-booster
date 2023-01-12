@@ -10,10 +10,10 @@ class NotifyToolReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         val workID = intent?.getStringExtra(Noty_KEY_WORK) ?: NotyWorkBooster
         val tanId = intent?.getStringExtra(Noty_KEY_SOURCE) ?: ""
-        if (DB_ACTION_FROM_POP_NOTY_POP_EXIT == intent?.action ?: "") {
+        if (DB_ACTION_FROM_POP_NOTY_EXIT == intent?.action ?: "") {
             NotifyManager.cancelAlertNotification()
         }
-        if (DB_ACTION_FROM_POP_NOTY_POP_FULLSCREEN == intent?.action ) {
+        if (DB_ACTION_FROM_POP_NOTY_FULLSCREEN == intent?.action ) {
         }
     }
 

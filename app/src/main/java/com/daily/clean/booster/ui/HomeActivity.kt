@@ -102,11 +102,11 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     private fun main() = this@HomeActivity
 
     private fun work_junkClean() {
-        main().goJunkCleanScanning(DB_ACTION_FROM_MAIN)
+        main().goJunkCleanScanning(DB_PAGE_FROM_MAIN)
     }
 
     private fun work_boost(id: String) {
-        main().goBoosting(id, actionStr = DB_ACTION_FROM_MAIN)
+        main().goBoosting(id, actionStr = DB_PAGE_FROM_MAIN)
     }
 
 

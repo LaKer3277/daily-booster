@@ -33,10 +33,12 @@ class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
     private var extraStr = "0B"
     private var workId = NotyWorkBooster
     private var isFirst = false
+
     override fun dailyData() {
         extraStr = intent.getStringExtra(DB_KEY_CLEAN_SIZE) ?: "0B"
         workId = intent.getStringExtra(Noty_KEY_WORK) ?: NotyWorkBooster
         isFirst = intent.getBooleanExtra(DB_KEY_IS_FIRST, false)
+
         binding.titleText.text = workId.getTitleText()
         binding.titleBack.setOnClickListener {
             onBackPressed()
@@ -77,7 +79,7 @@ class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
     }
 
     private fun log() {
-        if (DB_ACTION_FROM_POP_NOTY_POP == intent?.action) {
+        if (DB_ACTION_FROM_POP_NOTY == intent?.action) {
             FiBLogEvent.up_all_relust()
         }
         if (isFirst) {

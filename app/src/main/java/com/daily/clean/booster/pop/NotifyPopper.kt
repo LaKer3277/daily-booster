@@ -105,7 +105,7 @@ open class NotifyPopper {
                 Intent(App.ins, NotifyToolReceiver::class.java).apply {
                     putExtra(Noty_KEY_WORK, workID)
                     putExtra(Noty_KEY_SOURCE, tanId)
-                    action = DB_ACTION_FROM_POP_NOTY_POP_FULLSCREEN
+                    action = DB_ACTION_FROM_POP_NOTY_FULLSCREEN
                 }, validateImmutableFlags
             )
 
@@ -115,7 +115,7 @@ open class NotifyPopper {
                 Intent(App.ins, NotificationActivity::class.java).apply {
                     putExtra(Noty_KEY_WORK, workID)
                     putExtra(Noty_KEY_SOURCE, tanId)
-                    action = DB_ACTION_FROM_POP_NOTY_POP_FULLSCREEN
+                    action = DB_ACTION_FROM_POP_NOTY_FULLSCREEN
                 }, validateImmutableFlags
             )
 
@@ -129,7 +129,7 @@ open class NotifyPopper {
         val intent = Intent(App.ins, NotifyToolReceiver::class.java).apply {
             putExtra(Noty_KEY_WORK, workID)
             putExtra(Noty_KEY_SOURCE, tanId)
-            action = DB_ACTION_FROM_POP_NOTY_POP_EXIT
+            action = DB_ACTION_FROM_POP_NOTY_EXIT
         }
         return PendingIntent.getBroadcast(App.ins, tanId.hashCode() + 3, intent, validateImmutableFlags)
 
@@ -142,7 +142,7 @@ open class NotifyPopper {
             Intent(App.ins, SplashActivity::class.java).apply {
                 putExtra(Noty_KEY_WORK, workID)
                 putExtra(Noty_KEY_SOURCE, sourceId)
-                action = (DB_ACTION_FROM_POP_NOTY_POP)
+                action = (DB_ACTION_FROM_POP_NOTY)
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             },
             validateImmutableFlags

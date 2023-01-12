@@ -2,6 +2,7 @@ package com.daily.clean.booster.ui
 
 import android.animation.Animator
 import android.animation.ValueAnimator
+import android.content.Intent
 import androidx.lifecycle.lifecycleScope
 import com.daily.clean.booster.ads.AdsListener
 import com.daily.clean.booster.ads.AdsLoader
@@ -26,19 +27,34 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         return ActivitySplashBinding.inflate(layoutInflater)
     }
 
-    override fun dailyData() {
-        val tanId = intent.getStringExtra(Noty_KEY_SOURCE) ?: ""
-        val workID = intent.getStringExtra(Noty_KEY_WORK) ?: ""
-        val action = intent?.action ?: ""
-        if (action == DB_ACTION_FROM_POP_NOTY_POP ) {
-            NotifyManager.cancelAlertNotification()
-            FiBLogEvent.pop_log(tanId, 2)
-            FiBLogEvent.up_all_start()
-        }
+    private var tanId: String = ""
+    private var workID = ""
+    private var intentAction = ""
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        dispatchIntent(intent)
+    }
 
-        if (action == DB_ACTION_FROM_NOTIFYTOOL ){
-            FiBLogEvent.notifi_click(workID)
+    private fun dispatchIntent(intent: Intent?) {
+        tanId = intent?.getStringExtra(Noty_KEY_SOURCE) ?: ""
+        workID = intent?.getStringExtra(Noty_KEY_WORK) ?: ""
+        intentAction = intent?.action ?: ""
+        when (intentAction) {
+            DB_ACTION_FROM_POP_NOTY -> {
+                NotifyManager.cancelAlertNotification()
+                FiBLogEvent.pop_log(tanId, 2)
+                FiBLogEvent.up_all_start()
+            }
+
+            DB_ACTION_FROM_NOTY_RESIDENT -> {
+                FiBLogEvent.notifi_click(workID)
+            }
         }
+    }
+
+    override fun dailyData() {
+        dispatchIntent(intent)
+
         FiBLogEvent.start_page()
         FiBLogEvent.user_rent()
         HttpTBA.reportFirst()
@@ -134,20 +150,20 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     }
 
     private fun goNextByIntent() {
-        val workId = intent?.getStringExtra(Noty_KEY_WORK) ?: ""
+        val workId = workID
         when (workId) {
             NotyWorkClean -> {
-                goJunkCleanScanning(intent.action)
+                goJunkCleanScanning(intentAction)
             }
 
             NotyWorkBooster,
             NotyWorkCpu,
             NotyWorkBattery -> {
-                goBoosting(work_id = workId, actionStr = intent.action)
+                goBoosting(work_id = workId, actionStr = intentAction)
             }
 
             else -> {
-                goMain(DB_ACTION_FROM_SPLASH)
+                goMain(DB_PAGE_FROM_SPLASH)
             }
         }
 

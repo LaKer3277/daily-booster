@@ -9,7 +9,7 @@ import java.util.*
 
 object DaiBooMK {
 
-    val mmkv: MMKV =
+    private val mmkv: MMKV =
         MMKV.mmkvWithID(DB_NAME + "MMKV", MMKV.MULTI_PROCESS_MODE)
 
     private const val MK_IS_FIRST_START = "${DB_NAME}is_has_start"

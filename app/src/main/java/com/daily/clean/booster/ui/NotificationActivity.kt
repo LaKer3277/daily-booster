@@ -168,7 +168,7 @@ class NotificationActivity : BaseActivity<NotificationBigActBinding>() {
         startActivity(Intent(App.ins, SplashActivity::class.java).apply {
             putExtra(Noty_KEY_WORK, workID)
             putExtra(Noty_KEY_SOURCE, tanID)
-            action = (DB_ACTION_FROM_POP_NOTY_POP)
+            action = (DB_ACTION_FROM_POP_NOTY)
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         })
         finish()

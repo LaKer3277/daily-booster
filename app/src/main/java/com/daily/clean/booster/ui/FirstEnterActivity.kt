@@ -72,7 +72,7 @@ class FirstEnterActivity : BaseActivity<ActivityFirstBinding>() {
         DaiBooMK.saveFirstStart()
 
         binding.layInfo.tvSkip.setOnClickListener {
-            goMain(DB_ACTION_FROM_FIRST)
+            goMain(DB_PAGE_FROM_FIRST)
             finish()
         }
 
@@ -99,7 +99,7 @@ class FirstEnterActivity : BaseActivity<ActivityFirstBinding>() {
                 usedPerStr
             ))
             binding.layInfo.tvBoostNow.setOnClickListener {
-                goBoosting(NotyWorkBooster, isFirst = true, actionStr = DB_ACTION_FROM_FIRST)
+                goBoosting(NotyWorkBooster, isFirst = true, actionStr = DB_PAGE_FROM_FIRST)
                 finish()
             }
         }

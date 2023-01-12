@@ -48,7 +48,7 @@ object NotifyTools {
         val newIntent =
             Intent(App.ins, SplashActivity::class.java).apply {
                         putExtra(Noty_KEY_WORK, workID)
-                        action = DB_ACTION_FROM_NOTIFYTOOL
+                        action = DB_ACTION_FROM_NOTY_RESIDENT
                     }
 
         val resultPendingIntent: PendingIntent? = TaskStackBuilder.create(App.ins).run {
