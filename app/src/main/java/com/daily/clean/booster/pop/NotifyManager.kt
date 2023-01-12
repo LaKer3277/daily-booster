@@ -2,6 +2,7 @@ package com.daily.clean.booster.pop
 
 import com.daily.clean.booster.appIns
 import com.daily.clean.booster.base.FiBLogEvent
+import com.daily.clean.booster.datas.RemoteConfig
 import com.daily.clean.booster.entity.DaiBooPopItemBean
 import com.daily.clean.booster.ext.loggerNotify
 import com.daily.clean.booster.utils.DaiBooMK
@@ -13,7 +14,7 @@ object NotifyManager: NotifyPopper() {
     var usingActivity = false
 
     fun getPopItem(sourceId: String): DaiBooPopItemBean? {
-        FiBRemoteUtil.daiBooPopBean?.let {
+        RemoteConfig.daiBooPopBean?.let {
             return when (sourceId) {
                 NotySourceTime -> it.booster_time
                 NotySourceUnlock -> it.booster_unl
@@ -52,10 +53,10 @@ object NotifyManager: NotifyPopper() {
     private fun isCanPopConfig(tanId: String, item: DaiBooPopItemBean?): Boolean {
         if (appIns.isAtForeground()) return false
 
-        usingActivity = 1 == FiBRemoteUtil.daiBooPopBean?.booster_avti
+        usingActivity = 1 == RemoteConfig.daiBooPopBean?.booster_avti
         if (item == null) return false
         //是否开启体外弹窗
-        if (1 != FiBRemoteUtil.daiBooPopBean?.up_pop) {
+        if (1 != RemoteConfig.daiBooPopBean?.up_pop) {
             loggerNotify("allConfig Not Enable")
             return false
         }

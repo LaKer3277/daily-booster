@@ -1,5 +1,6 @@
 package com.daily.clean.booster.tba
 
+import android.os.Build
 import android.webkit.WebSettings
 import com.daily.clean.booster.BuildConfig
 import com.daily.clean.booster.appIns
@@ -41,8 +42,8 @@ object HttpTBA: IHttpBase(), CoroutineScope by GlobalScope {
         doReport(EVENT_SESSION)
     }
 
-    fun doReportRefer() {
-        doReport(EVENT_INSTALL)
+    fun doReportRefer(bodyMap: MutableMap<String, Any>) {
+        doReport(EVENT_INSTALL, referMap = bodyMap)
     }
 
     fun doReportLog(logEvent: DaiBooLogEvent? = null) {
@@ -50,14 +51,46 @@ object HttpTBA: IHttpBase(), CoroutineScope by GlobalScope {
     }
 
     fun doReportAd(adEvent: DaiBooAdEvent? = null) {
-        doReport(EVENT_AD, adevent = adEvent)
+        if (adEvent == null) return
+
+        val adPreEcpm = adEvent.daiboo_value_micros
+        val currency = "USD"
+        //广告网络，广告真实的填充平台，例如admob的bidding，填充了Facebook的广告，此值为Facebook
+        val adNetwork = adEvent.daiboo_ad_network
+        val adSource = adEvent.daiboo_ad_item.Network
+        val adCodeId = adEvent.daiboo_ad_item.Id
+        val adPosId = adEvent.daiboo_key
+        val adRitId = adEvent.daiboo_ad_item.Id
+        val adSense = ""
+        val adFormat = adEvent.daiboo_ad_item.getFormat()
+        //google ltvpingback的预估收益类型
+        val precisionType = adEvent.daiboo_precision_type
+        val ip = ipBean?.ip ?: ""           //客户端IP地址，获取的结果需要判断是否为合法的ip地址！！
+
+        val mapBody = mutableMapOf<String, Any>()
+        mapBody.apply {
+            this["knick"] = adPreEcpm
+            this["defrost"] = currency
+            this["creepy"] = adNetwork
+            this["lubbock"] = adSource
+            this["belgrade"] = adCodeId
+            this["chevron"] = adPosId
+            this["ember"] = adRitId
+            this["globular"] = adSense
+            this["vex"] = adFormat
+            this["hyena"] = precisionType
+            this["familiar"] = ip
+            this["gogh"] = ip
+        }
+        doReport(EVENT_AD, adEventMap = mapBody)
     }
 
     //上报data
     private fun doReport(
         event: String,
-        adevent: DaiBooAdEvent? = null,
-        logEvent: DaiBooLogEvent? = null) {
+        logEvent: DaiBooLogEvent? = null,
+        adEventMap: MutableMap<String, Any>? = null,
+        referMap: MutableMap<String, Any>? = null) {
         if (!DB_USE_TBA) {
             return
         }
@@ -69,19 +102,19 @@ object HttpTBA: IHttpBase(), CoroutineScope by GlobalScope {
         }
 
         GlobalScope.launch(Dispatchers.IO) {
-            httpReport(event, adevent, logEvent)
+            httpReport(event, logEvent, adEventMap, referMap)
         }
     }
 
     private suspend fun httpReport(
         event: String,
-        adevent: DaiBooAdEvent? = null,
         logEvent: DaiBooLogEvent? = null,
+        adEventMap: MutableMap<String, Any>? = null,
+        referMap: MutableMap<String, Any>? = null
     ) {
         val cacheList = mutableListOf<Any>()
         val bundleId = BuildConfig.APPLICATION_ID
         val os = "lizard"                   //操作系统；映射关系：{"lizard": "android", "delano": "ios", "nbs": "web"}
-        val lat = if (isLimitedTracking) "maybe" else "lactate"
         val ip = ipBean?.ip ?: ""           //客户端IP地址，获取的结果需要判断是否为合法的ip地址！！
 
         val systemLanguage = "${Locale.getDefault().language}_${Locale.getDefault().country}"
@@ -90,12 +123,6 @@ object HttpTBA: IHttpBase(), CoroutineScope by GlobalScope {
         } else {
             Date().time                     //日志发生的客户端时间，毫秒数
         }
-
-        val lastUpdateSeconds = getLastUpdateTime()
-        val installFirstSeconds = getFirstInstallTime()
-
-        val build = "build/Build.ID"        //系统构建版本，Build.ID， 以 build/ 开头
-        val userAgent = userAgentStr
         //头
         val header = mutableMapOf<String, Any>()
         header.run {
@@ -119,54 +146,15 @@ object HttpTBA: IHttpBase(), CoroutineScope by GlobalScope {
         try {
             when (event) {
                 EVENT_INSTALL -> {
-                    mapBody.run {
-                        put("telltale", "calcite")
-                        put("grave", build)
-                        put("dyeing", referrer_url)
-                        put("radon", install_version)
-                        put("skin", userAgent)
-                        put("ix", lat)
-                        put("quid", referrer_click_timestamp_seconds)
-                        put("like", install_begin_timestamp_seconds)
-                        put("bernet", referrer_click_timestamp_server_seconds)
-                        put("shasta", install_begin_timestamp_server_seconds)
-                        put("wintry", installFirstSeconds)
-                        put("jab", lastUpdateSeconds)
-                        put("purcell", google_play_instant)
+                    referMap?.let {
+                        mapBody.putAll(it)
                     }
                 }
 
                 EVENT_AD -> {
-                    adevent?.let {
-                        val adPreEcpm = it.daiboo_value_micros
-                        val currency = "USD"
-                        //广告网络，广告真实的填充平台，例如admob的bidding，填充了Facebook的广告，此值为Facebook
-                        val adNetwork = it.daiboo_ad_network
-                        val adSource = it.daiboo_ad_item.Network
-                        val adCodeId = it.daiboo_ad_item.Id
-                        val adPosId = it.daiboo_key
-                        val adRitId = it.daiboo_ad_item.Id
-                        val adSense = ""
-                        val adFormat = it.daiboo_ad_item.getFormat()
-                        //google ltvpingback的预估收益类型
-                        val precisionType = it.daiboo_precision_type
-
+                    adEventMap?.let {
                         mapBody.apply {
-
-                            this["woodlot"] = mutableMapOf<String, Any>().apply {
-                                this["knick"] = adPreEcpm
-                                this["defrost"] = currency
-                                this["creepy"] = adNetwork
-                                this["lubbock"] = adSource
-                                this["belgrade"] = adCodeId
-                                this["chevron"] = adPosId
-                                this["ember"] = adRitId
-                                this["globular"] = adSense
-                                this["vex"] = adFormat
-                                this["hyena"] = precisionType
-                                this["familiar"] = ip
-                                this["gogh"] = ip
-                            }
+                            this["woodlot"] = it
                         }
                     }
                 }
@@ -241,13 +229,6 @@ object HttpTBA: IHttpBase(), CoroutineScope by GlobalScope {
         0L
     }
 
-    private var referrer_url = ""
-    private var install_version = ""
-    private var install_begin_timestamp_seconds = 0L
-    private var referrer_click_timestamp_seconds = 0L
-    private var install_begin_timestamp_server_seconds = 0L
-    private var referrer_click_timestamp_server_seconds = 0L
-    private var google_play_instant = false
     override fun recordSelfInstall(
         referrerUrl: String,
         version: String,
@@ -257,14 +238,23 @@ object HttpTBA: IHttpBase(), CoroutineScope by GlobalScope {
         serverBeginTime: Long,
         googlePlayInstantParam: Boolean
     ) {
-        referrer_url = referrerUrl
-        install_version = version
-        referrer_click_timestamp_seconds = clickTime
-        install_begin_timestamp_seconds = beginTime
-        referrer_click_timestamp_server_seconds = serverClickTime
-        install_begin_timestamp_server_seconds = serverBeginTime
-        google_play_instant = googlePlayInstantParam
-        doReportRefer()
+        val mapBody: MutableMap<String, Any> = mutableMapOf()
+        mapBody.run {
+            put("telltale", "calcite")
+            put("grave", "build/${Build.ID}")        //系统构建版本，Build.ID， 以 build/ 开头
+            put("dyeing", referrerUrl)
+            put("radon", version)
+            put("skin", userAgentStr)
+            put("ix", if (isLimitedTracking) "maybe" else "lactate")
+            put("quid", clickTime)
+            put("like", beginTime)
+            put("bernet", serverClickTime)
+            put("shasta", serverBeginTime)
+            put("wintry", getFirstInstallTime())
+            put("jab", getLastUpdateTime())
+            put("purcell", googlePlayInstantParam)
+        }
+        doReportRefer(mapBody)
     }
 
     var isUserBuyer = false

@@ -12,6 +12,7 @@ import com.daily.clean.booster.R
 import com.daily.clean.booster.appIns
 import com.daily.clean.booster.base.*
 import com.daily.clean.booster.base.FiBLogEvent
+import com.daily.clean.booster.datas.RemoteConfig
 import com.daily.clean.booster.entity.DaiBooPopItemBean
 import com.daily.clean.booster.ui.NotificationActivity
 import com.daily.clean.booster.ui.SplashActivity
@@ -118,7 +119,7 @@ open class NotifyPopper {
             )
 
 
-        val isAct = 1 == FiBRemoteUtil.daiBooPopBean?.booster_avti
+        val isAct = 1 == RemoteConfig.daiBooPopBean?.booster_avti
         return if (isAct) actIntent else bpiBroad
 
     }
