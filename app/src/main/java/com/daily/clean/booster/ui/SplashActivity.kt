@@ -2,9 +2,7 @@ package com.daily.clean.booster.ui
 
 import android.animation.Animator
 import android.animation.ValueAnimator
-import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.lifecycleScope
-import com.daily.clean.booster.App
 import com.daily.clean.booster.ads.AdsListener
 import com.daily.clean.booster.ads.AdsLoader
 import com.daily.clean.booster.ads.conf.AdPos
@@ -29,16 +27,16 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     }
 
     override fun dailyData() {
-        val tanId = intent.getStringExtra(DBConfig.DAIBOO_KEY_NOTY_ID) ?: ""
-        val workID = intent.getStringExtra(DBConfig.DAIBOO_KEY_WORK_ID) ?: ""
+        val tanId = intent.getStringExtra(Noty_KEY_SOURCE) ?: ""
+        val workID = intent.getStringExtra(Noty_KEY_WORK) ?: ""
         val action = intent?.action ?: ""
-        if (action == DBConfig.DAIBOO_ACTION_FROM_POP_NOTY_POP ) {
-            NotificationManagerCompat.from(App.ins).cancel(DBConfig.NOTIFY_POP_ID)
+        if (action == DB_ACTION_FROM_POP_NOTY_POP ) {
+            NotifyManager.cancelAlertNotification()
             FiBLogEvent.pop_log(tanId, 2)
             FiBLogEvent.up_all_start()
         }
 
-        if (action == DBConfig.DAIBOO_ACTION_FROM_NOTIFYTOOL ){
+        if (action == DB_ACTION_FROM_NOTIFYTOOL ){
             FiBLogEvent.notifi_click(workID)
         }
         FiBLogEvent.start_page()
@@ -136,7 +134,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     }
 
     private fun goNextByIntent() {
-        val workId = intent?.getStringExtra(DBConfig.DAIBOO_KEY_WORK_ID) ?: ""
+        val workId = intent?.getStringExtra(Noty_KEY_WORK) ?: ""
         when (workId) {
             NotyWorkClean -> {
                 goJunkCleanScanning(intent.action)
@@ -149,7 +147,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
             }
 
             else -> {
-                goMain(DBConfig.DAIBOO_ACTION_FROM_SPLASH)
+                goMain(DB_ACTION_FROM_SPLASH)
             }
         }
 

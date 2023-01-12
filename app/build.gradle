@@ -19,7 +19,7 @@ stringfog {
 }
 
 android {
-    compileSdk 33
+    compileSdk 31
     //pwd: 123123
     defaultConfig {
         applicationId "com.daily.happy.do"

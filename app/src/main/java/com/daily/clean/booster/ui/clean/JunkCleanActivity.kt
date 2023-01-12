@@ -10,7 +10,7 @@ import com.daily.clean.booster.ads.conf.AdPos
 import com.daily.clean.booster.ads.model.BaseAd
 import com.daily.clean.booster.ads.model.BaseIns
 import com.daily.clean.booster.base.BaseActivity
-import com.daily.clean.booster.base.DBConfig
+import com.daily.clean.booster.base.*
 import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.databinding.ActivityCleanBinding
 import com.daily.clean.booster.entity.DaiBooCleanEvent
@@ -145,7 +145,7 @@ class JunkCleanActivity : BaseActivity<ActivityCleanBinding>() {
     }
 
     private fun goNextPage() {
-        val extra = intent.getStringExtra(DBConfig.DAIBOO_KEY_CLEAN_SIZE) ?: "0B"
+        val extra = intent.getStringExtra(DB_KEY_CLEAN_SIZE) ?: "0B"
         goCleanResult(NotyWorkClean, extra = extra, from = intent.action)
         FiBLogEvent.clean_page_to_result_end(NotyWorkClean)
         finish()

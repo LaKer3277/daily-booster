@@ -9,7 +9,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.daily.clean.booster.App
 import com.daily.clean.booster.R
-import com.daily.clean.booster.base.DBConfig
+import com.daily.clean.booster.base.*
 import com.daily.clean.booster.ui.SplashActivity
 import com.daily.clean.booster.ext.getString
 import com.daily.clean.booster.ext.isSPlus
@@ -47,13 +47,13 @@ object NotifyTools {
     private fun clickPending(workID: String): PendingIntent? {
         val newIntent =
             Intent(App.ins, SplashActivity::class.java).apply {
-                        putExtra(DBConfig.DAIBOO_KEY_WORK_ID, workID)
-                        action = DBConfig.DAIBOO_ACTION_FROM_NOTIFYTOOL
+                        putExtra(Noty_KEY_WORK, workID)
+                        action = DB_ACTION_FROM_NOTIFYTOOL
                     }
 
         val resultPendingIntent: PendingIntent? = TaskStackBuilder.create(App.ins).run {
             addNextIntentWithParentStack(newIntent)
-            getPendingIntent(workID.hashCode(), PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+            getPendingIntent(workID.hashCode(), validateImmutableFlags)
         }
 
 

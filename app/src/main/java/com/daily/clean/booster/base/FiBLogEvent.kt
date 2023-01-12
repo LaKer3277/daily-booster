@@ -24,7 +24,7 @@ object FiBLogEvent {
 
     private fun logEvent(key: String, params: Bundle?) {
         LogDB.dEvent("LOGDOT---$key <<< $params")
-        if (DBConfig.DAIBOO_USE_FB) {
+        if (DB_USE_FB) {
             firebaseAnalytics.logEvent(key, params)
         }
 
@@ -242,15 +242,15 @@ object FiBLogEvent {
      * 用户属性
      * 用户使用天数，第一天启动day0,第二天打开day1,依次类推
      */
-    const val KEY_LOGIN_TIMES = "${DBConfig.DAIBOO_SPNAME}_LOGIN_TIMES"
-    const val KEY_USER_RENTENTION = "${DBConfig.DAIBOO_SPNAME}_user_rentention"
+    const val KEY_LOGIN_TIMES = "${DB_NAME}_LOGIN_TIMES"
+    const val KEY_USER_RENTENTION = "${DB_NAME}_user_rentention"
 
     fun user_rent() {
         var times = DaiBooMK.decode(KEY_LOGIN_TIMES, 0)
         val lastReportTime = DaiBooMK.decode(KEY_USER_RENTENTION, 0L)
         LogDB.dEvent("LOGDOT---user_retention value=day$times")
         if (TimeUtils.isToday(lastReportTime).not()) {
-            if (DBConfig.DAIBOO_USE_FB)
+            if (DB_USE_FB)
                 firebaseAnalytics.setUserProperty("user_rent", "day$times")
             times++
             DaiBooMK.encode(KEY_LOGIN_TIMES, times)

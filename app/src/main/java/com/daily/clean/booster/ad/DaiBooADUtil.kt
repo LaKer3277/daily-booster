@@ -8,7 +8,7 @@ import com.daily.clean.booster.ad.mode.DaiBooNatImpl
 import com.daily.clean.booster.ad.mode.DaiBooOpInImpl
 import com.daily.clean.booster.ad.mode.DaiBooOpenMaxImpl
 import com.daily.clean.booster.base.BaseActivity
-import com.daily.clean.booster.base.DBConfig
+import com.daily.clean.booster.base.*
 import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.entity.DaiBooAdAllBean
 import com.daily.clean.booster.entity.AdConf
@@ -20,11 +20,8 @@ import java.util.*
 
 object DaiBooADUtil {
 
-
     var baseAD: DaiBooAdAllBean? = null
-
     var adShowTimes: Int = 0
-
     var adClickTimes: Int = 0
 
 
@@ -32,9 +29,7 @@ object DaiBooADUtil {
      * 是否达到 广告显示当限制
      */
     fun isReachLimit(): Boolean {
-
-        if (DBConfig.DAIBOO_USE_AD.not()) return true
-
+        if (!DB_USE_AD) return true
         if (baseAD == null) {
             LogDB.dAD("---Limit null")
             return true
@@ -45,33 +40,33 @@ object DaiBooADUtil {
 
     private val isLoading: MutableMap<String, Boolean> by lazy {
         mutableMapOf(
-            Pair(DBConfig.DAIBOO_AD_OPEN, false),
-            Pair(DBConfig.DAIBOO_AD_RESULT_NV, false),
-            Pair(DBConfig.DAIBOO_AD_CLEAN_IV, false),
+            Pair(DB_AD_OPEN, false),
+            Pair(DB_AD_RESULT_NV, false),
+            Pair(DB_AD_CLEAN_IV, false),
         )
     }
 
     private val loadStartTime: MutableMap<String, Long> by lazy {
         mutableMapOf(
-            Pair(DBConfig.DAIBOO_AD_OPEN, 0L),
-            Pair(DBConfig.DAIBOO_AD_RESULT_NV, 0L),
-            Pair(DBConfig.DAIBOO_AD_CLEAN_IV, 0L),
+            Pair(DB_AD_OPEN, 0L),
+            Pair(DB_AD_RESULT_NV, 0L),
+            Pair(DB_AD_CLEAN_IV, 0L),
         )
     }
 
     private val cache: MutableMap<String, MutableList<BaseLoader>> by lazy {
         mutableMapOf(
-            Pair(DBConfig.DAIBOO_AD_OPEN, mutableListOf()),
-            Pair(DBConfig.DAIBOO_AD_CLEAN_IV, mutableListOf()),
-            Pair(DBConfig.DAIBOO_AD_RESULT_NV, mutableListOf()),
+            Pair(DB_AD_OPEN, mutableListOf()),
+            Pair(DB_AD_CLEAN_IV, mutableListOf()),
+            Pair(DB_AD_RESULT_NV, mutableListOf()),
         )
     }
 
     private val showingAD: MutableMap<String, BaseLoader?> by lazy {
         mutableMapOf(
-            Pair(DBConfig.DAIBOO_AD_OPEN, null),
-            Pair(DBConfig.DAIBOO_AD_CLEAN_IV, null),
-            Pair(DBConfig.DAIBOO_AD_RESULT_NV, null),
+            Pair(DB_AD_OPEN, null),
+            Pair(DB_AD_CLEAN_IV, null),
+            Pair(DB_AD_RESULT_NV, null),
         )
     }
 
@@ -82,9 +77,9 @@ object DaiBooADUtil {
 
     fun getlistByKey(key: String): MutableList<AdConf>? {
         return when (key) {
-            DBConfig.DAIBOO_AD_OPEN -> baseAD?.db_Open
-            DBConfig.DAIBOO_AD_RESULT_NV -> baseAD?.result_NV
-            DBConfig.DAIBOO_AD_CLEAN_IV -> baseAD?.clean_IV
+            DB_AD_OPEN -> baseAD?.db_Open
+            DB_AD_RESULT_NV -> baseAD?.result_NV
+            DB_AD_CLEAN_IV -> baseAD?.clean_IV
             else -> {
                 null
             }
@@ -333,17 +328,17 @@ object DaiBooADUtil {
 
     fun addShowTimes() {
         adShowTimes++
-        DaiBooMK.encode(DBConfig.DAIBOO_AD_SHOW_TIMES, adShowTimes)
+        DaiBooMK.encode(DB_AD_SHOW_TIMES, adShowTimes)
     }
 
     fun addClickTimes() {
         adClickTimes++
-        DaiBooMK.encode(DBConfig.DAIBOO_AD_CLICK_TIMES, adClickTimes)
+        DaiBooMK.encode(DB_AD_CLICK_TIMES, adClickTimes)
     }
 
     private fun initLimt() {
-        adShowTimes = DaiBooMK.decode(DBConfig.DAIBOO_AD_SHOW_TIMES, 0)
-        adClickTimes = DaiBooMK.decode(DBConfig.DAIBOO_AD_CLICK_TIMES, 0)
+        adShowTimes = DaiBooMK.decode(DB_AD_SHOW_TIMES, 0)
+        adClickTimes = DaiBooMK.decode(DB_AD_CLICK_TIMES, 0)
         LogDB.dAD("initLimt...$adShowTimes  $adClickTimes")
     }
 
@@ -351,8 +346,8 @@ object DaiBooADUtil {
         LogDB.dAD("reSetLimit...")
         adShowTimes = 0
         adClickTimes = 0
-        DaiBooMK.encode(DBConfig.DAIBOO_AD_SHOW_TIMES, 0)
-        DaiBooMK.encode(DBConfig.DAIBOO_AD_CLICK_TIMES, 0)
+        DaiBooMK.encode(DB_AD_SHOW_TIMES, 0)
+        DaiBooMK.encode(DB_AD_CLICK_TIMES, 0)
     }
 
 
@@ -362,14 +357,14 @@ object DaiBooADUtil {
     var isInit: Boolean = false
     fun iniCountDate() {
         //检查广告展示时间 是否在同一天
-        val showDateOld: String = DaiBooMK.decode(DBConfig.DAIBOO_AD_SHOW_DATE, "")
+        val showDateOld: String = DaiBooMK.decode(DB_AD_SHOW_DATE, "")
         val showDateNew: String = SimpleDateFormat("yyyy-MM-dd").format(Date())
         LogDB.dAD("checkDate.old=$showDateOld  new=$showDateNew")
         //是同一天
         if (showDateOld == showDateNew) {
             initLimt()
         } else {
-            DaiBooMK.encode(DBConfig.DAIBOO_AD_SHOW_DATE, showDateNew)
+            DaiBooMK.encode(DB_AD_SHOW_DATE, showDateNew)
             reSetLimit()
         }
         isInit = true

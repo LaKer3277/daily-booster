@@ -1,12 +1,12 @@
 package com.daily.clean.booster.utils
 
 import android.util.Log
-import com.daily.clean.booster.base.DBConfig
+import com.daily.clean.booster.base.*
 import java.util.*
 
 object LogDB {
 
-    private const val DEBUG_MODE = DBConfig.DAIBOO_USE_LOG_DUBUG
+    private const val DEBUG_MODE = DB_USE_LOG_DEBUG
     private var TAG:String? = null
     private const val TAG_DEFAULT = "DAILY:"
 

@@ -10,11 +10,13 @@ import com.daily.clean.booster.utils.DaiBooMK
 import com.daily.clean.booster.utils.LogDB
 
 
-object NotifyManager {
+object NotifyManager: NotifyPopper() {
 
-    fun getPopItem(tanId: String): DaiBooPopItemBean? {
+    var usingActivity = false
+
+    fun getPopItem(sourceId: String): DaiBooPopItemBean? {
         FiBRemoteUtil.daiBooPopBean?.let {
-            return when (tanId) {
+            return when (sourceId) {
                 NotySourceTime -> it.booster_time
                 NotySourceUnlock -> it.booster_unl
                 NotySourceUninstall -> it.booster_uni
@@ -31,7 +33,7 @@ object NotifyManager {
             return false
         }
         FiBLogEvent.pop_log(sourceId, 0)
-        NotifyPopper.createNotificationAndPop(App.ins, workId, sourceId)
+        createNotificationAndPop(workId, sourceId)
         saveLastPopTime(sourceId)
         return true
     }
@@ -52,6 +54,7 @@ object NotifyManager {
     private fun isCanPopConfig(tanId: String, item: DaiBooPopItemBean?): Boolean {
         if (appIns.isAtForeground()) return false
 
+        usingActivity = 1 == FiBRemoteUtil.daiBooPopBean?.booster_avti
         if (item == null) return false
         //是否开启体外弹窗
         if (1 != FiBRemoteUtil.daiBooPopBean?.up_pop) {

@@ -3,19 +3,17 @@ package com.daily.clean.booster.pop
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import androidx.core.app.NotificationManagerCompat
-import com.daily.clean.booster.App
-import com.daily.clean.booster.base.DBConfig
+import com.daily.clean.booster.base.*
 
 class NotifyToolReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        val workID = intent?.getStringExtra(DBConfig.DAIBOO_KEY_WORK_ID) ?: NotyWorkBooster
-        val tanId = intent?.getStringExtra(DBConfig.DAIBOO_KEY_NOTY_ID) ?: ""
-        if (DBConfig.DAIBOO_ACTION_FROM_POP_NOTY_POP_EXIT == intent?.action ?: "") {
-            NotificationManagerCompat.from(App.ins).cancel(DBConfig.NOTIFY_POP_ID)
+        val workID = intent?.getStringExtra(Noty_KEY_WORK) ?: NotyWorkBooster
+        val tanId = intent?.getStringExtra(Noty_KEY_SOURCE) ?: ""
+        if (DB_ACTION_FROM_POP_NOTY_POP_EXIT == intent?.action ?: "") {
+            NotifyManager.cancelAlertNotification()
         }
-        if (DBConfig.DAIBOO_ACTION_FROM_POP_NOTY_POP_FULLSCREEN == intent?.action ) {
+        if (DB_ACTION_FROM_POP_NOTY_POP_FULLSCREEN == intent?.action ) {
         }
     }
 

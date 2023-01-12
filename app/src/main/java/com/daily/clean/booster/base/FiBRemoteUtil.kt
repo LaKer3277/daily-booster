@@ -36,7 +36,7 @@ object FiBRemoteUtil {
         updateADData(tag)
         updaePopData(tag)
         //TODO 其他
-//        ref_fer = mRemoteConfig.getLong(DBConfig.DAIBOO_REMOTE_NAME_REF_FER)
+//        ref_fer = mRemoteConfig.getLong(DAIBOO_REMOTE_NAME_REF_FER)
 //        LogDB.i("CONFIG-ref_fer---$tag----json=$ref_fer")
 //        ScanIV_refer = mRemoteConfig.getLong(MainConfig.DAIBOO_REMOTE_NAME_SCANIV_REFER)
 //        LogDM.i("CONFIG-ScanIV_refer----$tag----json=$ScanIV_refer")
@@ -58,12 +58,12 @@ object FiBRemoteUtil {
 
     fun initFireBaseData(next: () -> Unit = {}) {
 
-        if (DBConfig.DAIBOO_USE_FB.not()) {
+        if (DB_USE_FB.not()) {
             //TODO 本地数据
-            DaiBooADUtil.baseAD = DBConfig.DAIBOO_ADS_JSON_TEST?.Json2AD()
+            DaiBooADUtil.baseAD = DB_ADS_JSON_TEST?.Json2AD()
             LogDB.eAD("CONFIG-ADS-toBean=${DaiBooADUtil.baseAD}")
 
-            daiBooPopBean = DBConfig.DAIBOO_POP_JSON_TEST?.Json2TAN()
+            daiBooPopBean = DB_POP_JSON_TEST?.Json2TAN()
             LogDB.eAD("CONFIG-POP-toBean=$daiBooPopBean")
 
             next()
@@ -95,7 +95,7 @@ object FiBRemoteUtil {
     }
 
     private fun updateADData(log: String) {
-        val jsonAd = mRemoteConfig.getString(DBConfig.DAIBOO_REMOTE_NAME_AD)
+        val jsonAd = mRemoteConfig.getString(DB_REMOTE_NAME_AD)
         LogDB.e("CONFIG-ADS---$log---json=$jsonAd")
         DaiBooADUtil.baseAD = jsonAd?.Json2AD()
         LogDB.e("CONFIG-ADS---$log-toBean=${DaiBooADUtil.baseAD}")
@@ -103,14 +103,14 @@ object FiBRemoteUtil {
 
     fun updaePopData(tag: String) {
         //弹窗数据解析
-        val popJson = mRemoteConfig.getString(DBConfig.DAIBOO_REMOTE_NAME_POP)
-        LogDB.i("CONFIG-POP----$tag----${DBConfig.DAIBOO_REMOTE_NAME_POP}=$popJson")
+        val popJson = mRemoteConfig.getString(DB_REMOTE_NAME_POP)
+        LogDB.i("CONFIG-POP----$tag----${DB_REMOTE_NAME_POP}=$popJson")
         daiBooPopBean = popJson.Json2TAN()
         LogDB.e("CONFIG-POP---$tag-toBean=$daiBooPopBean")
     }
 
     fun isPop_refer(): Boolean {
-        if (DBConfig.DAIBOO_TEST_POP_REFER) {
+        if (DB_TEST_POP_REFER) {
             isByuser = true
             isfacebookUser = false
 //            ref_fer = 3L

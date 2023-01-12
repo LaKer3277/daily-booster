@@ -4,7 +4,7 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.daily.clean.booster.base.BaseActivity
-import com.daily.clean.booster.base.DBConfig
+import com.daily.clean.booster.base.*
 import com.daily.clean.booster.databinding.ActivityWebBinding
 
 class WebActivity : BaseActivity<ActivityWebBinding>() {
@@ -16,7 +16,7 @@ class WebActivity : BaseActivity<ActivityWebBinding>() {
     private var url: String = ""
     private lateinit var webview: WebView
     override fun dailyData() {
-        url = intent.getStringExtra(DBConfig.DAIBOO_KEY_WEB_URL) ?: ""
+        url = intent.getStringExtra(DB_KEY_WEB_URL) ?: ""
         webview = binding.webview
     }
 

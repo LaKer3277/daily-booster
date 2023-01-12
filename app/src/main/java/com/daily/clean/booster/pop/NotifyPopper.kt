@@ -5,27 +5,27 @@ import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.view.View
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.daily.clean.booster.App
 import com.daily.clean.booster.R
-import com.daily.clean.booster.base.DBConfig
+import com.daily.clean.booster.appIns
+import com.daily.clean.booster.base.*
 import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.base.FiBRemoteUtil
 import com.daily.clean.booster.entity.DaiBooPopItemBean
 import com.daily.clean.booster.ui.NotificationActivity
 import com.daily.clean.booster.ui.SplashActivity
 import com.daily.clean.booster.utils.DaiBooRAMUtils
-import com.daily.clean.booster.utils.LogDB
 import com.daily.clean.booster.ext.getString
 import com.daily.clean.booster.ext.isSPlus
+import java.util.*
 
-object NotifyPopper {
+open class NotifyPopper {
 
-    private const val channelId = DBConfig.NOTIFY_CHANNEL_ID_POP
-    private const val notificationId = DBConfig.NOTIFY_POP_ID
+    private val channelId = NOTIFY_CHANNEL_ID_POP
+    private val notificationId = NOTIFY_POP_ID
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -51,93 +51,159 @@ object NotifyPopper {
     }
 
     @SuppressLint("WrongConstant")
-    fun createNotificationAndPop(context: Context, workId: String, tanId: String): Notification {
-
+    fun createNotificationAndPop(workId: String, sourceId: String): Notification {
         cancelAlertNotification()
-
         createNotificationChannel()
 
-        val item: DaiBooPopItemBean? = NotifyManager.getPopItem(tanId)
+        val item: DaiBooPopItemBean? = NotifyManager.getPopItem(sourceId)
 
         val nBuilder = NotificationCompat.Builder(App.ins, channelId)
             .setSmallIcon(R.drawable.ic_daily_booster_logo)
             .setVisibility(Notification.VISIBILITY_PUBLIC)
-            .setPriority(NotificationCompat.PRIORITY_HIGH)//设置该通知优先级
-            .setCategory(NotificationCompat.CATEGORY_CALL)////设置通知类别
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setCategory(NotificationCompat.CATEGORY_CALL)
             //提供一个PendingIntent，当用户直接从通知面板上清除通知时发送。
             // 例如，当用户点击 "清除所有 "按钮或通知上的单个 "X "按钮时，将发送此意图。
             // 当应用程序调用NotificationManager.cancel(int)时，这个意图不会被发送。
-            .setContentIntent(btnClickPending(workId, tanId))
-            .setFullScreenIntent(btnClickPending_fsi(workId, tanId), true)
+            .setContentIntent(btnClickPending(workId, sourceId))
+            .setFullScreenIntent(getFullScreenIntent(workId, sourceId), true)
             .setAutoCancel(true)
             .setGroupSummary(false)
             .setSound(null)
 
-
         val size = item?.siz ?: 2
+        val small = getCustomView(workId, sourceId, 0)
+        val conf = getCustomView(workId, sourceId, size)
         if (isSPlus() || checkIsMIUI()) {
             //小
-            nBuilder.setCustomContentView(getCustomView(workId, tanId, 0, true))
-            nBuilder.setCustomHeadsUpContentView(getCustomView(workId, tanId, 0, true))
-            //大
-            nBuilder.setCustomBigContentView(getCustomView(workId, tanId, size, true))
+            nBuilder
+                .setCustomContentView(small)
+                .setCustomHeadsUpContentView(small)
+                .setCustomBigContentView(conf)
             //自带标题，并且可以再通知栏里面折叠, Android 31，需要设置了才能显示全
-            nBuilder.setStyle(NotificationCompat.DecoratedCustomViewStyle())
+            if (isSPlus()) nBuilder.setStyle(NotificationCompat.DecoratedCustomViewStyle())
         } else {
-            nBuilder.setCustomContentView(getCustomView(workId, tanId, size))
-            nBuilder.setCustomHeadsUpContentView(getCustomView(workId, tanId, size))
-            //大
-//            nBuilder.setCustomBigContentView(getCustomView(workId, tanId, 2))
+            nBuilder.setCustomContentView(conf)
+                .setCustomHeadsUpContentView(conf)
+                .setCustomBigContentView(conf)
         }
 
         //build
         val notification = nBuilder.build()
         //notify
         with(NotificationManagerCompat.from(App.ins)) {
-            LogDB.dpop("-notify---$notificationId")
             notify(notificationId, notification)
-            FiBLogEvent.pop_log(tanId, 1)
+            FiBLogEvent.pop_log(sourceId, 1)
         }
         return notification
     }
 
+    private fun getFullScreenIntent(workID: String, tanId: String): PendingIntent {
+        val bpiBroad: PendingIntent =
+            PendingIntent.getBroadcast(
+                App.ins, tanId.hashCode() + 20,
+                Intent(App.ins, NotifyToolReceiver::class.java).apply {
+                    putExtra(Noty_KEY_WORK, workID)
+                    putExtra(Noty_KEY_SOURCE, tanId)
+                    action = DB_ACTION_FROM_POP_NOTY_POP_FULLSCREEN
+                }, validateImmutableFlags
+            )
+
+        val actIntent: PendingIntent =
+            PendingIntent.getActivity(
+                App.ins, tanId.hashCode() + 20,
+                Intent(App.ins, NotificationActivity::class.java).apply {
+                    putExtra(Noty_KEY_WORK, workID)
+                    putExtra(Noty_KEY_SOURCE, tanId)
+                    action = DB_ACTION_FROM_POP_NOTY_POP_FULLSCREEN
+                }, validateImmutableFlags
+            )
+
+
+        val isAct = 1 == FiBRemoteUtil.daiBooPopBean?.booster_avti
+        return if (isAct) actIntent else bpiBroad
+
+    }
+
+    private fun btnClickPendingClose(workID: String, tanId: String): PendingIntent {
+        val intent = Intent(App.ins, NotifyToolReceiver::class.java).apply {
+            putExtra(Noty_KEY_WORK, workID)
+            putExtra(Noty_KEY_SOURCE, tanId)
+            action = DB_ACTION_FROM_POP_NOTY_POP_EXIT
+        }
+        return PendingIntent.getBroadcast(App.ins, tanId.hashCode() + 3, intent, validateImmutableFlags)
+
+    }
+
+    private fun btnClickPending(workID: String, sourceId: String): PendingIntent {
+        return PendingIntent.getActivity(
+            App.ins,
+            sourceId.hashCode(),
+            Intent(App.ins, SplashActivity::class.java).apply {
+                putExtra(Noty_KEY_WORK, workID)
+                putExtra(Noty_KEY_SOURCE, sourceId)
+                action = (DB_ACTION_FROM_POP_NOTY_POP)
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            },
+            validateImmutableFlags
+        )
+    }
+
+    private fun checkIsMIUI(context: Context = appIns): Boolean {
+        if ("xiaomi".equals(Build.MANUFACTURER, ignoreCase = true)) {
+            return true
+        }
+        val intent = Intent("miui.intent.action.APP_PERM_EDITOR")
+        intent.setClassName(
+            "com.android.settings",
+            "com.miui.securitycenter.permission.AppPermissionsEditor"
+        )
+        if (queryActivities(context, intent)) {
+            return true
+        }
+        var equalsIgnoreCase = "miui".equals(Build.ID, ignoreCase = true)
+        if ("xiaomi".equals(Build.BRAND, ignoreCase = true)) {
+            equalsIgnoreCase = true
+        }
+        val str = Build.MODEL
+        if (str != null) {
+            val lowerCase = str.lowercase(Locale.getDefault())
+            if (lowerCase.contains("xiaomi")) {
+                equalsIgnoreCase = true
+            }
+            if (lowerCase.contains("miui")) {
+                return true
+            }
+        }
+        return equalsIgnoreCase
+    }
+
+    @SuppressLint("WrongConstant")
+    private fun queryActivities(context: Context, intent: Intent): Boolean {
+        return context.packageManager.queryIntentActivities(intent, 1).size > 0
+    }
 
     private fun getCustomView(
         workID: String,
         tanID: String,
-        size: Int,
-        isHideTitle: Boolean = false
-    ): RemoteViews {
-
-        LogDB.dpop("getCustomView size = $size")
+        size: Int): RemoteViews {
 
         val layoutResId = when (size) {
-            0 -> R.layout.layout_notification_pop_small_40
-            1 -> R.layout.layout_notification_big1
-            2 -> {
-                if (tanID == NotySourceUninstall)
-                    R.layout.layout_notification_big2
-                else
-                    R.layout.layout_notification_big3
-            }
-            else -> R.layout.layout_notification_big1
+            0 -> R.layout.notification_pop_small
+            1 -> R.layout.notification_pop_middle
+            else -> R.layout.notification_pop_big
         }
 
+        val isBig = size == 2
         val remoteViews = RemoteViews(App.ins.packageName, layoutResId).apply {
-
-            if (isHideTitle) {
-                setViewVisibility(R.id.ll_title, View.GONE)
-            }
-
             setOnClickPendingIntent(R.id.btnWake, btnClickPending(workID, tanID))
-            if (size == 2) {
-                setOnClickPendingIntent(R.id.btnWake_no, btnClickPending_exit(workID, tanID))
+            if (isBig) {
+                setOnClickPendingIntent(R.id.btnWake_no, btnClickPendingClose(workID, tanID))
             }
-
 
             when (workID) {
                 NotyWorkBooster -> {
-                    setImageViewResource(R.id.ivAlertIcon, if (size == 2) R.mipmap.ic_pop_act_boost else R.mipmap.ic_result_boost)
+                    setImageViewResource(R.id.ivAlertIcon, if (isBig) R.mipmap.ic_pop_act_boost else R.mipmap.ic_result_boost)
                     setTextViewText(
                         R.id.tvAlertDescription,
                         R.string.des_boot_tan.getString(DaiBooRAMUtils.getUsedMemoryStringPer())
@@ -145,7 +211,7 @@ object NotifyPopper {
                     setTextViewText(R.id.btnWake, R.string.boost.getString())
                 }
                 NotyWorkCpu -> {
-                    setImageViewResource(R.id.ivAlertIcon, if (size == 2) R.mipmap.ic_pop_act_cpu else R.mipmap.ic_result_cpu)
+                    setImageViewResource(R.id.ivAlertIcon, if (isBig) R.mipmap.ic_pop_act_cpu else R.mipmap.ic_result_cpu)
                     setTextViewText(
                         R.id.tvAlertDescription,
                         R.string.des_cpu_tan.getString("${(24..40).random()}°C")
@@ -153,7 +219,7 @@ object NotifyPopper {
                     setTextViewText(R.id.btnWake, R.string.cool_down.getString())
                 }
                 NotyWorkBattery -> {
-                    setImageViewResource(R.id.ivAlertIcon, if (size == 2) R.mipmap.ic_pop_act_battery else R.mipmap.ic_result_battery)
+                    setImageViewResource(R.id.ivAlertIcon, if (isBig) R.mipmap.ic_pop_act_battery else R.mipmap.ic_result_battery)
 
                     when (tanID) {
                         NotySourceCharge -> {
@@ -194,7 +260,7 @@ object NotifyPopper {
                         }
 
                         else -> {
-                            setImageViewResource(R.id.ivAlertIcon, if (size == 2) R.mipmap.ic_pop_act_clean else R.mipmap.ic_result_junk)
+                            setImageViewResource(R.id.ivAlertIcon, if (isBig) R.mipmap.ic_pop_act_clean else R.mipmap.ic_result_junk)
                             setTextViewText(
                                 R.id.tvAlertDescription,
                                 R.string.des_clean_tan.getString(
@@ -210,64 +276,6 @@ object NotifyPopper {
             }
         }
         return remoteViews
-    }
-
-
-    private fun btnClickPending_fsi(workID: String, tanId: String): PendingIntent {
-        val bpiBroad: PendingIntent =
-            PendingIntent.getBroadcast(
-                App.ins, tanId.hashCode() + 20,
-                Intent(App.ins, NotifyToolReceiver::class.java).apply {
-                    putExtra(DBConfig.DAIBOO_KEY_WORK_ID, workID)
-                    putExtra(DBConfig.DAIBOO_KEY_NOTY_ID, tanId)
-                    action = DBConfig.DAIBOO_ACTION_FROM_POP_NOTY_POP_FULLSCREEN
-                }, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-            )
-
-        val actIntent: PendingIntent =
-            PendingIntent.getActivity(
-                App.ins, tanId.hashCode() + 20,
-                Intent(App.ins, NotificationActivity::class.java).apply {
-                    putExtra(DBConfig.DAIBOO_KEY_WORK_ID, workID)
-                    putExtra(DBConfig.DAIBOO_KEY_NOTY_ID, tanId)
-                    action = DBConfig.DAIBOO_ACTION_FROM_POP_NOTY_POP_FULLSCREEN
-                }, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-            )
-
-
-        val isAct = 1 == FiBRemoteUtil.daiBooPopBean?.booster_avti
-        return if (isAct) actIntent else bpiBroad
-
-    }
-
-    private fun btnClickPending_exit(workID: String, tanId: String): PendingIntent {
-        val intent = Intent(App.ins, NotifyToolReceiver::class.java).apply {
-            putExtra(DBConfig.DAIBOO_KEY_WORK_ID, workID)
-            putExtra(DBConfig.DAIBOO_KEY_NOTY_ID, tanId)
-            action = DBConfig.DAIBOO_ACTION_FROM_POP_NOTY_POP_EXIT
-        }
-        return PendingIntent.getBroadcast(App.ins, tanId.hashCode() + 3, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-
-    }
-
-    private fun btnClickPending(workID: String, tanId: String): PendingIntent {
-        return PendingIntent.getActivity(
-            App.ins,
-            tanId.hashCode(),
-            Intent(App.ins, SplashActivity::class.java).apply {
-                putExtra(DBConfig.DAIBOO_KEY_WORK_ID, workID)
-                putExtra(DBConfig.DAIBOO_KEY_NOTY_ID, tanId)
-                action = (DBConfig.DAIBOO_ACTION_FROM_POP_NOTY_POP)
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            },
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
-    }
-
-    private fun checkIsMIUI(): Boolean {
-        return Build.BRAND.equals("xiaomi", true)
-                || Build.BRAND.equals("Redmi", true)
-                || Build.BRAND.equals("miui", true)
     }
 
 }

@@ -14,7 +14,7 @@ import com.android.installreferrer.api.ReferrerDetails
 import com.blankj.utilcode.util.RomUtils
 import com.daily.clean.booster.BuildConfig
 import com.daily.clean.booster.App
-import com.daily.clean.booster.base.DBConfig
+import com.daily.clean.booster.base.*
 import com.daily.clean.booster.base.FiBRemoteUtil
 import com.daily.clean.booster.entity.DaiBooAdEvent
 import com.daily.clean.booster.entity.DaiBooIpBean
@@ -130,7 +130,7 @@ object HttpTBA {
         adevent: DaiBooAdEvent? = null,
         logEvent: DaiBooLogEvent? = null
     ) {
-        if (DBConfig.DAIBOO_USE_TBA.not()) {
+        if (DB_USE_TBA.not()) {
             LogDB.d("DAIBOO_USE_TBA == false")
             return
         }
@@ -216,7 +216,7 @@ object HttpTBA {
             }
             val key = UUID.randomUUID().toString()
             val distinct_id = uuid //用户排重字段，统计涉及到的排重用户数就是依据该字段，对接时需要和产品确认：事件公共字段
-            if (DBConfig.DAIBOO_USE_SHOW_UUID) {
+            if (DB_USE_SHOW_UUID) {
                 GlobalScope.launch(Dispatchers.Main) {
                     Toast.makeText(App.ins, "$distinct_id", Toast.LENGTH_SHORT).show()
                 }

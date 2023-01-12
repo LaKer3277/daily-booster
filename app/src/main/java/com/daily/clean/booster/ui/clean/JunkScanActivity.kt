@@ -15,11 +15,12 @@ import com.daily.clean.booster.ads.AdsLoader
 import com.daily.clean.booster.ads.conf.AdPos
 import com.daily.clean.booster.base.BaseActivity
 import com.daily.clean.booster.base.FiBLogEvent
-import com.daily.clean.booster.base.DBConfig
+import com.daily.clean.booster.base.*
 import com.daily.clean.booster.core.CleanData
 import com.daily.clean.booster.core.DaiBooCleaner
 import com.daily.clean.booster.databinding.ActivityJunkScanBinding
 import com.daily.clean.booster.ext.*
+import com.daily.clean.booster.pop.Noty_KEY_SOURCE
 import com.daily.clean.booster.pop.NotyWorkClean
 import com.daily.clean.booster.ui.view.ScanItemLayout
 import com.daily.clean.booster.utils.*
@@ -38,8 +39,8 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
     }
 
     override fun dailyData() {
-        val tanId = intent.getStringExtra(DBConfig.DAIBOO_KEY_NOTY_ID)
-        if (intent?.action == DBConfig.DAIBOO_ACTION_FROM_POP_NOTY_POP) {
+        val tanId = intent.getStringExtra(Noty_KEY_SOURCE)
+        if (intent?.action == DB_ACTION_FROM_POP_NOTY_POP) {
             FiBLogEvent.up_all_page()
         }
         FiBLogEvent.page_scan_show(NotyWorkClean)

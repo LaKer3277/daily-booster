@@ -12,7 +12,7 @@ import com.daily.clean.booster.R
 import com.daily.clean.booster.ad.base.IAdShowCallBack
 import com.daily.clean.booster.ad.base.BaseLoader
 import com.daily.clean.booster.base.FiBLogEvent
-import com.daily.clean.booster.base.DBConfig
+import com.daily.clean.booster.base.*
 import com.daily.clean.booster.entity.DaiBooAdEvent
 import com.daily.clean.booster.entity.AdConf
 import com.daily.clean.booster.tba.HttpTBA
@@ -77,9 +77,6 @@ class DaiBooNatMaxImpl(val activity: AppCompatActivity, var tag: String, conf: A
 
         nativeAdLoader?.placement = tag
         nativeAdLoader?.loadAd(createNativeAdView(tag))
-//        nativeAdLoader?.loadAd()
-
-
     }
 
     /**
@@ -102,7 +99,7 @@ class DaiBooNatMaxImpl(val activity: AppCompatActivity, var tag: String, conf: A
         val layoutId = when (tag) {
 //            MainConfig.DAIBOO_AD_HOME_NAT -> R.layout.layout_ad_max_home
 //            MainConfig.DAIBOO_AD_CLEAN_NAT -> R.layout.layout_admob_clean
-            DBConfig.DAIBOO_AD_RESULT_NV -> R.layout.ad_max_middle
+            DB_AD_RESULT_NV -> R.layout.ad_max_middle
 //            MainConfig.DAIBOO_AD_SCAN_NAT-> R.layout.layout_ad_max_scan
             else -> R.layout.ad_max_middle
         }

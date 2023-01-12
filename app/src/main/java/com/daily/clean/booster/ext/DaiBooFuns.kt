@@ -29,12 +29,8 @@ import com.applovin.adview.AppLovinFullscreenActivity
 import com.daily.clean.booster.BuildConfig
 import com.daily.clean.booster.App
 import com.daily.clean.booster.R
-import com.daily.clean.booster.base.DBConfig
-import com.daily.clean.booster.base.DBConfig.DAIBOO_KEY_IS_FIRST
-import com.daily.clean.booster.pop.NotyWorkBattery
-import com.daily.clean.booster.pop.NotyWorkBooster
-import com.daily.clean.booster.pop.NotyWorkClean
-import com.daily.clean.booster.pop.NotyWorkCpu
+import com.daily.clean.booster.base.*
+import com.daily.clean.booster.pop.*
 import com.daily.clean.booster.service.KeepingService
 import com.daily.clean.booster.ui.*
 import com.daily.clean.booster.ui.clean.BoostActivity
@@ -73,9 +69,6 @@ fun isRPlus() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
 
 @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.S)
 fun isSPlus() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
-
-@ChecksSdkIntAtLeast(api = Build.VERSION_CODES.TIRAMISU)
-fun isTiramisuPlus() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
 
 
 val Number.dip
@@ -160,8 +153,8 @@ fun AppCompatActivity.goBoosting(
     actionStr: String? = null
 ) {
     startActivity(Intent(this, BoostActivity::class.java).apply {
-        putExtra(DBConfig.DAIBOO_KEY_WORK_ID, work_id)
-        putExtra(DAIBOO_KEY_IS_FIRST, isFirst)
+        putExtra(Noty_KEY_WORK, work_id)
+        putExtra(DB_KEY_IS_FIRST, isFirst)
         actionStr?.let { action = actionStr }
     })
 }
@@ -175,7 +168,7 @@ fun AppCompatActivity.goJunkCleanScanning(act: String? = null) {
 
 fun AppCompatActivity.goJunkCleanPage(extra: String?, act: String? = null) {
     startActivity(Intent(this, JunkCleanActivity::class.java).apply {
-        extra?.let { putExtra(DBConfig.DAIBOO_KEY_CLEAN_SIZE, it) }
+        extra?.let { putExtra(DB_KEY_CLEAN_SIZE, it) }
         act?.let { action = act }
     })
 }
@@ -210,21 +203,21 @@ fun Context.updateApp() {
 
 fun Context.goPrivacy() {
     val intent = Intent(this, WebActivity::class.java).apply {
-        putExtra(DBConfig.DAIBOO_KEY_WEB_URL, DBConfig.DAIBOO_URL_PRIVACY)
+        putExtra(DB_KEY_WEB_URL, DB_URL_PRIVACY)
     }
     this.startActivity(intent)
 }
 
 fun Context.goTerm() {
     val intent = Intent(this, WebActivity::class.java).apply {
-        putExtra(DBConfig.DAIBOO_KEY_WEB_URL, DBConfig.DAIBOO_URL_TERM)
+        putExtra(DB_KEY_WEB_URL, DB_URL_TERM)
     }
     this.startActivity(intent)
 }
 
 fun AppCompatActivity.goMain(from: String? = null) {
     startActivity(Intent(this, HomeActivity::class.java).apply {
-        from?.let { putExtra(DBConfig.DAIBOO_KEY_FROM, it) }
+        from?.let { putExtra(DB_KEY_FROM, it) }
 
     })
 }
@@ -232,9 +225,9 @@ fun AppCompatActivity.goMain(from: String? = null) {
 fun AppCompatActivity.goCleanResult(work_id: String, extra: String? = null, from: String? = null, isFirst: Boolean = false) {
 
     startActivity(Intent(this, CleanResultActivity::class.java).apply {
-        putExtra(DBConfig.DAIBOO_KEY_WORK_ID, work_id)
-        putExtra(DAIBOO_KEY_IS_FIRST, isFirst)
-        extra?.let { putExtra(DBConfig.DAIBOO_KEY_CLEAN_SIZE, it) }
+        putExtra(Noty_KEY_WORK, work_id)
+        putExtra(DB_KEY_IS_FIRST, isFirst)
+        extra?.let { putExtra(DB_KEY_CLEAN_SIZE, it) }
         from?.let { action = from }
 
     })
@@ -244,7 +237,7 @@ fun AppCompatActivity.goCleanResult(work_id: String, extra: String? = null, from
 fun Context.goContactUs() {
     try {
         val intent = Intent(Intent.ACTION_SENDTO)
-        intent.data = Uri.parse("mailto:${DBConfig.DAIBOO_EMAIL}")
+        intent.data = Uri.parse("mailto:${DB_EMAIL}")
         intent.putExtra(Intent.EXTRA_SUBJECT, "Feedback")
         intent.putExtra(Intent.EXTRA_TEXT, "mail content")
         this.startActivity(intent)
@@ -252,7 +245,7 @@ fun Context.goContactUs() {
         e.printStackTrace()
         Toast.makeText(
             this,
-            "Contact us by email:${DBConfig.DAIBOO_EMAIL}",
+            "Contact us by email:${DB_EMAIL}",
             Toast.LENGTH_LONG
         ).show()
     }
@@ -265,7 +258,7 @@ fun Context.goShareApp() {
         intent.type = "text/plain"
         intent.putExtra(
             Intent.EXTRA_TEXT,
-            "https://play.google.com/store/apps/details?id=" + DBConfig.DAIBOO_APPLICATION_ID
+            "https://play.google.com/store/apps/details?id=" + DB_APPLICATION_ID
         )
         this.startActivity(Intent.createChooser(intent, "share"))
     } catch (e: java.lang.Exception) {
@@ -329,7 +322,6 @@ fun String.getTitleText(): String {
     }
 }
 
-fun is23Android6() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
 fun is24Android7() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
 fun is26Android8() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
 fun is28Android9() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P

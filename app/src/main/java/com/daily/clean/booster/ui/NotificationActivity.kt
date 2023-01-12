@@ -3,7 +3,7 @@ package com.daily.clean.booster.ui
 import android.content.Intent
 import android.content.IntentFilter
 import android.view.Gravity
-import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
@@ -11,25 +11,26 @@ import com.blankj.utilcode.util.ActivityUtils
 import com.daily.clean.booster.App
 import com.daily.clean.booster.R
 import com.daily.clean.booster.base.BaseActivity
-import com.daily.clean.booster.base.DBConfig
+import com.daily.clean.booster.base.*
 import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.pop.NotifyManager
-import com.daily.clean.booster.databinding.LayoutNotificationBigActBinding
+import com.daily.clean.booster.databinding.NotificationBigActBinding
 import com.daily.clean.booster.utils.DaiBooRAMUtils
 import com.daily.clean.booster.ext.getString
 import com.daily.clean.booster.pop.*
 
-class NotificationActivity : BaseActivity<LayoutNotificationBigActBinding>() {
+class NotificationActivity : BaseActivity<NotificationBigActBinding>() {
 
-    override fun dailyBinding(): LayoutNotificationBigActBinding {
-        return LayoutNotificationBigActBinding.inflate(layoutInflater)
+    override fun dailyBinding(): NotificationBigActBinding {
+        return NotificationBigActBinding.inflate(layoutInflater)
     }
 
     override fun onNewIntent(intentNew: Intent?) {
         super.onNewIntent(intent)
         intent = intentNew
-        dailyData()
-        dailyView()
+        workID = intent?.getStringExtra(Noty_KEY_WORK) ?: ""
+        tanID = intent?.getStringExtra(Noty_KEY_SOURCE) ?: ""
+        initView()
     }
 
     override fun onBackPressed() {
@@ -38,17 +39,23 @@ class NotificationActivity : BaseActivity<LayoutNotificationBigActBinding>() {
     private var workID = ""
     private var tanID = ""
     override fun dailyData() {
-        workID = intent?.getStringExtra(DBConfig.DAIBOO_KEY_WORK_ID) ?: ""
-        tanID = intent?.getStringExtra(DBConfig.DAIBOO_KEY_NOTY_ID) ?: ""
+        workID = intent?.getStringExtra(Noty_KEY_WORK) ?: ""
+        tanID = intent?.getStringExtra(Noty_KEY_SOURCE) ?: ""
         FiBLogEvent.up_ac_show(tanID)
     }
 
-    private fun dailyView() {
-        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        initView()
-    }
-
     override fun dailyLoad() {
+        val params = window.attributes
+        window.setGravity(Gravity.CENTER)
+        params.width = (resources.displayMetrics.widthPixels * 0.98f).toInt()
+        params.apply {
+            height = WindowManager.LayoutParams.WRAP_CONTENT
+            dimAmount = 0f
+            alpha = 1f
+            flags = WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+        }
+        window.attributes = params
+        initView()
     }
 
     private fun initView() {
@@ -67,8 +74,10 @@ class NotificationActivity : BaseActivity<LayoutNotificationBigActBinding>() {
         item?.let {
             when (it.acti_pos) {
                 0 -> (binding.rlPage.layoutParams as FrameLayout.LayoutParams).gravity = Gravity.TOP
-                1 -> (binding.rlPage.layoutParams as FrameLayout.LayoutParams).gravity = Gravity.CENTER
-                2 -> (binding.rlPage.layoutParams as FrameLayout.LayoutParams).gravity = Gravity.BOTTOM
+                1 -> (binding.rlPage.layoutParams as FrameLayout.LayoutParams).gravity =
+                    Gravity.CENTER
+                2 -> (binding.rlPage.layoutParams as FrameLayout.LayoutParams).gravity =
+                    Gravity.BOTTOM
             }
         }
 
@@ -157,9 +166,9 @@ class NotificationActivity : BaseActivity<LayoutNotificationBigActBinding>() {
         FiBLogEvent.up_ac_click(tanID)
         ActivityUtils.finishAllActivities()
         startActivity(Intent(App.ins, SplashActivity::class.java).apply {
-            putExtra(DBConfig.DAIBOO_KEY_WORK_ID, workID)
-            putExtra(DBConfig.DAIBOO_KEY_NOTY_ID, tanID)
-            action = (DBConfig.DAIBOO_ACTION_FROM_POP_NOTY_POP)
+            putExtra(Noty_KEY_WORK, workID)
+            putExtra(Noty_KEY_SOURCE, tanID)
+            action = (DB_ACTION_FROM_POP_NOTY_POP)
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
         })
         finish()

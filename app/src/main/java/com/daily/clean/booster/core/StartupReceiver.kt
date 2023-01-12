@@ -53,7 +53,7 @@ object StartupReceiver {
 
             Intent.ACTION_SCREEN_OFF -> {
                 App.isReceiverScreenOn = false
-                NotifyManager.tryPopRandom(NotySourceUnlock)
+                if (NotifyManager.usingActivity) NotifyManager.tryPopRandom(NotySourceUnlock)
             }
 
             //充电
@@ -68,7 +68,8 @@ object StartupReceiver {
 
             //解锁
             Intent.ACTION_USER_PRESENT -> {
-                NotifyManager.tryPopRandom(NotySourceUnlock)
+                if (!NotifyManager.usingActivity)
+                    NotifyManager.tryPopRandom(NotySourceUnlock)
             }
 
             //卸载

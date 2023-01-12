@@ -15,7 +15,7 @@ import com.daily.clean.booster.ads.conf.AdPos
 import com.daily.clean.booster.ads.model.BaseAd
 import com.daily.clean.booster.ads.model.BaseNav
 import com.daily.clean.booster.base.BaseActivity
-import com.daily.clean.booster.base.DBConfig
+import com.daily.clean.booster.base.*
 import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.core.CleanData
 import com.daily.clean.booster.databinding.ActivityResultBinding
@@ -34,9 +34,9 @@ class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
     private var workId = NotyWorkBooster
     private var isFirst = false
     override fun dailyData() {
-        extraStr = intent.getStringExtra(DBConfig.DAIBOO_KEY_CLEAN_SIZE) ?: "0B"
-        workId = intent.getStringExtra(DBConfig.DAIBOO_KEY_WORK_ID) ?: NotyWorkBooster
-        isFirst = intent.getBooleanExtra(DBConfig.DAIBOO_KEY_IS_FIRST, false)
+        extraStr = intent.getStringExtra(DB_KEY_CLEAN_SIZE) ?: "0B"
+        workId = intent.getStringExtra(Noty_KEY_WORK) ?: NotyWorkBooster
+        isFirst = intent.getBooleanExtra(DB_KEY_IS_FIRST, false)
         binding.titleText.text = workId.getTitleText()
         binding.titleBack.setOnClickListener {
             onBackPressed()
@@ -77,7 +77,7 @@ class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
     }
 
     private fun log() {
-        if (DBConfig.DAIBOO_ACTION_FROM_POP_NOTY_POP == intent?.action) {
+        if (DB_ACTION_FROM_POP_NOTY_POP == intent?.action) {
             FiBLogEvent.up_all_relust()
         }
         if (isFirst) {

@@ -9,7 +9,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.daily.clean.booster.R
 import com.daily.clean.booster.base.BaseActivity
-import com.daily.clean.booster.base.DBConfig
+import com.daily.clean.booster.base.*
 import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.core.CleanData
 import com.daily.clean.booster.core.DaiBooCleaner
@@ -102,11 +102,11 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     private fun main() = this@HomeActivity
 
     private fun work_junkClean() {
-        main().goJunkCleanScanning(DBConfig.DAIBOO_ACTION_FROM_MAIN)
+        main().goJunkCleanScanning(DB_ACTION_FROM_MAIN)
     }
 
     private fun work_boost(id: String) {
-        main().goBoosting(id, actionStr = DBConfig.DAIBOO_ACTION_FROM_MAIN)
+        main().goBoosting(id, actionStr = DB_ACTION_FROM_MAIN)
     }
 
 

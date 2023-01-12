@@ -17,7 +17,7 @@ import com.applovin.adview.AppLovinFullscreenActivity
 import com.applovin.sdk.AppLovinSdk
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.ProcessUtils
-import com.daily.clean.booster.base.DBConfig
+import com.daily.clean.booster.base.*
 import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.core.StartupReceiver
 import com.daily.clean.booster.datas.RemoteConfig
@@ -73,7 +73,7 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
         MMKV.initialize(this)
 
         AudienceNetworkInitializeHelper.initialize(this)
-        if (DBConfig.DAIBOO_USE_FB)
+        if (DB_USE_FB)
             Firebase.initialize(this)
         initAds()
 
@@ -134,8 +134,8 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
             when (activity) {
                 is SplashActivity, is AdActivity, is AppLovinFullscreenActivity, is NotificationActivity -> {}
                 else -> {
-                    if (activity.intent?.action == DBConfig.DAIBOO_ACTION_FROM_NOTIFY_NM) return
-                    if (activity.intent?.action == DBConfig.DAIBOO_ACTION_FROM_POP_NOTY_POP) return
+                    if (activity.intent?.action == DB_ACTION_FROM_NOTIFY_NM) return
+                    if (activity.intent?.action == DB_ACTION_FROM_POP_NOTY_POP) return
                     if (isScreenOn().not()) return
                     ActivityUtils.startActivity(SplashActivity::class.java)
                 }
@@ -211,7 +211,7 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
             PeriodicWorkRequestBuilder<FiBLogWorker>(PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS, TimeUnit.MILLISECONDS)
                 .build()
         WorkManager.getInstance(c).enqueueUniquePeriodicWork(
-            "${DBConfig.DAIBOO_SPNAME}_work_clean",
+            "${DB_NAME}_work_clean",
             ExistingPeriodicWorkPolicy.KEEP,
             sendLogsWorkRequest
         )

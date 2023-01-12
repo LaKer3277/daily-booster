@@ -14,7 +14,7 @@ import com.daily.clean.booster.ads.conf.AdPos
 import com.daily.clean.booster.ads.model.BaseAd
 import com.daily.clean.booster.ads.model.BaseIns
 import com.daily.clean.booster.base.BaseActivity
-import com.daily.clean.booster.base.DBConfig
+import com.daily.clean.booster.base.*
 import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.core.CleanData
 import com.daily.clean.booster.databinding.ActivityBoostBinding
@@ -45,9 +45,9 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
     private var isFirst = false
 
     override fun dailyData() {
-        workingMode = intent.getStringExtra(DBConfig.DAIBOO_KEY_WORK_ID) ?: NotyWorkBooster
-        popId = intent.getStringExtra(DBConfig.DAIBOO_KEY_NOTY_ID)
-        isFirst = intent.getBooleanExtra(DBConfig.DAIBOO_KEY_IS_FIRST, false)
+        workingMode = intent.getStringExtra(Noty_KEY_WORK) ?: NotyWorkBooster
+        popId = intent.getStringExtra(Noty_KEY_SOURCE)
+        isFirst = intent.getBooleanExtra(DB_KEY_IS_FIRST, false)
 
         queryApps()
         fbLog()
@@ -205,8 +205,8 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
 
 
     private fun fbLog() {
-        val tanId = intent.getStringExtra(DBConfig.DAIBOO_KEY_NOTY_ID)
-        if (intent?.action == DBConfig.DAIBOO_ACTION_FROM_POP_NOTY_POP) {
+        val tanId = intent.getStringExtra(Noty_KEY_SOURCE)
+        if (intent?.action == DB_ACTION_FROM_POP_NOTY_POP) {
             FiBLogEvent.up_all_page()
         }
 
