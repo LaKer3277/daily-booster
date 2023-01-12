@@ -53,9 +53,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
     override fun dailyData() {
         dispatchIntent(intent)
-
         FirebaseEvent.logEvent("start_page")
-        FirebaseEvent.userRetention()
     }
 
     override fun dailyLoad() {

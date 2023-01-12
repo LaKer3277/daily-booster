@@ -62,7 +62,6 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
         initAds()
 
         RemoteConfig.ins.fetchInit()
-        FirebaseEvent.userRetention()
         HttpTBA.initStartup()
 
         WorkerAll.startImmediatelyWork(this)

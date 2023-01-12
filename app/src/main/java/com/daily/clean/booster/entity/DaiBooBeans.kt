@@ -8,6 +8,7 @@ import android.os.Parcelable
 import android.text.format.Formatter
 import com.blankj.utilcode.util.TimeUtils
 import com.daily.clean.booster.R
+import com.daily.clean.booster.ads.conf.AdConf
 import com.daily.clean.booster.pop.*
 import com.daily.clean.booster.ext.getString
 import kotlinx.android.parcel.Parcelize
@@ -19,39 +20,6 @@ data class DaiBooIpBean(
     val country: String = "",
     val cc: String = ""
 )
-
-
-data class DaiBooAdAllBean(
-    val db_Open: MutableList<AdConf>,
-    val result_NV: MutableList<AdConf>,
-    val clean_IV: MutableList<AdConf>,
-)
-
-data class AdConf(
-    val Network: String,//平台 Admob 和 Max
-    val Hierarchy: Int,//优先级
-    val Form: String,//类型
-    val Id: String
-) {
-    fun getFormat() = when (Form) {
-        "interstitial" -> "interstitial"
-        "inter" -> "interstitial"
-        "open" -> "open"
-        "native" -> "native"
-        else -> Form
-    }
-
-    fun isOpenOrInter() = when (getFormat()) {
-        "interstitial" -> true
-        "open" -> true
-        else -> false
-    }
-
-    fun isNative() = Form == "native"
-
-
-    fun isMax() = "Max".equals(Network, true)
-}
 
 data class DaiBooAdEvent(
     val daiboo_key: String,
@@ -203,19 +171,6 @@ data class DaiBooNMBean(
         return TimeUtils.millis2String(time, "HH:mm")
     }
 }
-
-data class AppInfo(
-    val appName: String,
-    val pkgName: String,
-    val icon: Drawable,
-    val isSystem: Boolean = false,
-    var isNotDnd: Boolean = false,
-)
-
-data class EventNM(
-    val nmb: DaiBooNMBean
-)
-
 
 sealed class DaiBooUIItem(
     val id: String,
