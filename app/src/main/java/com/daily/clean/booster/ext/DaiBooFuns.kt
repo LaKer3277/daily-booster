@@ -21,23 +21,17 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.ChecksSdkIntAtLeast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.OutOfQuotaPolicy
-import androidx.work.WorkManager
 import com.applovin.adview.AppLovinFullscreenActivity
 import com.daily.clean.booster.BuildConfig
 import com.daily.clean.booster.R
 import com.daily.clean.booster.appIns
 import com.daily.clean.booster.base.*
 import com.daily.clean.booster.pop.*
-import com.daily.clean.booster.service.KeepingService
 import com.daily.clean.booster.ui.*
 import com.daily.clean.booster.ui.clean.BoostActivity
 import com.daily.clean.booster.ui.clean.CleanResultActivity
 import com.daily.clean.booster.ui.clean.JunkCleanActivity
 import com.daily.clean.booster.ui.clean.JunkScanActivity
-import com.daily.clean.booster.utils.work.ServiceWork
 import com.google.android.gms.ads.AdActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -128,24 +122,6 @@ fun TextView.setForegroundColorSpanText(textStr: String, color: Int = Color.pars
 fun Activity.isADActivity(): Boolean {
     return this is AdActivity || this is AppLovinFullscreenActivity
 }
-
-
-fun Context.startCleanService() {
-
-    runCatching {
-        if (is31Android12()) {
-            val request = OneTimeWorkRequestBuilder<ServiceWork>()
-                .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
-                .build()
-            WorkManager.getInstance(this)
-                .enqueue(request)
-        } else {
-            ContextCompat.startForegroundService(this, Intent(this, KeepingService::class.java))
-        }
-
-    }
-}
-
 
 fun AppCompatActivity.goBoosting(
     work_id: String,

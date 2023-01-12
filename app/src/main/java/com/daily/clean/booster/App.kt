@@ -2,16 +2,11 @@ package com.daily.clean.booster
 
 import android.app.Activity
 import android.app.Application
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.os.PowerManager
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequest
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
 import com.alive.union.longer.DaiBooh2
 import com.applovin.adview.AppLovinFullscreenActivity
 import com.applovin.sdk.AppLovinSdk
@@ -26,19 +21,16 @@ import com.daily.clean.booster.ui.*
 import com.daily.clean.booster.ui.clean.JunkScanActivity
 import com.daily.clean.booster.utils.AudienceNetworkInitializeHelper
 import com.daily.clean.booster.ext.isADActivity
-import com.daily.clean.booster.ext.startCleanService
-import com.daily.clean.booster.utils.work.FiBLogWorker
+import com.daily.clean.booster.utils.work.WorkerAll
 import com.google.android.gms.ads.AdActivity
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.ktx.initialize
+import com.google.firebase.FirebaseApp
 import com.tencent.mmkv.MMKV
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.concurrent.TimeUnit
 
 
 val isDebugMode = BuildConfig.DEBUG
@@ -58,21 +50,21 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
         DaiBooh2(this).it()
         
         if (isNotMainProcess()) return
-        startCleanService()
         StartupReceiver.registerReceivers(this)
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
         MMKV.initialize(this)
 
         AudienceNetworkInitializeHelper.initialize(this)
-        if (DB_USE_FB)
-            Firebase.initialize(this)
+        try {
+            FirebaseApp.initializeApp(this)
+        } catch (e: Exception) {}
         initAds()
 
         RemoteConfig.ins.fetchInit()
         FiBLogEvent.app_active()
         FiBLogEvent.user_rent()
-        initWork(this)
 
+        WorkerAll.startImmediatelyWork(this)
         registerActivityLifecycleCallbacks(this)
     }
 
@@ -158,15 +150,9 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
         }
     }
 
-    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-        Log.d("ActivityLife", "onActivityCreated: ---$activity")
-        if (activity is SplashActivity || activity is LaunchActivity) {
-            startCleanService()
-        }
-    }
+    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {}
 
     override fun onActivityResumed(activity: Activity) {
-        Log.d("ActivityLife", "onActivityResumed: ---$activity")
         isAdActivityResume = activity.isADActivity()
         if (activity is SplashActivity || activity is JunkScanActivity) {
             isNotDoHotStart = false
@@ -174,7 +160,6 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
     }
 
     override fun onActivityPaused(activity: Activity) {
-        Log.d("ActivityLife", "onActivityPaused: ---$activity")
         if (activity.isADActivity()) {
             isAdActivityResume = false
         }
@@ -188,17 +173,6 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
     private fun isScreenOn(): Boolean {
         val pm = appIns.applicationContext.getSystemService(POWER_SERVICE) as PowerManager
         return pm.isInteractive
-    }
-
-    private fun initWork(c: Context) {
-        val sendLogsWorkRequest =
-            PeriodicWorkRequestBuilder<FiBLogWorker>(PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS, TimeUnit.MILLISECONDS)
-                .build()
-        WorkManager.getInstance(c).enqueueUniquePeriodicWork(
-            "${DB_NAME}_work_clean",
-            ExistingPeriodicWorkPolicy.KEEP,
-            sendLogsWorkRequest
-        )
     }
 
 
