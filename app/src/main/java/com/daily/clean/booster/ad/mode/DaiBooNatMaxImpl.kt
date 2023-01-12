@@ -11,7 +11,7 @@ import com.applovin.mediation.nativeAds.MaxNativeAdViewBinder
 import com.daily.clean.booster.R
 import com.daily.clean.booster.ad.base.IAdShowCallBack
 import com.daily.clean.booster.ad.base.BaseLoader
-import com.daily.clean.booster.base.FiBLogEvent
+import com.daily.clean.booster.base.FirebaseEvent
 import com.daily.clean.booster.base.*
 import com.daily.clean.booster.entity.DaiBooAdEvent
 import com.daily.clean.booster.entity.AdConf
@@ -63,7 +63,7 @@ class DaiBooNatMaxImpl(val activity: AppCompatActivity, var tag: String, conf: A
             override fun onNativeAdClicked(nativeAd: MaxAd) {
                 isClicked = true
                 ADCallBack?.onAdClicked(this@DaiBooNatMaxImpl)
-                FiBLogEvent.ad_click(tag)
+                FirebaseEvent.ad_click(tag)
             }
 
         })
@@ -115,7 +115,7 @@ class DaiBooNatMaxImpl(val activity: AppCompatActivity, var tag: String, conf: A
             adEvent?.let {
                 HttpTBA.doReportAd(adEvent = it)
             }
-            FiBLogEvent.dm_ad_impression(tag)
+            FirebaseEvent.dm_ad_impression(tag)
         }
     }
 

@@ -12,7 +12,7 @@ import com.daily.clean.booster.R
 import com.daily.clean.booster.appIns
 import com.daily.clean.booster.base.BaseActivity
 import com.daily.clean.booster.base.*
-import com.daily.clean.booster.base.FiBLogEvent
+import com.daily.clean.booster.base.FirebaseEvent
 import com.daily.clean.booster.pop.NotifyManager
 import com.daily.clean.booster.databinding.NotificationBigActBinding
 import com.daily.clean.booster.utils.DaiBooRAMUtils
@@ -41,7 +41,7 @@ class NotificationActivity : BaseActivity<NotificationBigActBinding>() {
     override fun dailyData() {
         workID = intent?.getStringExtra(Noty_KEY_WORK) ?: ""
         tanID = intent?.getStringExtra(Noty_KEY_SOURCE) ?: ""
-        FiBLogEvent.up_ac_show(tanID)
+        FirebaseEvent.notyActivityShow(tanID)
     }
 
     override fun dailyLoad() {
@@ -163,7 +163,7 @@ class NotificationActivity : BaseActivity<NotificationBigActBinding>() {
     }
 
     private fun goBoost() {
-        FiBLogEvent.up_ac_click(tanID)
+        FirebaseEvent.notyActivityClick(tanID)
         ActivityUtils.finishAllActivities()
         startActivity(Intent(appIns, SplashActivity::class.java).apply {
             putExtra(Noty_KEY_WORK, workID)

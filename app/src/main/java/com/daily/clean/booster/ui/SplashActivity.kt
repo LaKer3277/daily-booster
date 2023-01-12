@@ -41,12 +41,12 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         when (intentAction) {
             DB_ACTION_FROM_POP_NOTY -> {
                 NotifyManager.cancelAlertNotification()
-                FiBLogEvent.pop_log(tanId, 2)
-                FiBLogEvent.up_all_start()
+                FirebaseEvent.popLog(tanId, 2)
+                FirebaseEvent.logEvent("up_all_start")
             }
 
             DB_ACTION_FROM_NOTY_RESIDENT -> {
-                FiBLogEvent.notifi_click(workID)
+                FirebaseEvent.notifyResidentClick(workID)
             }
         }
     }
@@ -54,8 +54,8 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     override fun dailyData() {
         dispatchIntent(intent)
 
-        FiBLogEvent.start_page()
-        FiBLogEvent.user_rent()
+        FirebaseEvent.logEvent("start_page")
+        FirebaseEvent.userRetention()
     }
 
     override fun dailyLoad() {

@@ -11,7 +11,7 @@ import com.daily.clean.booster.ads.model.BaseAd
 import com.daily.clean.booster.ads.model.BaseIns
 import com.daily.clean.booster.base.BaseActivity
 import com.daily.clean.booster.base.*
-import com.daily.clean.booster.base.FiBLogEvent
+import com.daily.clean.booster.base.FirebaseEvent
 import com.daily.clean.booster.databinding.ActivityCleanBinding
 import com.daily.clean.booster.entity.DaiBooCleanEvent
 import com.daily.clean.booster.utils.DaiBooMK
@@ -47,7 +47,7 @@ class JunkCleanActivity : BaseActivity<ActivityCleanBinding>() {
     private fun cleanJob() {
         jobClean?.cancel()
         jobClean = lifecycleScope.launch {
-            FiBLogEvent.page_clean_show(NotyWorkClean)
+            FirebaseEvent.pageCleanShow(NotyWorkClean)
             EventBus.getDefault().post(DaiBooCleanEvent(true))
             animClean.run { start() }
             doCycle {
@@ -117,7 +117,6 @@ class JunkCleanActivity : BaseActivity<ActivityCleanBinding>() {
 
 
     private fun showAdOrInvokeNext() {
-        FiBLogEvent.clean_page_to_result_start(NotyWorkClean)
         AdsLoader.loadAd(this, AdPos.InsClean, object : AdsListener() {
             override fun onLoaded(ad: BaseAd) {
                 if (isActivityPaused) {
@@ -147,7 +146,6 @@ class JunkCleanActivity : BaseActivity<ActivityCleanBinding>() {
     private fun goNextPage() {
         val extra = intent.getStringExtra(DB_KEY_CLEAN_SIZE) ?: "0B"
         goCleanResult(NotyWorkClean, extra = extra, from = intent.action)
-        FiBLogEvent.clean_page_to_result_end(NotyWorkClean)
         finish()
     }
 }

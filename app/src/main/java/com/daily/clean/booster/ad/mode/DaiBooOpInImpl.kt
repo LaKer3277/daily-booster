@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.daily.clean.booster.ad.base.IAdShowCallBack
 import com.daily.clean.booster.ad.base.BaseLoader
 import com.daily.clean.booster.appIns
-import com.daily.clean.booster.base.FiBLogEvent
+import com.daily.clean.booster.base.FirebaseEvent
 import com.daily.clean.booster.entity.DaiBooAdEvent
 import com.daily.clean.booster.entity.AdConf
 import com.daily.clean.booster.tba.HttpTBA
@@ -116,7 +116,7 @@ class DaiBooOpInImpl(var tag: String, conf: AdConf) : BaseLoader(conf) {
 
                     override fun onAdClicked() {
                         callback?.onAdClicked(this@DaiBooOpInImpl)
-                        FiBLogEvent.ad_click(tag)
+                        FirebaseEvent.ad_click(tag)
                     }
 
                     override fun onAdImpression() {
@@ -125,7 +125,7 @@ class DaiBooOpInImpl(var tag: String, conf: AdConf) : BaseLoader(conf) {
                         adEvent?.let {
                             HttpTBA.doReportAd(adEvent = it)
                         }
-                        FiBLogEvent.dm_ad_impression(tag)
+                        FirebaseEvent.dm_ad_impression(tag)
 
                     }
                 }

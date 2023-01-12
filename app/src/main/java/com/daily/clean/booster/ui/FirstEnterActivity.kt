@@ -7,7 +7,7 @@ import com.daily.clean.booster.ads.AdsLoader
 import com.daily.clean.booster.ads.conf.AdPos
 import com.daily.clean.booster.base.BaseActivity
 import com.daily.clean.booster.base.*
-import com.daily.clean.booster.base.FiBLogEvent
+import com.daily.clean.booster.base.FirebaseEvent
 import com.daily.clean.booster.databinding.ActivityFirstBinding
 import com.daily.clean.booster.ext.*
 import com.daily.clean.booster.pop.NotyWorkBooster
@@ -22,7 +22,7 @@ class FirstEnterActivity : BaseActivity<ActivityFirstBinding>() {
     }
 
     override fun dailyData() {
-        FiBLogEvent.start_first_()
+        FirebaseEvent.logEvent("start_first_")
     }
 
     override fun dailyLoad() {//下划线

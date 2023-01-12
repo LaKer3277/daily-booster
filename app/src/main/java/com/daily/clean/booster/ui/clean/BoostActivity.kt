@@ -15,7 +15,7 @@ import com.daily.clean.booster.ads.model.BaseIns
 import com.daily.clean.booster.appIns
 import com.daily.clean.booster.base.BaseActivity
 import com.daily.clean.booster.base.*
-import com.daily.clean.booster.base.FiBLogEvent
+import com.daily.clean.booster.base.FirebaseEvent
 import com.daily.clean.booster.core.CleanData
 import com.daily.clean.booster.databinding.ActivityBoostBinding
 import com.daily.clean.booster.ext.doCycle
@@ -60,7 +60,7 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
     }
 
     private fun startScanning() {
-        if (isFirst.not()) FiBLogEvent.page_scan_show(workingMode)
+        if (isFirst.not()) FirebaseEvent.pageScanShow(workingMode)
         startAppAnim()
         binding.lotAnimScan.apply {
             setAnimation(getScanAnimal())
@@ -76,7 +76,7 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
     @SuppressLint("SetTextI18n")
     private fun startCleaning() {
         lifecycleScope.launch {
-            if (isFirst.not()) FiBLogEvent.page_clean_show(workingMode)
+            if (isFirst.not()) FirebaseEvent.pageCleanShow(workingMode)
             binding.lotAnimScan.run {
                 setAnimation(getCleanAnimal())
                 playAnimation()
@@ -207,16 +207,15 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
     private fun fbLog() {
         val tanId = intent.getStringExtra(Noty_KEY_SOURCE)
         if (intent?.action == DB_ACTION_FROM_POP_NOTY) {
-            FiBLogEvent.up_all_page()
+            FirebaseEvent.logEvent("up_all_page")
         }
 
         if (isFirst) {
-            FiBLogEvent.start_first_clean()
+            FirebaseEvent.logEvent("start_first_clean")
         }
     }
 
     private fun showAdClean() {
-        FiBLogEvent.clean_page_to_result_start(workingMode)
         AdsLoader.loadAd(this, AdPos.InsClean, object :AdsListener() {
             override fun onLoaded(ad: BaseAd) {
                 if (isActivityPaused) {

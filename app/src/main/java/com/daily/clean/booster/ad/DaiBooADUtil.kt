@@ -9,7 +9,7 @@ import com.daily.clean.booster.ad.mode.DaiBooOpInImpl
 import com.daily.clean.booster.ad.mode.DaiBooOpenMaxImpl
 import com.daily.clean.booster.base.BaseActivity
 import com.daily.clean.booster.base.*
-import com.daily.clean.booster.base.FiBLogEvent
+import com.daily.clean.booster.base.FirebaseEvent
 import com.daily.clean.booster.entity.DaiBooAdAllBean
 import com.daily.clean.booster.entity.AdConf
 import com.daily.clean.booster.utils.DaiBooMK
@@ -202,7 +202,7 @@ object DaiBooADUtil {
         if (index >= ads.size) {
             isLoading[key] = false
             //瀑布流请求完成
-            FiBLogEvent.ad_request(key, (Date().time - startTime) / 1000, false)
+            FirebaseEvent.ad_request(key, (Date().time - startTime) / 1000, false)
             callEnd()
         } else {
 
@@ -236,7 +236,7 @@ object DaiBooADUtil {
                 //加载成功后 添加缓存
                 cache[key]?.add(it)
                 callBack(it)
-                FiBLogEvent.ad_request(key, (Date().time - startTime) / 1000, true)
+                FirebaseEvent.ad_request(key, (Date().time - startTime) / 1000, true)
             }, {
                 //失败，请求下一个
                 loadAD(activity, key, index + 1, ads, startTime, callBack, callEnd)
@@ -279,7 +279,7 @@ object DaiBooADUtil {
             block(false)
         } else {
 
-            FiBLogEvent.ad_chance(key)
+            FirebaseEvent.ad_chance(key)
 
             baseAd.show(activity, object : IAdShowCallBack {
 

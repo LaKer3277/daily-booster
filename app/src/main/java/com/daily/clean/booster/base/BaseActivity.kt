@@ -126,19 +126,19 @@ abstract class BaseActivity<T: ViewBinding> : AppCompatActivity() {
             if (XXPermissions.isGranted(this, Permission.Group.STORAGE)) {
                 onGranted()
             } else {
-                FiBLogEvent.per_show()
+                FirebaseEvent.logEvent("per_show")
                 XXPermissions.with(this)
                     .permission(Permission.Group.STORAGE)
                     .request(object : OnPermissionCallback {
                         override fun onGranted(permissions: List<String>, all: Boolean) {
                             if (all) {
-                                FiBLogEvent.per_agree()
+                                FirebaseEvent.logEvent("per_agree")
                                 onGranted()
                             }
                         }
 
                         override fun onDenied(permissions: List<String>, never: Boolean) {
-                            FiBLogEvent.per_reject()
+                            FirebaseEvent.logEvent("per_reject")
                             onDenied(true)
                         }
                     })
@@ -153,7 +153,7 @@ abstract class BaseActivity<T: ViewBinding> : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !Environment.isExternalStorageManager()) {
 
             MaterialDialog(this).show {
-                FiBLogEvent.per_show()
+                FirebaseEvent.logEvent("per_show")
                 customView(R.layout.dialog_permission_request)
                 cancelable(false)
                 cancelOnTouchOutside(false)
@@ -168,13 +168,13 @@ abstract class BaseActivity<T: ViewBinding> : AppCompatActivity() {
                             .request(object : OnPermissionCallback {
                                 override fun onGranted(permissions: List<String>, all: Boolean) {
                                     if (all) {
-                                        FiBLogEvent.per_agree()
+                                        FirebaseEvent.logEvent("per_agree")
                                         onGranted()
                                     }
                                 }
 
                                 override fun onDenied(permissions: List<String>, never: Boolean) {
-                                    FiBLogEvent.per_reject()
+                                    FirebaseEvent.logEvent("per_reject")
                                     onDenied(never)
                                 }
                             })
@@ -182,7 +182,7 @@ abstract class BaseActivity<T: ViewBinding> : AppCompatActivity() {
                 this.view.contentLayout.findViewById<AppCompatTextView>(R.id.btnCancel)
                     .setOnClickListener {
                         dismiss()
-                        FiBLogEvent.per_reject()
+                        FirebaseEvent.logEvent("per_reject")
                         onDenied(true)
                     }
             }

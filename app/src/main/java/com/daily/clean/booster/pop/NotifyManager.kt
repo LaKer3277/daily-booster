@@ -1,7 +1,7 @@
 package com.daily.clean.booster.pop
 
 import com.daily.clean.booster.appIns
-import com.daily.clean.booster.base.FiBLogEvent
+import com.daily.clean.booster.base.FirebaseEvent
 import com.daily.clean.booster.datas.RemoteConfig
 import com.daily.clean.booster.entity.DaiBooPopItemBean
 import com.daily.clean.booster.ext.loggerNotify
@@ -30,7 +30,7 @@ object NotifyManager: NotifyPopper() {
         if (!isCanPopConfig(sourceId, getPopItem(sourceId))) {
             return false
         }
-        FiBLogEvent.pop_log(sourceId, 0)
+        FirebaseEvent.popLog(sourceId, 0)
         createNotificationAndPop(workId, sourceId)
         saveLastPopTime(sourceId)
         return true

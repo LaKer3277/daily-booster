@@ -16,7 +16,7 @@ import com.daily.clean.booster.ads.model.BaseAd
 import com.daily.clean.booster.ads.model.BaseNav
 import com.daily.clean.booster.base.BaseActivity
 import com.daily.clean.booster.base.*
-import com.daily.clean.booster.base.FiBLogEvent
+import com.daily.clean.booster.base.FirebaseEvent
 import com.daily.clean.booster.core.CleanData
 import com.daily.clean.booster.databinding.ActivityResultBinding
 import com.daily.clean.booster.entity.DaiBooUIItem
@@ -80,12 +80,12 @@ class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
 
     private fun log() {
         if (DB_ACTION_FROM_POP_NOTY == intent?.action) {
-            FiBLogEvent.up_all_relust()
+            FirebaseEvent.logEvent("up_all_relust")
         }
         if (isFirst) {
-            FiBLogEvent.start_first_result()
+            FirebaseEvent.logEvent("start_first_result")
         }else{
-            FiBLogEvent.page_result_show(workId)
+            FirebaseEvent.pageResultShow(workId)
         }
     }
 
@@ -175,9 +175,9 @@ class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
 
     override fun onBackPressed() {
         if (isFirst) {
-            FiBLogEvent.start_first_return()
+            FirebaseEvent.logEvent("start_first_return")
         }else{
-            FiBLogEvent.page_return_click(workId)
+            FirebaseEvent.pageReturnClick(workId)
         }
         goMain()
         finish()

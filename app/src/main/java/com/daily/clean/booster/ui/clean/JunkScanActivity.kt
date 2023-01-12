@@ -14,7 +14,7 @@ import com.daily.clean.booster.ads.AdsLoader
 import com.daily.clean.booster.ads.conf.AdPos
 import com.daily.clean.booster.appIns
 import com.daily.clean.booster.base.BaseActivity
-import com.daily.clean.booster.base.FiBLogEvent
+import com.daily.clean.booster.base.FirebaseEvent
 import com.daily.clean.booster.base.*
 import com.daily.clean.booster.core.CleanData
 import com.daily.clean.booster.core.DaiBooCleaner
@@ -41,9 +41,9 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
     override fun dailyData() {
         val tanId = intent.getStringExtra(Noty_KEY_SOURCE)
         if (intent?.action == DB_ACTION_FROM_POP_NOTY) {
-            FiBLogEvent.up_all_page()
+            FirebaseEvent.logEvent("up_all_page")
         }
-        FiBLogEvent.page_scan_show(NotyWorkClean)
+        FirebaseEvent.pageScanShow(NotyWorkClean)
 
         binding.titleBack.setOnClickListener { onBackPressed() }
 

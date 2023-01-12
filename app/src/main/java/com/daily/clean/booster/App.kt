@@ -13,7 +13,7 @@ import com.applovin.sdk.AppLovinSdk
 import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.ProcessUtils
 import com.daily.clean.booster.base.*
-import com.daily.clean.booster.base.FiBLogEvent
+import com.daily.clean.booster.base.FirebaseEvent
 import com.daily.clean.booster.core.StartupReceiver
 import com.daily.clean.booster.datas.RemoteConfig
 import com.daily.clean.booster.ext.loggerApp
@@ -62,12 +62,18 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
         initAds()
 
         RemoteConfig.ins.fetchInit()
-        FiBLogEvent.app_active()
-        FiBLogEvent.user_rent()
+        FirebaseEvent.userRetention()
         HttpTBA.initStartup()
 
         WorkerAll.startImmediatelyWork(this)
         registerActivityLifecycleCallbacks(this)
+
+        GlobalScope.launch {
+            while (true) {
+                FirebaseEvent.logEvent("session_sttt")
+                delay(30 * 60_000L)
+            }
+        }
     }
 
     private fun initAds() {

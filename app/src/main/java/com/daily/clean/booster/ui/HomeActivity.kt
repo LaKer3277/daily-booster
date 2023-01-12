@@ -10,7 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import com.daily.clean.booster.R
 import com.daily.clean.booster.base.BaseActivity
 import com.daily.clean.booster.base.*
-import com.daily.clean.booster.base.FiBLogEvent
+import com.daily.clean.booster.base.FirebaseEvent
 import com.daily.clean.booster.core.CleanData
 import com.daily.clean.booster.core.DaiBooCleaner
 import com.daily.clean.booster.databinding.ActivityHomeBinding
@@ -32,7 +32,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     }
 
     override fun dailyData() {
-        FiBLogEvent.page_home_show()
+        FirebaseEvent.logEvent("page_home_show")
         initHome()
         initMenu()
     }
@@ -66,21 +66,21 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         }
 
         binding.contentHome.cardClean.setOnClickListener {
-            FiBLogEvent.page_home_clean2()
+            FirebaseEvent.logEvent("page_home_clean2")
             clean(NotyWorkClean) }
         binding.contentHome.cardBattry.setOnClickListener {
-            FiBLogEvent.page_home_battery()
+            FirebaseEvent.logEvent("page_home_battery")
             clean(NotyWorkBattery) }
         binding.contentHome.cardBoost.setOnClickListener {
-            FiBLogEvent.page_home_boost()
+            FirebaseEvent.logEvent("page_home_boost")
             clean(NotyWorkBooster)
         }
         binding.contentHome.cardCpu.setOnClickListener {
-            FiBLogEvent.page_home_cpu()
+            FirebaseEvent.logEvent("page_home_cpu")
             clean(NotyWorkCpu)
         }
         binding.contentHome.ivBall.setOnClickListener {
-            FiBLogEvent.page_home_clean()
+            FirebaseEvent.logEvent("page_home_clean")
             clean(NotyWorkClean)
         }
     }
