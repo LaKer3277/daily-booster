@@ -66,6 +66,7 @@ class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
 
     private fun loadNavAd() {
         binding.resultNatAdLayout.visibility = View.VISIBLE
+        FirebaseEvent.adChance(AdPos.NavResult)
         AdsLoader.loadAd(this, AdPos.NavResult, object :AdsListener() {
             override fun onLoaded(ad: BaseAd) {
                 if (isActivityPaused) {
@@ -74,6 +75,10 @@ class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
                 }
                 if (ad !is BaseNav) return
                 ad.show(this@CleanResultActivity, binding.resultNatAdLayout)
+            }
+
+            override fun onShown() {
+                FirebaseEvent.adImpression(AdPos.NavResult)
             }
         })
     }

@@ -2,6 +2,7 @@ package com.daily.clean.booster.base
 
 import android.os.Bundle
 import com.blankj.utilcode.util.TimeUtils
+import com.daily.clean.booster.ads.conf.AdPos
 import com.daily.clean.booster.appIns
 import com.daily.clean.booster.entity.DaiBooLogEvent
 import com.daily.clean.booster.tba.HttpTBA
@@ -151,36 +152,15 @@ object FirebaseEvent {
         }
     }
 
-
-    /**
-     * 一轮waterfall广告请求开始发出时记录，附带两个事件参数：
-    1. Type（广告类型），参数值：open, interstitial, native
-    2. LoadTime（一轮waterfall广告请求发出-加载完成的时间，单位秒），参数值：1,2,3,...
-    3. Result（该轮请求是否得到填充），参数值：success, fail
-     */
-    fun ad_request(tag: String, time: Long, result: Boolean) {
-        var bundle = Bundle()
-        bundle.putString("ad_pos_id", tag)
-        bundle.putLong("LoadTime", time)
-        bundle.putString("Result", if (result) "success" else "fail")
-        logEvent("ad_request", bundle)
-    }
-
-    fun ad_chance(tag: String) {
+    fun adChance(adPos: AdPos) {
         val bundle = Bundle()
-        bundle.putString("ad_pos_id", tag)
+        bundle.putString("ad_pos_id", adPos.adPos)
         logEvent("db_ad_chance", bundle)
     }
 
-    fun dm_ad_impression(tag: String) {
+    fun adImpression(adPos: AdPos) {
         val bundle = Bundle()
-        bundle.putString("ad_pos_id", tag)
+        bundle.putString("ad_pos_id", adPos.adPos)
         logEvent("db_ad_impression", bundle)
-    }
-
-    fun ad_click(tag: String) {
-        val bundle = Bundle()
-        bundle.putString("ad_pos_id", tag)
-        logEvent("ad_click", bundle)
     }
 }

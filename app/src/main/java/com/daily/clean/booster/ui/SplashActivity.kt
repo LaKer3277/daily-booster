@@ -67,9 +67,10 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
             }
             openNextLogic.invoke()
         }
+        FirebaseEvent.adChance(AdPos.Open)
         lifecycleScope.launch {
             delay(200L)
-            openAdLogic() {
+            openAdLogic {
                 openNextLogic.invoke()
             }
             delay(600L)
@@ -141,6 +142,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
             override fun onShown() {
                 isAdImpression = true
+                FirebaseEvent.adImpression(AdPos.Open)
             }
         })
     }

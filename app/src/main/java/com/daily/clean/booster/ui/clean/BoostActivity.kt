@@ -216,6 +216,7 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
     }
 
     private fun showAdClean() {
+        FirebaseEvent.adChance(AdPos.InsClean)
         AdsLoader.loadAd(this, AdPos.InsClean, object :AdsListener() {
             override fun onLoaded(ad: BaseAd) {
                 if (isActivityPaused) {
@@ -238,6 +239,10 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
 
             override fun onDismiss() {
                 goNextPage()
+            }
+
+            override fun onShown() {
+                FirebaseEvent.adImpression(AdPos.InsClean)
             }
         }, onlyCache = true)
     }

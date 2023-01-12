@@ -117,6 +117,7 @@ class JunkCleanActivity : BaseActivity<ActivityCleanBinding>() {
 
 
     private fun showAdOrInvokeNext() {
+        FirebaseEvent.adChance(AdPos.InsClean)
         AdsLoader.loadAd(this, AdPos.InsClean, object : AdsListener() {
             override fun onLoaded(ad: BaseAd) {
                 if (isActivityPaused) {
@@ -139,6 +140,10 @@ class JunkCleanActivity : BaseActivity<ActivityCleanBinding>() {
 
             override fun onDismiss() {
                 goNextPage()
+            }
+
+            override fun onShown() {
+                FirebaseEvent.adImpression(AdPos.InsClean)
             }
         }, onlyCache = true)
     }
