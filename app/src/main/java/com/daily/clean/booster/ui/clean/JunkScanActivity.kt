@@ -55,7 +55,6 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
             if (size> 500.MB){
                 animBg.start()
             }
-            LogDB.dScan("all size = $size")
             val fs = Formatter.formatFileSize(this, size).uppercase()
             fs.replace(" ","").let {
                 binding.tvJunkSize.text = it.substring(0, it.length - 2)
@@ -145,11 +144,9 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
         var selectedSize = 0L
         CleanData.cache.forEach { junk ->
             if (junk.isSelected) {
-                LogDB.dScan("item select = ${junk.getSelectedSize()}")
                 selectedSize += junk.getSelectedSize()
             }
         }
-        LogDB.dScan("all size select = $selectedSize")
         kotlin.runCatching {
             selectSizeStr = Formatter.formatFileSize(this, selectedSize).uppercase()
             binding.tvClean.text = getString(R.string.clean_junk_xx_up, selectSizeStr)
@@ -192,7 +189,6 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
                             curTotalSize += (file?.length() ?: 0L)
                             sizeLiveData.postValue(curTotalSize)
                         } catch (e: Exception) {
-                            LogDB.eScan("scan-${file?.absolutePath}")
                         }
                     }
 
@@ -252,7 +248,6 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
     }
 
     private fun startProgressTimer(d: Long = 1500L, target: Int) {
-        LogDB.d("startProgressTimer $target")
         cancelProgressTimer()
         progressTimer = ValueAnimator.ofInt(binding.progressScan.progress, target)
         progressTimer?.apply {
@@ -303,7 +298,6 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
             interpolator = LinearInterpolator()
             playMode = PlayMode.TOGETHER
             onEnd {
-                LogDB.d("boost complete...")
             }
         }
     }
@@ -325,7 +319,6 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
             interpolator = LinearInterpolator()
             playMode = PlayMode.TOGETHER
             onEnd {
-                LogDB.d("boost complete...")
             }
         }
     }

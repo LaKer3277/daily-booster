@@ -8,7 +8,6 @@ import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.entity.DaiBooAdEvent
 import com.daily.clean.booster.entity.AdConf
 import com.daily.clean.booster.tba.HttpTBA
-import com.daily.clean.booster.utils.LogDB
 import com.google.android.gms.ads.AdError
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
@@ -27,7 +26,6 @@ class DaiBooOpInImpl(var tag: String, conf: AdConf) : BaseLoader(conf) {
     private fun getAdRequest() = AdRequest.Builder().build();
 
     override fun load(success: (BaseLoader) -> Unit, failed: () -> Unit) {
-        LogDB.dAD("--$tag----load---start--$adItem")
 
         adItem?.let {
             when (it.getFormat()) {
@@ -39,8 +37,7 @@ class DaiBooOpInImpl(var tag: String, conf: AdConf) : BaseLoader(conf) {
                         getAdRequest(),
                         object : InterstitialAdLoadCallback() {
                             override fun onAdLoaded(interstitialAd: InterstitialAd) {
-                                LogDB.dAD("--$tag----load---success--" + interstitialAd.hashCode())
-//                                this@ADProsecImpl.mAd_inter = interstitialAd
+                                //                                this@ADProsecImpl.mAd_inter = interstitialAd
                                 mAd = interstitialAd
                                 this@DaiBooOpInImpl.loadTime = Date().time
                                 success.invoke(this@DaiBooOpInImpl)
@@ -50,15 +47,13 @@ class DaiBooOpInImpl(var tag: String, conf: AdConf) : BaseLoader(conf) {
                                     daiboo_ad_item = adItem
                                 )
 
-                                interstitialAd.setOnPaidEventListener {v->
-                                    LogDB.dAD("--$tag----show---pay--${v.valueMicros}")
+                                interstitialAd.setOnPaidEventListener { v ->
                                     adEvent?.daiboo_value_micros = (v.valueMicros)
                                     adEvent?.daiboo_precision_type = "${v.precisionType}"
                                 }
                             }
 
                             override fun onAdFailedToLoad(loadAdError: LoadAdError) {
-                                LogDB.dAD("--$tag----load---success--error: ${loadAdError.message}--${loadAdError.code}")
                                 failed.invoke()
                             }
                         })
@@ -71,8 +66,7 @@ class DaiBooOpInImpl(var tag: String, conf: AdConf) : BaseLoader(conf) {
                         AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT,
                         object : AppOpenAd.AppOpenAdLoadCallback() {
                             override fun onAdLoaded(openAD: AppOpenAd) {
-                                LogDB.dAD("--$tag----load---success--" + openAD.hashCode())
-//                                mAd_open = openAD
+                                //                                mAd_open = openAD
                                 mAd = openAD
                                 loadTime = Date().time
                                 success.invoke(this@DaiBooOpInImpl)
@@ -82,15 +76,13 @@ class DaiBooOpInImpl(var tag: String, conf: AdConf) : BaseLoader(conf) {
                                     daiboo_ad_item = adItem
                                 )
 
-                                openAD.setOnPaidEventListener {v->
-                                    LogDB.dAD("--$tag----show---pay--${v.valueMicros}")
+                                openAD.setOnPaidEventListener { v ->
                                     adEvent?.daiboo_value_micros = (v.valueMicros)
                                     adEvent?.daiboo_precision_type = "${v.precisionType}"
                                 }
                             }
 
                             override fun onAdFailedToLoad(loadAdError: LoadAdError) {
-                                LogDB.e("--$tag----load----error:${loadAdError.message}  ${loadAdError.code}")
                                 failed.invoke()
                             }
                         })
@@ -105,29 +97,24 @@ class DaiBooOpInImpl(var tag: String, conf: AdConf) : BaseLoader(conf) {
      * Shows the ad if one isn't already showing.
      */
     override fun show(activity: AppCompatActivity, callback: IAdShowCallBack?) {
-        LogDB.dAD("--$tag----show---start--")
         if (isAdAvailable()) {
             val fullScreenContentCallback: FullScreenContentCallback =
                 object : FullScreenContentCallback() {
                     override fun onAdDismissedFullScreenContent() {
-                        LogDB.dAD("--$tag----show---dismiss-- ")
                         mAd = null
                         callback?.onAdDismiss(this@DaiBooOpInImpl)
                     }
 
                     override fun onAdFailedToShowFullScreenContent(adError: AdError) {
-                        LogDB.dAD("--$tag----show---error=" + adError.message)
                         mAd = null
                         callback?.onAdShowed(false)
                     }
 
                     override fun onAdShowedFullScreenContent() {
-                        LogDB.dAD("--$tag----show---success")
                         callback?.onAdShowed(true)
                     }
 
                     override fun onAdClicked() {
-                        LogDB.dAD("--$tag----show---click")
                         callback?.onAdClicked(this@DaiBooOpInImpl)
                         FiBLogEvent.ad_click(tag)
                     }

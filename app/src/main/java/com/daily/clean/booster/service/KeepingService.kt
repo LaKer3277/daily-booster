@@ -9,7 +9,6 @@ import com.daily.clean.booster.core.CleanData
 import com.daily.clean.booster.pop.NotifyTools
 import com.daily.clean.booster.entity.DaiBooCleanEvent
 import com.daily.clean.booster.utils.DaiBooRAMUtils
-import com.daily.clean.booster.utils.LogDB
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -47,7 +46,6 @@ class KeepingService : Service() {
                 CleanData.cache.forEach { cacheParent ->
                     cacheParent.childDaiBooCleans.forEach { cacheChild ->
                         if (cacheChild.isSelected) cacheChild.pathList.forEach { path ->
-                            LogDB.dService("---delete---$path")
                             FileUtils.delete(path)
                         }
                     }

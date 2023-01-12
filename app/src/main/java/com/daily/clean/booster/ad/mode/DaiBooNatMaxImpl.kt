@@ -16,11 +16,11 @@ import com.daily.clean.booster.base.*
 import com.daily.clean.booster.entity.DaiBooAdEvent
 import com.daily.clean.booster.entity.AdConf
 import com.daily.clean.booster.tba.HttpTBA
-import com.daily.clean.booster.utils.LogDB
 import java.util.*
 
 
-class DaiBooNatMaxImpl(val activity: AppCompatActivity, var tag: String, conf: AdConf) : BaseLoader(conf) {
+class DaiBooNatMaxImpl(val activity: AppCompatActivity, var tag: String, conf: AdConf) :
+    BaseLoader(conf) {
 
 
     var ADCallBack: IAdShowCallBack? = null
@@ -31,9 +31,6 @@ class DaiBooNatMaxImpl(val activity: AppCompatActivity, var tag: String, conf: A
 
 
     override fun load(success: (BaseLoader) -> Unit, failed: () -> Unit) {
-
-        LogDB.dAD("--$tag-MAX---load---start--$adItem")
-
         nativeAdLoader = MaxNativeAdLoader(adItem.Id, activity)
         nativeAdLoader?.setRevenueListener {
             if (it.revenue > 0) {
@@ -43,12 +40,10 @@ class DaiBooNatMaxImpl(val activity: AppCompatActivity, var tag: String, conf: A
         }
         nativeAdLoader?.setNativeAdListener(object : MaxNativeAdListener() {
             override fun onNativeAdLoaded(nativeAdView: MaxNativeAdView?, nativeAd: MaxAd) {
-                LogDB.dAD("--$tag-MAX---load---success--$nativeAdView")
                 mAd = nativeAd
                 val nativeAd = nativeAd.nativeAd
                 nativeAd?.let {
                     val aspectRatio = nativeAd.mediaContentAspectRatio
-                    LogDB.dAD("--$tag-MAX---load---success--aspectRatio=$aspectRatio")
                 }
                 loadTime = Date().time
                 mNativeAdView = nativeAdView
@@ -62,12 +57,10 @@ class DaiBooNatMaxImpl(val activity: AppCompatActivity, var tag: String, conf: A
             }
 
             override fun onNativeAdLoadFailed(adUnitId: String, error: MaxError) {
-                LogDB.dAD("--$tag-MAX---load---error:${error.code}")
                 failed.invoke()
             }
 
             override fun onNativeAdClicked(nativeAd: MaxAd) {
-                LogDB.dAD("--$tag-MAX---load---onAdClicked-${nativeAd?.hashCode()}")
                 isClicked = true
                 ADCallBack?.onAdClicked(this@DaiBooNatMaxImpl)
                 FiBLogEvent.ad_click(tag)
@@ -84,7 +77,6 @@ class DaiBooNatMaxImpl(val activity: AppCompatActivity, var tag: String, conf: A
      */
     override fun show(activity: AppCompatActivity, callback: IAdShowCallBack?) {
         this.ADCallBack = callback
-        LogDB.dAD("--$tag-MAX---show---start--")
         when (activity) {
 //            is MainActivity -> showNativeAD(activity.getCurrentFragmentADLayout())
 //            is JunkSelectActivity -> showNativeAD(activity.scan_nat_ad_layout)
@@ -116,23 +108,20 @@ class DaiBooNatMaxImpl(val activity: AppCompatActivity, var tag: String, conf: A
     }
 
     private fun showNativeAD(frameLayout: ViewGroup?) {
-            LogDB.dAD("--$tag-MAX---show--try-${mAd?.hashCode()}  ${mNativeAdView}  $frameLayout")
-            if (mNativeAdView != null && frameLayout != null) {
-                frameLayout.removeAllViews()
-                frameLayout.addView(mNativeAdView)
-                LogDB.dAD("--$tag-MAX---show---success-${mAd?.hashCode()}")
-                ADCallBack?.onAdShowed(true)
-                adEvent?.let {
-                    HttpTBA.doReportAd(adEvent = it)
-                }
-                FiBLogEvent.dm_ad_impression(tag)
+        if (mNativeAdView != null && frameLayout != null) {
+            frameLayout.removeAllViews()
+            frameLayout.addView(mNativeAdView)
+            ADCallBack?.onAdShowed(true)
+            adEvent?.let {
+                HttpTBA.doReportAd(adEvent = it)
             }
+            FiBLogEvent.dm_ad_impression(tag)
+        }
     }
 
 
     override fun destroy() {
         super.destroy()
-        LogDB.dAD("--$tag-MAX---show---destroy ${mAd?.hashCode()}")
         if (mAd != null) {
             nativeAdLoader?.destroy(mAd)
             mAd = null

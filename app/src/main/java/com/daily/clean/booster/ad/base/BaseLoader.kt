@@ -3,7 +3,6 @@ package com.daily.clean.booster.ad.base
 import androidx.appcompat.app.AppCompatActivity
 import com.daily.clean.booster.entity.DaiBooAdEvent
 import com.daily.clean.booster.entity.AdConf
-import com.daily.clean.booster.utils.LogDB
 import java.util.*
 
 abstract class BaseLoader(var adItem: AdConf) {
@@ -21,7 +20,6 @@ abstract class BaseLoader(var adItem: AdConf) {
     fun wasTimeIn(cacheTime: Int): Boolean {
         if(cacheTime == 0) return true
         val dateDifference: Long = (Date()).time - loadTime
-        LogDB.d("#ADS---dateDifference = ${dateDifference/1000}")
         val per: Long = 1000
         return (dateDifference < (per * cacheTime))
     }

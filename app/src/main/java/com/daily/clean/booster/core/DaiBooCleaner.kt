@@ -183,7 +183,6 @@ class DaiBooCleaner(private val parent: File) {
                     val filePathForLowercase = filePath.lowercase()
                     //符合规则的垃圾文件
                     if (filePathForLowercase.matches(filter.lowercase().toRegex())) {
-                        LogDB.dScan("过滤--开始-->符合规则---$filePathForLowercase")
 //                        LogUtils.dScan("过滤--开始-->appRegex---$appRegex")
                         if (file.isFile) {
                             if (filePathForLowercase.endsWith(".apk")) {
@@ -201,7 +200,6 @@ class DaiBooCleaner(private val parent: File) {
                                     pathList.add(filePath)
                                 }.let { scanTemp.tempFiles.add(it) }
                             } else {
-                                LogDB.dScan("过滤--add-others--$filePathForLowercase")
                                 scanTemp.otherFiles.run {
                                     pathList.add(filePath)
                                     size += file.length()
@@ -210,9 +208,7 @@ class DaiBooCleaner(private val parent: File) {
                         }
                         //如果文件在包名文件夹中
                         else if (filePathForLowercase.matches(packageRegex)) {
-                            LogDB.dScan("过滤--开始-->符合规则---packageName")
                             val packageName = packageRegex.find(filePathForLowercase)?.value ?: ""
-                            LogDB.dScan("过滤--add--packageName--$packageName")
                             if (TextUtils.isEmpty(packageName)) {
                                 scanTemp.otherFiles.run {
                                     pathList.add(filePath)
@@ -232,7 +228,6 @@ class DaiBooCleaner(private val parent: File) {
                                 }
                             }
                         }
-                        LogDB.dScan("过滤--return")
                         return true
                     }
                 }

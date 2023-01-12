@@ -7,7 +7,6 @@ import com.daily.clean.booster.appIns
 import com.daily.clean.booster.entity.DaiBooLogEvent
 import com.daily.clean.booster.tba.HttpTBA
 import com.daily.clean.booster.utils.DaiBooMK
-import com.daily.clean.booster.utils.LogDB
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.daily.clean.booster.pop.*
 import java.util.*
@@ -23,13 +22,11 @@ object FiBLogEvent {
     }
 
     private fun logEvent(key: String, params: Bundle?) {
-        LogDB.dEvent("LOGDOT---$key <<< $params")
         if (DB_USE_FB) {
             firebaseAnalytics.logEvent(key, params)
         }
 
         HttpTBA.doReportLog(logEvent = DaiBooLogEvent(key, params))
-
     }
 
 
@@ -248,7 +245,6 @@ object FiBLogEvent {
     fun user_rent() {
         var times = DaiBooMK.decode(KEY_LOGIN_TIMES, 0)
         val lastReportTime = DaiBooMK.decode(KEY_USER_RENTENTION, 0L)
-        LogDB.dEvent("LOGDOT---user_retention value=day$times")
         if (TimeUtils.isToday(lastReportTime).not()) {
             if (DB_USE_FB)
                 firebaseAnalytics.setUserProperty("user_rent", "day$times")
@@ -260,9 +256,7 @@ object FiBLogEvent {
             HttpTBA.doReportLog(logEvent = DaiBooLogEvent("biscuit", Bundle().apply {
                 putString("user_rent", "day$times")
             }))
-            LogDB.dEvent("LOGDOT---保存数据")
         } else {
-            LogDB.dEvent("LOGDOT---今日已经LOGDOT")
         }
     }
 

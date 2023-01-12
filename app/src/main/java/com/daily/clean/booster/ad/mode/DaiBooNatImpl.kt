@@ -14,7 +14,6 @@ import com.daily.clean.booster.base.BaseActivity
 import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.entity.DaiBooAdEvent
 import com.daily.clean.booster.entity.AdConf
-import com.daily.clean.booster.utils.LogDB
 import com.daily.clean.booster.tba.HttpTBA
 import com.daily.clean.booster.ui.clean.CleanResultActivity
 import com.google.android.gms.ads.AdListener
@@ -40,12 +39,10 @@ class DaiBooNatImpl(var tag: String, conf: AdConf) : BaseLoader(conf) {
 
     override fun load(success: (BaseLoader) -> Unit, failed: () -> Unit) {
 
-        LogDB.dAD("--$tag----load---start--$adItem")
 
         AdLoader.Builder(appIns, adItem.Id).forNativeAd {
             mAd = it
             isClicked = false
-            LogDB.dAD("--$tag----load---success--" + it.hashCode())
             this@DaiBooNatImpl.loadTime = Date().time
             success.invoke(this@DaiBooNatImpl)
             adEvent = DaiBooAdEvent(
@@ -54,7 +51,6 @@ class DaiBooNatImpl(var tag: String, conf: AdConf) : BaseLoader(conf) {
                 daiboo_ad_item = adItem
             )
             mAd?.setOnPaidEventListener { v ->
-                LogDB.dAD("--$tag----show---pay--${v.valueMicros}")
                 adEvent?.daiboo_value_micros = (v.valueMicros)
                 adEvent?.daiboo_precision_type = "${v.precisionType}"
             }
@@ -62,28 +58,23 @@ class DaiBooNatImpl(var tag: String, conf: AdConf) : BaseLoader(conf) {
         }.withAdListener(object : AdListener() {
 
             override fun onAdFailedToLoad(loadAdError: LoadAdError) {
-                LogDB.dAD("--$tag----load---error:${loadAdError.message}")
                 failed.invoke()
             }
 
             override fun onAdClosed() {
-                LogDB.dAD("--$tag----load---onAdClosed")
             }
 
             override fun onAdOpened() {
-                LogDB.dAD("--$tag----load---onAdOpened")
             }
 
 
             override fun onAdClicked() {
-                LogDB.dAD("--$tag----load---onAdClicked-${mAd?.hashCode()}")
                 isClicked = true
                 ADCallBack?.onAdClicked(this@DaiBooNatImpl)
                 FiBLogEvent.ad_click(tag)
             }
 
             override fun onAdImpression() {
-                LogDB.dAD("$tag----load---onAdImpression-${mAd?.hashCode()}")
                 adEvent?.let {
                     HttpTBA.doReportAd(adEvent = it)
                 }
@@ -101,7 +92,6 @@ class DaiBooNatImpl(var tag: String, conf: AdConf) : BaseLoader(conf) {
      */
     override fun show(activity: AppCompatActivity, callback: IAdShowCallBack?) {
         this.ADCallBack = callback
-        LogDB.dAD("--$tag----show---start--")
 
         if (isAdAvailable()) {
             when (activity) {
@@ -176,7 +166,6 @@ class DaiBooNatImpl(var tag: String, conf: AdConf) : BaseLoader(conf) {
             adView.setNativeAd(nativeAd)
             frameLayout?.removeAllViews()
             frameLayout?.addView(adView)
-            LogDB.dAD("--$tag----show---success-${mAd?.hashCode()}")
             ADCallBack?.onAdShowed(true)
         }
     }
@@ -184,7 +173,6 @@ class DaiBooNatImpl(var tag: String, conf: AdConf) : BaseLoader(conf) {
 
     override fun destroy() {
         super.destroy()
-        LogDB.dAD("--$tag----show---destroy ${mAd?.hashCode()}")
         mAd?.destroy()
         mAd = null
 

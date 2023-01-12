@@ -105,7 +105,6 @@ object DaiBooMK {
         if (0 == max) return true
         return try {
             val countItem = mmkv.decodeParcelable(key, DaiBooPopShowItem::class.java)
-            LogDB.dpop("check ---> last times = ${countItem?.counts} ")
             if (null != countItem && TimeUtils.isToday(countItem.time)) {
                 countItem.counts < max
             } else true
@@ -126,10 +125,8 @@ object DaiBooMK {
                 item.counts++
                 item.time = Date().time
                 mmkv.encode(tanId, item)
-                LogDB.dpop("check --->save last one>>${tanId} ")
             } else {
                 mmkv.encode(tanId, DaiBooPopShowItem())
-                LogDB.dpop("check --->save new one>>${tanId} ")
             }
 
         } catch (e: Exception) {

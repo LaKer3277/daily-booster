@@ -6,7 +6,6 @@ import com.daily.clean.booster.datas.RemoteConfig
 import com.daily.clean.booster.entity.DaiBooPopItemBean
 import com.daily.clean.booster.ext.loggerNotify
 import com.daily.clean.booster.utils.DaiBooMK
-import com.daily.clean.booster.utils.LogDB
 
 
 object NotifyManager: NotifyPopper() {
@@ -88,7 +87,6 @@ object NotifyManager: NotifyPopper() {
         if (0 == inTime) return true
         val lastPopTime = DaiBooMK.getTanLastTime(key)
         val dffTime = System.currentTimeMillis() - lastPopTime
-        LogDB.dpop("check ---> $key is Not overt last time >>> dffTime = $dffTime ? ${inTime * 60 * 1000}")
         return dffTime >= inTime * 60 * 1000
     }
 

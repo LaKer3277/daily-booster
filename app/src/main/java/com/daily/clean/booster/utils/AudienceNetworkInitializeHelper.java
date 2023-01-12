@@ -32,6 +32,5 @@ public class AudienceNetworkInitializeHelper
 
     @Override
     public void onInitialized(AudienceNetworkAds.InitResult result) {
-        LogDB.INSTANCE.d("FBAudienceNetwork---" + result.getMessage());
     }
 }

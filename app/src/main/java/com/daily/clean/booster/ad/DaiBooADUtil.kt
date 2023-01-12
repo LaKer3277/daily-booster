@@ -13,7 +13,6 @@ import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.entity.DaiBooAdAllBean
 import com.daily.clean.booster.entity.AdConf
 import com.daily.clean.booster.utils.DaiBooMK
-import com.daily.clean.booster.utils.LogDB
 import com.daily.clean.booster.ad.mode.DaiBooNatMaxImpl
 import java.text.SimpleDateFormat
 import java.util.*
@@ -31,7 +30,6 @@ object DaiBooADUtil {
     fun isReachLimit(): Boolean {
         if (!DB_USE_AD) return true
         if (baseAD == null) {
-            LogDB.dAD("---Limit null")
             return true
         }
         return false
@@ -121,7 +119,6 @@ object DaiBooADUtil {
 
 
         if (isReachLimit()) {
-            LogDB.dAD("--$key----load---limit")
             return
         }
 
@@ -133,16 +130,11 @@ object DaiBooADUtil {
         //获取缓存数据
         var cacheAD = getCacheAD(key)
         if (cacheAD != null) {
-            LogDB.dAD("--$key----load---cache")
             callBack.invoke(cacheAD)
             return
         }
 
-        val list = getlistByKey(key)
-        if (list == null) {
-            LogDB.dAD("--$key----load---list is null")
-            return
-        }
+        val list = getlistByKey(key) ?: return
         list.sortByDescending { it.Hierarchy }
         if (isLoading[key] == false || System.currentTimeMillis() - loadStartTime[key]!! > 60 * 1000L) {
             isLoading[key] = true
@@ -150,7 +142,6 @@ object DaiBooADUtil {
             loadStartTime[key] = startTime
             loadAD(activity, key, 0, list, startTime, callBack, callEnd)
         } else {
-            LogDB.dAD("--$key----load---isLoading")
             callLoading()
 
         }
@@ -203,7 +194,6 @@ object DaiBooADUtil {
     ) {
 
         if (ads.isNullOrEmpty()) {
-            LogDB.dAD("--$key----load---no data")
             isLoading[key] = false
             callEnd()
             return
@@ -212,7 +202,6 @@ object DaiBooADUtil {
         if (index >= ads.size) {
             isLoading[key] = false
             //瀑布流请求完成
-            LogDB.eAD("--$key----load---瀑布了结束")
             FiBLogEvent.ad_request(key, (Date().time - startTime) / 1000, false)
             callEnd()
         } else {
@@ -224,21 +213,28 @@ object DaiBooADUtil {
                 return
             }
             val baseAd = when (ad.getFormat()) {
-                "open" -> if (ad.isMax()) DaiBooOpenMaxImpl(activity, key, ad) else DaiBooOpInImpl(key, ad)
-                "interstitial" -> if (ad.isMax()) DaiBooOpenMaxImpl(activity, key, ad) else DaiBooOpInImpl(key, ad)
-                "native" -> if (ad.isMax()) DaiBooNatMaxImpl(activity, key, ad) else DaiBooNatImpl(key, ad)
+                "open" -> if (ad.isMax()) DaiBooOpenMaxImpl(activity, key, ad) else DaiBooOpInImpl(
+                    key,
+                    ad
+                )
+                "interstitial" -> if (ad.isMax()) DaiBooOpenMaxImpl(
+                    activity,
+                    key,
+                    ad
+                ) else DaiBooOpInImpl(key, ad)
+                "native" -> if (ad.isMax()) DaiBooNatMaxImpl(activity, key, ad) else DaiBooNatImpl(
+                    key,
+                    ad
+                )
                 else -> {
                     isLoading[key] = false
                     return
                 }
             }
-            LogDB.dAD("--$key----load---start $index")
             baseAd?.load({
-                LogDB.dAD("--$key----load---success")
                 isLoading[key] = false
                 //加载成功后 添加缓存
                 cache[key]?.add(it)
-                LogDB.dAD("--$key----load---add cache--- ${cache[key]?.size}")
                 callBack(it)
                 FiBLogEvent.ad_request(key, (Date().time - startTime) / 1000, true)
             }, {
@@ -260,7 +256,6 @@ object DaiBooADUtil {
     ) {
 
         if (activity.isActivityPaused || App.isAdActivityResume) {
-            LogDB.dAD("--$key----show---ishowing-- ${App.isAdActivityResume}")
             return
         }
 
@@ -276,13 +271,11 @@ object DaiBooADUtil {
 //        }
 
         if (isReachLimit()) {
-            LogDB.dAD("--$key----show---cancel-return-- onPause")
             block(false)
             return
         }
         val baseAd = getCacheAD(key)
         if (baseAd == null) {
-            LogDB.dAD("--$key----show---cancel-null--")
             block(false)
         } else {
 
@@ -300,7 +293,6 @@ object DaiBooADUtil {
                             block(result)
                         }
                     } else {
-                        LogDB.dAD("--$key----show---false:error")
                         block(false)
                         return
                     }
@@ -311,7 +303,6 @@ object DaiBooADUtil {
                     if (baseLoader?.adItem?.isOpenOrInter() == true) {
                         //显示之后删除缓存
                         cache[key]?.remove(baseLoader)
-                        LogDB.dAD("--$key----show---remove cache--${cache[key]?.size}")
                         block(true)
                     }
                 }
@@ -339,11 +330,9 @@ object DaiBooADUtil {
     private fun initLimt() {
         adShowTimes = DaiBooMK.decode(DB_AD_SHOW_TIMES, 0)
         adClickTimes = DaiBooMK.decode(DB_AD_CLICK_TIMES, 0)
-        LogDB.dAD("initLimt...$adShowTimes  $adClickTimes")
     }
 
     private fun reSetLimit() {
-        LogDB.dAD("reSetLimit...")
         adShowTimes = 0
         adClickTimes = 0
         DaiBooMK.encode(DB_AD_SHOW_TIMES, 0)
@@ -359,7 +348,6 @@ object DaiBooADUtil {
         //检查广告展示时间 是否在同一天
         val showDateOld: String = DaiBooMK.decode(DB_AD_SHOW_DATE, "")
         val showDateNew: String = SimpleDateFormat("yyyy-MM-dd").format(Date())
-        LogDB.dAD("checkDate.old=$showDateOld  new=$showDateNew")
         //是同一天
         if (showDateOld == showDateNew) {
             initLimt()
