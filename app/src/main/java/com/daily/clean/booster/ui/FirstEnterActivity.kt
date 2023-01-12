@@ -11,7 +11,6 @@ import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.databinding.ActivityFirstBinding
 import com.daily.clean.booster.ext.*
 import com.daily.clean.booster.pop.NotyWorkBooster
-import com.daily.clean.booster.tba.HttpTBA
 import com.daily.clean.booster.utils.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -41,7 +40,6 @@ class FirstEnterActivity : BaseActivity<ActivityFirstBinding>() {
         binding.layStart.btnStart.setOnClickListener {
             goScan()
         }
-        HttpTBA.reportFirst()
 
         lifecycleScope.launch {
             delay(1000)

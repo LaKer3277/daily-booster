@@ -123,7 +123,7 @@ class DaiBooNatMaxImpl(val activity: AppCompatActivity, var tag: String, conf: A
                 LogDB.dAD("--$tag-MAX---show---success-${mAd?.hashCode()}")
                 ADCallBack?.onAdShowed(true)
                 adEvent?.let {
-                    HttpTBA.doReport(HttpTBA.EVENT_AD, adevent = it)
+                    HttpTBA.doReportAd(adEvent = it)
                 }
                 FiBLogEvent.dm_ad_impression(tag)
             }

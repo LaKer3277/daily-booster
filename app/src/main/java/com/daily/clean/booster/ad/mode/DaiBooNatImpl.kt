@@ -85,7 +85,7 @@ class DaiBooNatImpl(var tag: String, conf: AdConf) : BaseLoader(conf) {
             override fun onAdImpression() {
                 LogDB.dAD("$tag----load---onAdImpression-${mAd?.hashCode()}")
                 adEvent?.let {
-                    HttpTBA.doReport(HttpTBA.EVENT_AD, adevent = it)
+                    HttpTBA.doReportAd(adEvent = it)
                 }
                 FiBLogEvent.dm_ad_impression(tag)
 

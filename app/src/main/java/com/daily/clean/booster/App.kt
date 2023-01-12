@@ -21,6 +21,7 @@ import com.daily.clean.booster.ui.*
 import com.daily.clean.booster.ui.clean.JunkScanActivity
 import com.daily.clean.booster.utils.AudienceNetworkInitializeHelper
 import com.daily.clean.booster.ext.isADActivity
+import com.daily.clean.booster.tba.HttpTBA
 import com.daily.clean.booster.utils.work.WorkerAll
 import com.google.android.gms.ads.AdActivity
 import com.google.android.gms.ads.MobileAds
@@ -63,6 +64,7 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
         RemoteConfig.ins.fetchInit()
         FiBLogEvent.app_active()
         FiBLogEvent.user_rent()
+        HttpTBA.initStartup()
 
         WorkerAll.startImmediatelyWork(this)
         registerActivityLifecycleCallbacks(this)

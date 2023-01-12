@@ -136,7 +136,7 @@ class DaiBooOpInImpl(var tag: String, conf: AdConf) : BaseLoader(conf) {
                         super.onAdImpression()
 
                         adEvent?.let {
-                            HttpTBA.doReport(HttpTBA.EVENT_AD, adevent = it)
+                            HttpTBA.doReportAd(adEvent = it)
                         }
                         FiBLogEvent.dm_ad_impression(tag)
 
@@ -144,11 +144,11 @@ class DaiBooOpInImpl(var tag: String, conf: AdConf) : BaseLoader(conf) {
                 }
 
             if (mAd is InterstitialAd) {
-                (mAd as InterstitialAd)!!.fullScreenContentCallback = fullScreenContentCallback
-                (mAd as InterstitialAd)!!.show(activity)
+                (mAd as InterstitialAd).fullScreenContentCallback = fullScreenContentCallback
+                (mAd as InterstitialAd).show(activity)
             } else if (mAd is AppOpenAd) {
-                (mAd as AppOpenAd)!!.fullScreenContentCallback = fullScreenContentCallback
-                (mAd as AppOpenAd)!!.show(activity)
+                (mAd as AppOpenAd).fullScreenContentCallback = fullScreenContentCallback
+                (mAd as AppOpenAd).show(activity)
             }
         } else {
             callback?.onAdDismiss(this@DaiBooOpInImpl)

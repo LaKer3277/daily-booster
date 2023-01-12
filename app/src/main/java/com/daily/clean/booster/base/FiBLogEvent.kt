@@ -28,7 +28,7 @@ object FiBLogEvent {
             firebaseAnalytics.logEvent(key, params)
         }
 
-        HttpTBA.doReport(HttpTBA.EVENT_LOG, logEvent = DaiBooLogEvent(key, params))
+        HttpTBA.doReportLog(logEvent = DaiBooLogEvent(key, params))
 
     }
 
@@ -257,7 +257,7 @@ object FiBLogEvent {
             DaiBooMK.encode(KEY_USER_RENTENTION, Date().time)
 
             //属性
-            HttpTBA.doReport(HttpTBA.EVENT_LOG, logEvent = DaiBooLogEvent("biscuit", Bundle().apply {
+            HttpTBA.doReportLog(logEvent = DaiBooLogEvent("biscuit", Bundle().apply {
                 putString("user_rent", "day$times")
             }))
             LogDB.dEvent("LOGDOT---保存数据")

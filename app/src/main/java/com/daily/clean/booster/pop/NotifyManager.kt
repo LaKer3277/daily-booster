@@ -2,7 +2,6 @@ package com.daily.clean.booster.pop
 
 import com.daily.clean.booster.appIns
 import com.daily.clean.booster.base.FiBLogEvent
-import com.daily.clean.booster.base.FiBRemoteUtil
 import com.daily.clean.booster.entity.DaiBooPopItemBean
 import com.daily.clean.booster.ext.loggerNotify
 import com.daily.clean.booster.utils.DaiBooMK

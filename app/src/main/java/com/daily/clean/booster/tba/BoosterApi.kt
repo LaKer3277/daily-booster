@@ -14,8 +14,6 @@ interface BoosterApi {
         @QueryMap queryMap: MutableMap<String, Any> = mutableMapOf()
     ): String
 
-
-
     @GET
     suspend fun getIp(@Url url:String = "https://api.myip.com"): DaiBooIpBean
 }

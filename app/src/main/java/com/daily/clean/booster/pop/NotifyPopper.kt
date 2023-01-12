@@ -12,7 +12,6 @@ import com.daily.clean.booster.R
 import com.daily.clean.booster.appIns
 import com.daily.clean.booster.base.*
 import com.daily.clean.booster.base.FiBLogEvent
-import com.daily.clean.booster.base.FiBRemoteUtil
 import com.daily.clean.booster.entity.DaiBooPopItemBean
 import com.daily.clean.booster.ui.NotificationActivity
 import com.daily.clean.booster.ui.SplashActivity

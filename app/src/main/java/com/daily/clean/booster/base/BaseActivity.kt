@@ -17,9 +17,11 @@ import com.afollestad.materialdialogs.customview.customView
 import com.daily.clean.booster.App
 import com.daily.clean.booster.R
 import com.daily.clean.booster.ext.isRPlus
+import com.daily.clean.booster.tba.HttpTBA
 import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.Permission
 import com.hjq.permissions.XXPermissions
+import java.util.concurrent.atomic.AtomicBoolean
 
 abstract class BaseActivity<T: ViewBinding> : AppCompatActivity() {
 
@@ -42,6 +44,16 @@ abstract class BaseActivity<T: ViewBinding> : AppCompatActivity() {
 
         dailyData()
         dailyLoad()
+        doSessionUpload()
+    }
+
+    companion object {
+        private val uploadedSession = AtomicBoolean(false)
+    }
+    private fun doSessionUpload() {
+        if (!uploadedSession.getAndSet(true)) {
+            HttpTBA.doReportSession()
+        }
     }
 
     var isActivityPaused: Boolean = false

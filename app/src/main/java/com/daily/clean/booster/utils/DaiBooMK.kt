@@ -17,17 +17,21 @@ object DaiBooMK {
     private const val MK_LAST_SCAN_TIME = "${DB_NAME}last_scan_time"
 
     const val MK_REFERRER_URL = "${DB_NAME}mk_referrer_url"
-    const val MK_REFERRER_INSTALL_VERSION = "${DB_NAME}mk_referrer_install_version"
-    const val MK_REFERRER_INSTALL_TIME = "${DB_NAME}mk_referrer_install_time"
-    const val MK_REFERRER_CLICK = "${DB_NAME}mk_referrer_click_timestamp_seconds"
-    const val MK_REFERRER_CLICK_SERVER = "${DB_NAME}mk_referrer_click_timestamp_server_seconds"
-    const val MK_REFERRER_INSTALL_SERVER = "${DB_NAME}mk_install_begin_timestamp_server_seconds"
-    const val MK_REFERRER_GOOGLE_PLAY_INSTANT= "${DB_NAME}mk_google_play_instant"
 
     const val MK_LAST_SESSION_TIME = "${DB_NAME}mk_last_session_time"
     const val MK_TBA_INSTALL_TIME = "${DB_NAME}mk_tab_install_time"
 
     const val MK_TBA_LIST_CACHE = "${DB_NAME}mk_tab_list_CACHE"
+
+
+    fun deviceId(): String {
+        var deviceId = decode("device_user_id", "")
+        if (deviceId.isNullOrEmpty()) {
+            deviceId = UUID.randomUUID().toString().replace("-", "")
+        }
+        encode("device_user_id", deviceId)
+        return deviceId
+    }
 
     fun isFirstStart(): Boolean {
         return decode(MK_IS_FIRST_START, false).not()

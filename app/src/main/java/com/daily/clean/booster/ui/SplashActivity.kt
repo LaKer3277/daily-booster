@@ -17,7 +17,6 @@ import com.daily.clean.booster.ext.currentTms
 import com.daily.clean.booster.ext.goBoosting
 import com.daily.clean.booster.ext.goJunkCleanScanning
 import com.daily.clean.booster.ext.goMain
-import com.daily.clean.booster.tba.HttpTBA
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -57,7 +56,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
         FiBLogEvent.start_page()
         FiBLogEvent.user_rent()
-        HttpTBA.reportFirst()
     }
 
     override fun dailyLoad() {

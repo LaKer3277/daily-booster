@@ -2,6 +2,9 @@ package com.daily.clean.booster.ext
 
 import android.util.Log
 import com.daily.clean.booster.ads.conf.AdPos
+import com.daily.clean.booster.entity.DaiBooAdAllBean
+import com.daily.clean.booster.entity.DaiBooPopBean
+import com.google.gson.Gson
 import java.text.DecimalFormat
 import java.util.*
 
@@ -12,6 +15,24 @@ fun String.toAdPos(): AdPos {
         AdPos.NavResult.adPos -> AdPos.NavResult
         AdPos.InsClean.adPos -> AdPos.InsClean
         else -> AdPos.None
+    }
+}
+
+fun String.json2AdConf(): DaiBooAdAllBean? {
+    if (this.isNullOrEmpty()) return null
+    return try {
+        Gson().fromJson(this, DaiBooAdAllBean::class.java)
+    } catch (e: Exception) {
+        null
+    }
+}
+
+fun String.json2Pop(): DaiBooPopBean? {
+    if (this.isNullOrEmpty()) return null
+    return try {
+        Gson().fromJson(this, DaiBooPopBean::class.java)
+    } catch (e: Exception) {
+        null
     }
 }
 
@@ -81,4 +102,8 @@ fun loggerApp(msg: String) {
 
 fun loggerNotify(msg: String) {
     Log.i("loggerNotify", msg)
+}
+
+fun loggerHttp(msg: String) {
+    Log.i("loggerHttp", msg)
 }

@@ -62,7 +62,7 @@ class DaiBooOpenMaxImpl(var activity: AppCompatActivity, var tag: String, conf: 
                 LogDB.dAD("--$tag-MAX---show---onAdDisplayed--")
                 mAdShowCallBack?.onAdShowed(true)
                 adEvent?.let {
-                    HttpTBA.doReport(HttpTBA.EVENT_AD, adevent = it)
+                    HttpTBA.doReportAd(adEvent = it)
                 }
                 FiBLogEvent.dm_ad_impression(tag)
             }
