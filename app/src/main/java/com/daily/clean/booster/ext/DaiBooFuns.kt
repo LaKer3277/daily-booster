@@ -27,8 +27,8 @@ import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkManager
 import com.applovin.adview.AppLovinFullscreenActivity
 import com.daily.clean.booster.BuildConfig
-import com.daily.clean.booster.App
 import com.daily.clean.booster.R
+import com.daily.clean.booster.appIns
 import com.daily.clean.booster.base.*
 import com.daily.clean.booster.pop.*
 import com.daily.clean.booster.service.KeepingService
@@ -91,11 +91,11 @@ val Number.GB
 
 
 fun Int.getString(): String {
-    return App.ins.getString(this)
+    return appIns.getString(this)
 }
 
 fun Int.getString(vararg formatArgs: Any?): String {
-    return App.ins.getString(this, *formatArgs)
+    return appIns.getString(this, *formatArgs)
 }
 
 suspend fun CoroutineScope.doCycle(back: (Int) -> Unit) {

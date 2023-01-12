@@ -5,13 +5,13 @@ import android.content.Context
 import android.content.Intent
 import android.text.TextUtils
 import com.daily.clean.booster.BuildConfig
-import com.daily.clean.booster.App
+import com.daily.clean.booster.appIns
 
 object DaiBooRAMUtils {
 
     fun getUsedMemory(): Long {
         val activityManager =
-            App.ins.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            appIns.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val memoryInfo = ActivityManager.MemoryInfo()
         activityManager.getMemoryInfo(memoryInfo)
         return memoryInfo.totalMem - memoryInfo.availMem
@@ -19,7 +19,7 @@ object DaiBooRAMUtils {
 
 
     fun getUsedMemoryString(context: Context?=null): String {
-        val am = App.ins.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val am = appIns.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val memoryInfo = ActivityManager.MemoryInfo()
         am.getMemoryInfo(memoryInfo)
         val result = memoryInfo.totalMem - memoryInfo.availMem
@@ -28,7 +28,7 @@ object DaiBooRAMUtils {
 
 
     fun getFreeRAMtring(context: Context?=null): String {
-        val am = App.ins.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val am = appIns.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val memoryInfo = ActivityManager.MemoryInfo()
         am.getMemoryInfo(memoryInfo)
         val result = memoryInfo.availMem
@@ -37,7 +37,7 @@ object DaiBooRAMUtils {
 
 
     fun getTotalMemoryString(context: Context?=null): String {
-        val am = App.ins.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        val am = appIns.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val memoryInfo = ActivityManager.MemoryInfo()
         am.getMemoryInfo(memoryInfo)
         val result = memoryInfo.totalMem
@@ -47,7 +47,7 @@ object DaiBooRAMUtils {
 
     fun getUsedMemoryStringPerInt(): Int {
         val activityManager =
-            App.ins.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            appIns.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val memoryInfo = ActivityManager.MemoryInfo()
         activityManager.getMemoryInfo(memoryInfo)
         val used = memoryInfo.totalMem - memoryInfo.availMem
@@ -57,7 +57,7 @@ object DaiBooRAMUtils {
 
     fun getUsedMemoryStringPer(): String {
         val activityManager =
-            App.ins.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            appIns.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val memoryInfo = ActivityManager.MemoryInfo()
         activityManager.getMemoryInfo(memoryInfo)
         val used = memoryInfo.totalMem - memoryInfo.availMem
@@ -69,25 +69,25 @@ object DaiBooRAMUtils {
     fun getInstalledAppAmounts(callback: (Int) -> Unit) {
         val intent = Intent(Intent.ACTION_MAIN, null)
         intent.addCategory(Intent.CATEGORY_LAUNCHER)
-        callback.invoke(App.ins.packageManager.queryIntentActivities(intent, 0).size)
+        callback.invoke(appIns.packageManager.queryIntentActivities(intent, 0).size)
     }
     fun getInstalledAppAmounts2():Int {
         val intent = Intent(Intent.ACTION_MAIN, null)
         intent.addCategory(Intent.CATEGORY_LAUNCHER)
-       return App.ins.packageManager.queryIntentActivities(intent, 0).size
+       return appIns.packageManager.queryIntentActivities(intent, 0).size
     }
 
     private fun getInstalledPackageNameList(): List<String> {
         val intent = Intent(Intent.ACTION_MAIN, null)
         intent.addCategory(Intent.CATEGORY_LAUNCHER)
-        return App.ins.packageManager.queryIntentActivities(intent, 0)
+        return appIns.packageManager.queryIntentActivities(intent, 0)
             .map { it?.activityInfo?.packageName ?: "" }
             .filter { TextUtils.isEmpty(it).not() && it != BuildConfig.APPLICATION_ID }
     }
 
     fun clearRAM() {
         val mActivityManager =
-            App.ins.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            appIns.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val packageList = getInstalledPackageNameList()
         for (packageName in packageList) {
             mActivityManager.killBackgroundProcesses(packageName)

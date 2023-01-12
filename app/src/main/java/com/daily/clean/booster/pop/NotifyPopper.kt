@@ -8,7 +8,6 @@ import android.os.Build
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.daily.clean.booster.App
 import com.daily.clean.booster.R
 import com.daily.clean.booster.appIns
 import com.daily.clean.booster.base.*
@@ -40,14 +39,14 @@ open class NotifyPopper {
                 enableLights(false)
                 enableVibration(false)
             }
-            (App.ins.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(
+            (appIns.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(
                 channel
             )
         }
     }
 
     fun cancelAlertNotification() {
-        NotificationManagerCompat.from(App.ins).cancel(notificationId)
+        NotificationManagerCompat.from(appIns).cancel(notificationId)
     }
 
     @SuppressLint("WrongConstant")
@@ -57,7 +56,7 @@ open class NotifyPopper {
 
         val item: DaiBooPopItemBean? = NotifyManager.getPopItem(sourceId)
 
-        val nBuilder = NotificationCompat.Builder(App.ins, channelId)
+        val nBuilder = NotificationCompat.Builder(appIns, channelId)
             .setSmallIcon(R.drawable.ic_daily_booster_logo)
             .setVisibility(Notification.VISIBILITY_PUBLIC)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -91,7 +90,7 @@ open class NotifyPopper {
         //build
         val notification = nBuilder.build()
         //notify
-        with(NotificationManagerCompat.from(App.ins)) {
+        with(NotificationManagerCompat.from(appIns)) {
             notify(notificationId, notification)
             FiBLogEvent.pop_log(sourceId, 1)
         }
@@ -101,8 +100,8 @@ open class NotifyPopper {
     private fun getFullScreenIntent(workID: String, tanId: String): PendingIntent {
         val bpiBroad: PendingIntent =
             PendingIntent.getBroadcast(
-                App.ins, tanId.hashCode() + 20,
-                Intent(App.ins, NotifyToolReceiver::class.java).apply {
+                appIns, tanId.hashCode() + 20,
+                Intent(appIns, NotifyToolReceiver::class.java).apply {
                     putExtra(Noty_KEY_WORK, workID)
                     putExtra(Noty_KEY_SOURCE, tanId)
                     action = DB_ACTION_FROM_POP_NOTY_FULLSCREEN
@@ -111,8 +110,8 @@ open class NotifyPopper {
 
         val actIntent: PendingIntent =
             PendingIntent.getActivity(
-                App.ins, tanId.hashCode() + 20,
-                Intent(App.ins, NotificationActivity::class.java).apply {
+                appIns, tanId.hashCode() + 20,
+                Intent(appIns, NotificationActivity::class.java).apply {
                     putExtra(Noty_KEY_WORK, workID)
                     putExtra(Noty_KEY_SOURCE, tanId)
                     action = DB_ACTION_FROM_POP_NOTY_FULLSCREEN
@@ -126,20 +125,20 @@ open class NotifyPopper {
     }
 
     private fun btnClickPendingClose(workID: String, tanId: String): PendingIntent {
-        val intent = Intent(App.ins, NotifyToolReceiver::class.java).apply {
+        val intent = Intent(appIns, NotifyToolReceiver::class.java).apply {
             putExtra(Noty_KEY_WORK, workID)
             putExtra(Noty_KEY_SOURCE, tanId)
             action = DB_ACTION_FROM_POP_NOTY_EXIT
         }
-        return PendingIntent.getBroadcast(App.ins, tanId.hashCode() + 3, intent, validateImmutableFlags)
+        return PendingIntent.getBroadcast(appIns, tanId.hashCode() + 3, intent, validateImmutableFlags)
 
     }
 
     private fun btnClickPending(workID: String, sourceId: String): PendingIntent {
         return PendingIntent.getActivity(
-            App.ins,
+            appIns,
             sourceId.hashCode(),
-            Intent(App.ins, SplashActivity::class.java).apply {
+            Intent(appIns, SplashActivity::class.java).apply {
                 putExtra(Noty_KEY_WORK, workID)
                 putExtra(Noty_KEY_SOURCE, sourceId)
                 action = (DB_ACTION_FROM_POP_NOTY)
@@ -195,7 +194,7 @@ open class NotifyPopper {
         }
 
         val isBig = size == 2
-        val remoteViews = RemoteViews(App.ins.packageName, layoutResId).apply {
+        val remoteViews = RemoteViews(appIns.packageName, layoutResId).apply {
             setOnClickPendingIntent(R.id.btnWake, btnClickPending(workID, tanID))
             if (isBig) {
                 setOnClickPendingIntent(R.id.btnWake_no, btnClickPendingClose(workID, tanID))
@@ -265,7 +264,7 @@ open class NotifyPopper {
                                 R.id.tvAlertDescription,
                                 R.string.des_clean_tan.getString(
                                     DaiBooRAMUtils.getUsedMemoryString(
-                                        App.ins
+                                        appIns
                                     )
                                 )
                             )

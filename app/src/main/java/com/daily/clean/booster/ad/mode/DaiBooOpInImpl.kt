@@ -1,9 +1,9 @@
 package com.daily.clean.booster.ad.mode
 
 import androidx.appcompat.app.AppCompatActivity
-import com.daily.clean.booster.App
 import com.daily.clean.booster.ad.base.IAdShowCallBack
 import com.daily.clean.booster.ad.base.BaseLoader
+import com.daily.clean.booster.appIns
 import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.entity.DaiBooAdEvent
 import com.daily.clean.booster.entity.AdConf
@@ -34,7 +34,7 @@ class DaiBooOpInImpl(var tag: String, conf: AdConf) : BaseLoader(conf) {
                 "interstitial" -> {
 
                     InterstitialAd.load(
-                        App.ins,
+                        appIns,
                         adItem.Id,
                         getAdRequest(),
                         object : InterstitialAdLoadCallback() {
@@ -65,7 +65,7 @@ class DaiBooOpInImpl(var tag: String, conf: AdConf) : BaseLoader(conf) {
                 }
                 "open" -> {
                     AppOpenAd.load(
-                        App.ins,
+                        appIns,
                         adItem.Id,
                         getAdRequest(),
                         AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT,

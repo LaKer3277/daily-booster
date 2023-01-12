@@ -3,19 +3,17 @@ package com.daily.clean.booster.utils
 import com.blankj.utilcode.util.TimeUtils
 import com.daily.clean.booster.base.*
 import com.daily.clean.booster.entity.DaiBooPopShowItem
-import com.daily.clean.booster.ext.ss
 import com.tencent.mmkv.MMKV
 import java.util.*
 
 object DaiBooMK {
 
-    private val mmkv: MMKV =
+    val mmkv: MMKV =
         MMKV.mmkvWithID(DB_NAME + "MMKV", MMKV.MULTI_PROCESS_MODE)
 
     private const val MK_IS_FIRST_START = "${DB_NAME}is_has_start"
     private const val MK_LAST_CLEAN_TIME = "${DB_NAME}last_Clean_time"
     private const val MK_CLEAN_JUNK_SIZE_APPCACHE = "${DB_NAME}clean_junk_appcache"
-    private const val MK_LAST_BOOST_TIME = "${DB_NAME}last_boost_time"
     private const val MK_LAST_SCAN_TIME = "${DB_NAME}last_scan_time"
 
     const val MK_REFERRER_URL = "${DB_NAME}mk_referrer_url"
@@ -49,18 +47,6 @@ object DaiBooMK {
 
     fun reSetCleanTime() {
         mmkv.encode(MK_LAST_CLEAN_TIME, Date().time)
-    }
-
-    fun reSetBoostTime() {
-        mmkv.encode(MK_LAST_BOOST_TIME, Date().time)
-    }
-
-    fun getLastBoostTime(): Long {
-        return mmkv.decodeLong(MK_LAST_BOOST_TIME)
-    }
-
-    fun isNeedShowRAM(): Boolean {
-        return Date().time - getLastBoostTime() > 5.ss
     }
 
     fun saveAppCacheSize(size: Long) {

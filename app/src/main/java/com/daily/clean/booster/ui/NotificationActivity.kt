@@ -8,8 +8,8 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import com.blankj.utilcode.util.ActivityUtils
-import com.daily.clean.booster.App
 import com.daily.clean.booster.R
+import com.daily.clean.booster.appIns
 import com.daily.clean.booster.base.BaseActivity
 import com.daily.clean.booster.base.*
 import com.daily.clean.booster.base.FiBLogEvent
@@ -141,7 +141,7 @@ class NotificationActivity : BaseActivity<NotificationBigActBinding>() {
                     else -> {
                         setTextViewText(
                             R.id.tvAlertDescription,
-                            R.string.des_clean_tan.getString(DaiBooRAMUtils.getUsedMemoryString(App.ins))
+                            R.string.des_clean_tan.getString(DaiBooRAMUtils.getUsedMemoryString(appIns))
                         )
                         setTextViewText(R.id.btnWake, R.string.clean.getString())
                     }
@@ -165,7 +165,7 @@ class NotificationActivity : BaseActivity<NotificationBigActBinding>() {
     private fun goBoost() {
         FiBLogEvent.up_ac_click(tanID)
         ActivityUtils.finishAllActivities()
-        startActivity(Intent(App.ins, SplashActivity::class.java).apply {
+        startActivity(Intent(appIns, SplashActivity::class.java).apply {
             putExtra(Noty_KEY_WORK, workID)
             putExtra(Noty_KEY_SOURCE, tanID)
             action = (DB_ACTION_FROM_POP_NOTY)

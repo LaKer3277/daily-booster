@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.daily.clean.booster.App
 import com.daily.clean.booster.R
 import com.daily.clean.booster.ad.base.IAdShowCallBack
 import com.daily.clean.booster.ad.base.BaseLoader
+import com.daily.clean.booster.appIns
 import com.daily.clean.booster.base.BaseActivity
 import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.entity.DaiBooAdEvent
@@ -42,7 +42,7 @@ class DaiBooNatImpl(var tag: String, conf: AdConf) : BaseLoader(conf) {
 
         LogDB.dAD("--$tag----load---start--$adItem")
 
-        AdLoader.Builder(App.ins, adItem.Id).forNativeAd {
+        AdLoader.Builder(appIns, adItem.Id).forNativeAd {
             mAd = it
             isClicked = false
             LogDB.dAD("--$tag----load---success--" + it.hashCode())

@@ -1,6 +1,5 @@
 package com.daily.clean.booster.pop
 
-import com.daily.clean.booster.App
 import com.daily.clean.booster.appIns
 import com.daily.clean.booster.base.FiBLogEvent
 import com.daily.clean.booster.base.FiBRemoteUtil
@@ -95,8 +94,8 @@ object NotifyManager: NotifyPopper() {
 
     private fun getFirstInstallTime(): Long {
         return try {
-            App.ins.applicationContext.packageManager.getPackageInfo(
-                App.ins.packageName,
+            appIns.applicationContext.packageManager.getPackageInfo(
+                appIns.packageName,
                 0
             ).firstInstallTime
         } catch (e: Exception) {

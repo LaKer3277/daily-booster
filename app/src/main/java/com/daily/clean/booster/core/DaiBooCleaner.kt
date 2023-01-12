@@ -3,8 +3,8 @@ package com.daily.clean.booster.core
 import android.content.pm.PackageManager
 import android.text.TextUtils
 import com.daily.clean.booster.BuildConfig
-import com.daily.clean.booster.App
 import com.daily.clean.booster.R
+import com.daily.clean.booster.appIns
 import com.daily.clean.booster.entity.CleanType
 import com.daily.clean.booster.entity.DaiBooCleanChildBean
 import com.daily.clean.booster.entity.DaiBooCleanDatas
@@ -61,7 +61,7 @@ class DaiBooCleaner(private val parent: File) {
         synchronized(CleanData.cache) {
             CleanData.cache.clear()
             DaiBooCleanParentBean(
-                name = App.ins.getString(R.string.ram_used),
+                name = appIns.getString(R.string.ram_used),
                 cleanType = CleanType.RAM_USED
             ).apply {
                 fileSize = DaiBooRAMUtils.getUsedMemory()
@@ -69,7 +69,7 @@ class DaiBooCleaner(private val parent: File) {
                 CleanData.cache.add(it)
             }
             DaiBooCleanParentBean(
-                name = App.ins.getString(R.string.app_cache),
+                name = appIns.getString(R.string.app_cache),
                 cleanType = CleanType.APP_CACHE
             ).apply {
                 childDaiBooCleans.addAll(scanTemp.appCache.values)
@@ -104,7 +104,7 @@ class DaiBooCleaner(private val parent: File) {
 
 //            if (scanTemp.apkFiles.isNullOrEmpty().not()) {
             DaiBooCleanParentBean(
-                name = App.ins.getString(R.string.apk_files),
+                name = appIns.getString(R.string.apk_files),
                 cleanType = CleanType.APK_FILES
             ).apply { childDaiBooCleans.addAll(scanTemp.apkFiles) }.let {
                 CleanData.cache.add(it)
@@ -112,7 +112,7 @@ class DaiBooCleaner(private val parent: File) {
 //            }
 //            if (scanTemp.appResidual.isNullOrEmpty().not()) {
             DaiBooCleanParentBean(
-                name = App.ins.getString(R.string.app_residual),
+                name = appIns.getString(R.string.app_residual),
                 cleanType = CleanType.APP_RESIDUAL
             ).apply { childDaiBooCleans.addAll(scanTemp.appResidual) }.let {
                 CleanData.cache.add(it)
@@ -120,7 +120,7 @@ class DaiBooCleaner(private val parent: File) {
 //            }
 //            if (scanTemp.logFiles.isNullOrEmpty().not()) {
             DaiBooCleanParentBean(
-                name = App.ins.getString(R.string.log_files),
+                name = appIns.getString(R.string.log_files),
                 cleanType = CleanType.LOG_FILES
             ).apply { childDaiBooCleans.addAll(scanTemp.logFiles) }.let {
                 CleanData.cache.add(it)
@@ -128,7 +128,7 @@ class DaiBooCleaner(private val parent: File) {
 //            }
 //            if (scanTemp.tempFiles.isNullOrEmpty().not()) {
             DaiBooCleanParentBean(
-                name = App.ins.getString(R.string.temp_files),
+                name = appIns.getString(R.string.temp_files),
                 cleanType = CleanType.TEMP_FILES
             ).apply { childDaiBooCleans.addAll(scanTemp.tempFiles) }.let {
                 CleanData.cache.add(it)
@@ -136,7 +136,7 @@ class DaiBooCleaner(private val parent: File) {
 //            }
 //            if (scanTemp.otherFiles.pathList.isNullOrEmpty().not()) {
             DaiBooCleanParentBean(
-                name = App.ins.getString(R.string.ad_junks),
+                name = appIns.getString(R.string.ad_junks),
                 cleanType = CleanType.AD_JUNK
             ).apply {
                 childDaiBooCleans.add(scanTemp.otherFiles)
@@ -247,7 +247,7 @@ class DaiBooCleaner(private val parent: File) {
 
     private fun addAppCacheItem(packageName: String, filePath: String): DaiBooCleanChildBean? {
         return try {
-            val pm = App.ins.packageManager
+            val pm = appIns.packageManager
             val pi = pm.getPackageInfo(packageName, 0)
             val icon = pi?.applicationInfo?.loadIcon(pm)
             val name = (pi?.applicationInfo?.loadLabel(pm) ?: "").toString()
@@ -299,11 +299,11 @@ class DaiBooCleaner(private val parent: File) {
         val files: MutableList<String> = mutableListOf()
         val folders: MutableList<String> = mutableListOf()
 
-        files.addAll(App.ins.resources.getStringArray(R.array.common_filter_files))
-        folders.addAll(App.ins.resources.getStringArray(R.array.common_filter_folders))
+        files.addAll(appIns.resources.getStringArray(R.array.common_filter_files))
+        folders.addAll(appIns.resources.getStringArray(R.array.common_filter_folders))
         if (aggressive) {
-            files.addAll(App.ins.resources.getStringArray(R.array.aggressive_files))
-            folders.addAll(App.ins.resources.getStringArray(R.array.aggressive_folders))
+            files.addAll(appIns.resources.getStringArray(R.array.aggressive_files))
+            folders.addAll(appIns.resources.getStringArray(R.array.aggressive_folders))
         }
         filters.clear()
         for (folder in folders) filters.add(getFolderRegex(folder))
@@ -355,7 +355,7 @@ class DaiBooCleaner(private val parent: File) {
 
     private fun getInstallPackageNames(): MutableList<String> {
         synchronized(installedPackageNameList) {
-            val pm = App.ins.packageManager
+            val pm = appIns.packageManager
             val packages = pm.getInstalledApplications(PackageManager.GET_META_DATA)
             installedPackageNameList.clear()
             installedPackageNameList.addAll(packages.map { it.packageName ?: "" }

@@ -1,20 +1,8 @@
 <resources>
     <string name="app_name">Daily booster</string>
 
-<!--  TEST  -->
-<!--    <string name="facebook_app_id" translatable="false">111222333444555</string>-->
-<!--    <string name="admob_app_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>-->
-    <string name="max_ad_sdk_key" translatable="false">xxxxxxxxx1</string>
-
-<!--   RELEASE -->
-    <string name="facebook_app_id" translatable="false">1538770449905379</string>
-    <string name="admob_app_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
-
-
     <string name="app_name_tools">Daily Booster Clean Tools</string>
-
     <string name="press_again">Press again to exit</string>
-
     <string name="need_open_storage_permission">Need open storage permission. </string>
 
     <string name="contact_us">Contact us</string>
@@ -29,19 +17,16 @@
     <string name="terms_of_service">Terms of Service</string>
     <string name="and">and</string>
 
-
     <string name="is_boosting">Phone is boosting…</string>
     <string name="is_cleaning">Cleaning up…</string>
     <string name="is_cooling_down">Cpu is cooling down…</string>
     <string name="is_optimizing">Battery is optimizing…</string>
     <string name="is_notification_cleaning">Notifications is cleaning…</string>
 
-
     <string name="optimized_up">OPTIMIZED</string>
     <string name="cool_down_up">COOL DOWN</string>
     <string name="clean_now_up">CLEAN NOW</string>
     <string name="boost_up">BOOST NOW</string>
-
 
     <string name="your_phone_already_cleaned">your phone is already cleaned.</string>
     <string name="permission_request">Permission Request</string>
@@ -73,8 +58,6 @@
     <string name="temp_files">Temp Files</string>
     <string name="ad_junks">AD Junks</string>
 
-
-
     <string name="des_recom_clean">%s of junk files detected, clean new!</string>
     <string name="des_recom_boot">%s of memory is occupied, speed up now.</string>
     <string name="des_recom_cpu">The CPU is overheating, click to cool down.</string>
@@ -86,7 +69,6 @@
     <string name="des_complete_boot">Complete the acceleration</string>
     <string name="des_complete_cpu">CPU has cooled</string>
     <string name="des_complete_battery">%s increase in battery utilization</string>
-
 
     <string name="des_boot_tan">RAM has used %s of memory, phone is running slow!</string>
     <string name="des_cpu_tan">CPU overheating %s, please cool down！</string>
@@ -109,7 +91,6 @@
     <string name="scanning_cpu_xx">Scanning CPU…%s</string>
     <string name="scanning_battery_xx">Analyzing Battery Usage…%s</string>
 
-
     <string name="nm_guide_tips1">Too many app notifications?</string>
     <string name="nm_guide_tips2">Turn on notifications to block these annoying notifications</string>
     <string name="filter_now">filter now</string>
@@ -117,5 +98,9 @@
     <string name="guide_button_des">Filter useless messages, clear notifications with one click</string>
 
     <string name="manage_apps_you_want_to_hide">Manage apps you want to hide</string>
+
+    <string name="max_ad_sdk_key" translatable="false">xxxxxxxxx1</string>
+    <string name="facebook_app_id" translatable="false">1538770449905379</string>
+    <string name="admob_app_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
 
 </resources>

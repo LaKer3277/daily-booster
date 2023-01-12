@@ -7,8 +7,8 @@ import android.os.Build
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.daily.clean.booster.App
 import com.daily.clean.booster.R
+import com.daily.clean.booster.appIns
 import com.daily.clean.booster.base.*
 import com.daily.clean.booster.ui.SplashActivity
 import com.daily.clean.booster.ext.getString
@@ -34,24 +34,24 @@ object NotifyTools {
                 enableVibration(false)
                 setShowBadge(false)
             }
-            (App.ins.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(
+            (appIns.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager).createNotificationChannel(
                 channel
             )
         }
     }
 
     private fun cancelPopNotification() {
-        NotificationManagerCompat.from(App.ins).cancel(notificationId)
+        NotificationManagerCompat.from(appIns).cancel(notificationId)
     }
 
     private fun clickPending(workID: String): PendingIntent? {
         val newIntent =
-            Intent(App.ins, SplashActivity::class.java).apply {
+            Intent(appIns, SplashActivity::class.java).apply {
                         putExtra(Noty_KEY_WORK, workID)
                         action = DB_ACTION_FROM_NOTY_RESIDENT
                     }
 
-        val resultPendingIntent: PendingIntent? = TaskStackBuilder.create(App.ins).run {
+        val resultPendingIntent: PendingIntent? = TaskStackBuilder.create(appIns).run {
             addNextIntentWithParentStack(newIntent)
             getPendingIntent(workID.hashCode(), validateImmutableFlags)
         }
@@ -67,7 +67,7 @@ object NotifyTools {
         }else{
             R.layout.layout_tool_64
         }
-        return RemoteViews(App.ins.packageName, layoutId).apply {
+        return RemoteViews(appIns.packageName, layoutId).apply {
             setOnClickPendingIntent(
                 R.id.notify_booster,
                 clickPending(NotyWorkBooster)
@@ -90,7 +90,7 @@ object NotifyTools {
     fun createNotification(): Notification {
         createNotificationChannel()
         cancelPopNotification()
-        val notificationBuilder = NotificationCompat.Builder(App.ins, channelId)
+        val notificationBuilder = NotificationCompat.Builder(appIns, channelId)
             .setSmallIcon(R.drawable.ic_daily_booster_logo)
             .setCustomContentView(customRemoteViews())
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)

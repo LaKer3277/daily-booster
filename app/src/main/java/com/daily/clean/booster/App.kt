@@ -46,23 +46,14 @@ lateinit var appIns: App
 class App : Application(), Application.ActivityLifecycleCallbacks {
 
     companion object {
-        lateinit var ins: App
         const val app_name = BuildConfig.APPLICATION_ID
         var isReceiverScreenOn = false
-        var listActivity: MutableList<Activity>? = mutableListOf()
         var isAdActivityResume = false
         var isNotDoHotStart = false
-        var isColdStart = true
-        var isHotStart = false
-
-        var timeOnAppStop = 0L
-        var activityCount = 0
-        var backJob: Job? = null
     }
 
     override fun onCreate() {
         super.onCreate()
-        ins = this
         appIns = this
         DaiBooh2(this).it()
         
@@ -116,6 +107,9 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
     }
 
 
+    private var isHotStart = false
+    private var backJob: Job? = null
+    private var activityCount = 0
     fun isAtForeground(): Boolean {
         return activityCount > 0
     }
@@ -125,7 +119,7 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
 
 
     override fun onActivityStarted(activity: Activity) {
-        Log.d("ActivityLife", "onActivityStarted: ---${activity::class.java.simpleName}  isHotStart = $isHotStart  isColdStar =${isColdStart}  action = ${activity.intent?.action} ")
+        Log.d("ActivityLife", "onActivityStarted: ---$activity  isHotStart = $isHotStart  action = ${activity.intent?.action} ")
         activityCount++
         backJob?.cancel()
         StartupReceiver.cancelTimingJob()
@@ -139,16 +133,13 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
                     ActivityUtils.startActivity(SplashActivity::class.java)
                 }
             }
-        } else if (isColdStart) {
-            isColdStart = false
         }
     }
 
     override fun onActivityStopped(activity: Activity) {
         activityCount--
-        Log.d("ActivityLife", "onActivityStopped: ---${activity::class.java.simpleName}  count=${activityCount} $isNotDoHotStart ")
+        Log.d("ActivityLife", "onActivityStopped: ---$activity  count=${activityCount} $isNotDoHotStart ")
         if (activityCount <= 0) {
-            timeOnAppStop = System.currentTimeMillis()
             StartupReceiver.startTimingAlertJob()
 
             backJob = GlobalScope.launch {
@@ -168,15 +159,14 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
     }
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-        Log.d("ActivityLife", "onActivityCreated: ---${activity::class.java.simpleName}")
-        listActivity?.add(activity)
+        Log.d("ActivityLife", "onActivityCreated: ---$activity")
         if (activity is SplashActivity || activity is LaunchActivity) {
             startCleanService()
         }
     }
 
     override fun onActivityResumed(activity: Activity) {
-        Log.d("ActivityLife", "onActivityResumed: ---${activity::class.java.simpleName}  ${listActivity?.size}")
+        Log.d("ActivityLife", "onActivityResumed: ---$activity")
         isAdActivityResume = activity.isADActivity()
         if (activity is SplashActivity || activity is JunkScanActivity) {
             isNotDoHotStart = false
@@ -184,7 +174,7 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
     }
 
     override fun onActivityPaused(activity: Activity) {
-        Log.d("ActivityLife", "onActivityPaused: ---${activity::class.java.simpleName}")
+        Log.d("ActivityLife", "onActivityPaused: ---$activity")
         if (activity.isADActivity()) {
             isAdActivityResume = false
         }
@@ -192,16 +182,11 @@ class App : Application(), Application.ActivityLifecycleCallbacks {
 
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {}
     override fun onActivityDestroyed(activity: Activity) {
-        Log.d("ActivityLife", "onActivityDestroyed: ---${activity::class.java.simpleName}  ${listActivity?.size}")
-        listActivity?.remove(activity)
-        if (listActivity?.isEmpty() == true) {
-            backJob?.cancel()
-            isColdStart = true
-        }
+        Log.d("ActivityLife", "onActivityDestroyed: ---$activity")
     }
 
     private fun isScreenOn(): Boolean {
-        val pm = ins.applicationContext.getSystemService(POWER_SERVICE) as PowerManager
+        val pm = appIns.applicationContext.getSystemService(POWER_SERVICE) as PowerManager
         return pm.isInteractive
     }
 

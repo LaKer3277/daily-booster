@@ -6,13 +6,13 @@ import android.view.View
 import android.view.animation.LinearInterpolator
 import androidx.lifecycle.lifecycleScope
 import com.daily.clean.booster.BuildConfig
-import com.daily.clean.booster.App
 import com.daily.clean.booster.R
 import com.daily.clean.booster.ads.AdsListener
 import com.daily.clean.booster.ads.AdsLoader
 import com.daily.clean.booster.ads.conf.AdPos
 import com.daily.clean.booster.ads.model.BaseAd
 import com.daily.clean.booster.ads.model.BaseIns
+import com.daily.clean.booster.appIns
 import com.daily.clean.booster.base.BaseActivity
 import com.daily.clean.booster.base.*
 import com.daily.clean.booster.base.FiBLogEvent
@@ -156,12 +156,12 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
 
     private fun queryApps() {
         val intent = Intent(Intent.ACTION_MAIN, null).apply { addCategory(Intent.CATEGORY_LAUNCHER) }
-        val infoList = App.ins.packageManager.queryIntentActivities(intent, 0)
+        val infoList = appIns.packageManager.queryIntentActivities(intent, 0)
         CleanData.appList.clear()
         infoList.forEach {
             with(it) {
                 if (activityInfo.packageName != BuildConfig.APPLICATION_ID) {
-                    CleanData.appList.add(loadIcon(App.ins.packageManager))
+                    CleanData.appList.add(loadIcon(appIns.packageManager))
                 }
             }
         }
