@@ -8,6 +8,7 @@ import com.daily.clean.booster.ads.model.AdmobInterstitial
 import com.daily.clean.booster.ads.model.AdmobNative
 import com.daily.clean.booster.ads.model.AdmobOpen
 import com.daily.clean.booster.ads.model.BaseAd
+import com.daily.clean.booster.ext.loggerAds
 import com.google.android.gms.ads.AdLoader
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.LoadAdError
@@ -65,6 +66,7 @@ class AdmobLoader: BaseLoader {
                 }
 
                 override fun onAdFailedToLoad(p0: LoadAdError) {
+                    loggerAds("OpenAdLoadError: ${p0.message}")
                     callBack.invoke(null)
                 }
             })
@@ -83,6 +85,7 @@ class AdmobLoader: BaseLoader {
             AdRequest.Builder().build(),
             object : InterstitialAdLoadCallback() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {
+                    loggerAds("InterstitialAdLoadError: ${adError.message}")
                     callBack.invoke(null)
                 }
 

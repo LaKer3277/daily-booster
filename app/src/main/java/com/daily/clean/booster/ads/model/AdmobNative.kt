@@ -9,6 +9,7 @@ import com.daily.clean.booster.R
 import com.daily.clean.booster.ads.AdsListener
 import com.daily.clean.booster.ads.conf.AdConf
 import com.daily.clean.booster.ads.conf.AdPos
+import com.daily.clean.booster.ext.loggerAds
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdValue
 import com.google.android.gms.ads.LoadAdError
@@ -38,6 +39,7 @@ class AdmobNative(val adPos: AdPos, adCong: AdConf): BaseNav(adPos, adCong), OnP
 
     val listener = object : AdListener() {
         override fun onAdFailedToLoad(p0: LoadAdError) {
+            loggerAds("NativeAdLoadError: ${p0.message}")
             loadErrorAction.invoke(p0.message)
         }
 

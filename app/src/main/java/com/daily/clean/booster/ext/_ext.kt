@@ -101,3 +101,7 @@ fun loggerHttp(msg: String) {
 fun loggerAds(msg: String) {
     Log.i("AdsLoader", msg)
 }
+
+fun loggerEvent(msg: String) {
+    Log.i("loggerEvent", msg)
+}
