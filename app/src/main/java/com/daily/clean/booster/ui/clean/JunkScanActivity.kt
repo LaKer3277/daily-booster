@@ -288,7 +288,6 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
             playMode = PlayMode.TOGETHER
 
         }
-
     }
     private val animBg by lazy {
         animSet {
@@ -307,6 +306,7 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
             interpolator = LinearInterpolator()
             playMode = PlayMode.TOGETHER
             onEnd {
+                changeStatusBarBg(Color.parseColor("#F57926"), false)
             }
         }
     }

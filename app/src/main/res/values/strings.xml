@@ -66,7 +66,7 @@
     <string name="des_complete_clean">%s \n cleaned</string>
     <string name="des_complete_clean2">Your phone has been cleaned</string>
     <string name="des_complete_notification">%s \n notification cleaned</string>
-    <string name="des_complete_boot">Complete the acceleration</string>
+    <string name="des_complete_boot">Accelerate \n Completion</string>
     <string name="des_complete_cpu">CPU has cooled</string>
     <string name="des_complete_battery">%s increase in battery utilization</string>
 
