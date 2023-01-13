@@ -7,6 +7,9 @@ import com.daily.clean.booster.entity.DaiBooPopItemBean
 import com.daily.clean.booster.ext.loggerNotify
 import com.daily.clean.booster.tba.HttpTBA
 import com.daily.clean.booster.utils.DaiBooMK
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 object NotifyManager: NotifyPopper() {
@@ -27,14 +30,16 @@ object NotifyManager: NotifyPopper() {
         return null
     }
 
-    fun tryPop(workId: String, sourceId: String): Boolean {
-        if (!isCanPopConfig(sourceId, getPopItem(sourceId))) {
-            return false
+    fun tryPop(workId: String, sourceId: String) {
+        MainScope().launch {
+            delay(1200L)
+            if (!isCanPopConfig(sourceId, getPopItem(sourceId))) {
+                return@launch
+            }
+            FirebaseEvent.popLog(sourceId, 0)
+            createNotificationAndPop(workId, sourceId)
+            saveLastPopTime(sourceId)
         }
-        FirebaseEvent.popLog(sourceId, 0)
-        createNotificationAndPop(workId, sourceId)
-        saveLastPopTime(sourceId)
-        return true
     }
 
     private var index = 0
@@ -72,14 +77,14 @@ object NotifyManager: NotifyPopper() {
         usingActivity = 1 == popBean.booster_avti
         if (item == null) return false
         //是否超过弹窗时间
-        val overFirstTime = System.currentTimeMillis() - getFirstInstallTime() >= item.first * 60 * 60 * 1000L
-        if (!overFirstTime) {
+        val isFirstTimeValid = System.currentTimeMillis() - getFirstInstallTime() >= item.first * 60 * 60 * 1000L
+        if (!isFirstTimeValid) {
             loggerNotify("FirstTime Not Reached")
             return false
         }
 
         //是否在弹窗时间间隔之内
-        if (!isOverInTime(item.int, tanId)) {
+        if (!isIntervalTimeValid(item.int, tanId)) {
             loggerNotify("IntervalTime Not reached")
             return false
         }
@@ -95,7 +100,7 @@ object NotifyManager: NotifyPopper() {
         DaiBooMK.saveTanShowCounts(tanId)
     }
 
-    private fun isOverInTime(inTime: Int, key: String): Boolean {
+    private fun isIntervalTimeValid(inTime: Int, key: String): Boolean {
         if (0 == inTime) return true
         val lastPopTime = DaiBooMK.getTanLastTime(key)
         val dffTime = System.currentTimeMillis() - lastPopTime
