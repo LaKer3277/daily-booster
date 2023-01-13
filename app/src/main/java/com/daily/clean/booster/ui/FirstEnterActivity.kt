@@ -6,7 +6,6 @@ import com.daily.clean.booster.R
 import com.daily.clean.booster.ads.AdsLoader
 import com.daily.clean.booster.ads.conf.AdPos
 import com.daily.clean.booster.base.BaseActivity
-import com.daily.clean.booster.base.*
 import com.daily.clean.booster.base.FirebaseEvent
 import com.daily.clean.booster.databinding.ActivityFirstBinding
 import com.daily.clean.booster.ext.*
@@ -70,7 +69,7 @@ class FirstEnterActivity : BaseActivity<ActivityFirstBinding>() {
         DaiBooMK.saveFirstStart()
 
         binding.layInfo.tvSkip.setOnClickListener {
-            goMain(DB_PAGE_FROM_FIRST)
+            openMain()
             finish()
         }
 
@@ -97,7 +96,7 @@ class FirstEnterActivity : BaseActivity<ActivityFirstBinding>() {
                 usedPerStr
             ))
             binding.layInfo.tvBoostNow.setOnClickListener {
-                goBoosting(NotyWorkBooster, isFirst = true, actionStr = DB_PAGE_FROM_FIRST)
+                goBoosting(NotyWorkBooster, isFirst = true)
                 finish()
             }
         }

@@ -161,7 +161,7 @@ fun Context.goTerm() {
 
 fun AppCompatActivity.goMain(from: String? = null) {
     startActivity(Intent(this, HomeActivity::class.java).apply {
-        from?.let { putExtra(DB_KEY_FROM, it) }
+        from?.let { putExtra(DB_FROM_KEY, it) }
 
     })
 }

@@ -15,7 +15,6 @@ import com.daily.clean.booster.base.*
 import com.daily.clean.booster.databinding.ActivitySplashBinding
 import com.daily.clean.booster.pop.*
 import com.daily.clean.booster.ext.currentTms
-import com.daily.clean.booster.ext.goMain
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -154,25 +153,8 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     }
 
     private fun goNextByIntent() {
-        val workId = workID
-        when (workId) {
-            NotyWorkClean -> {
-                goJunkScanPage(intentAction)
-            }
-
-            NotyWorkBooster,
-            NotyWorkCpu,
-            NotyWorkBattery -> {
-                goBoosting(work_id = workId, actionStr = intentAction)
-            }
-
-            else -> {
-                goMain(DB_PAGE_FROM_SPLASH)
-            }
-        }
-
+        openMain(workId = workID, sourceId = tanId, actionStr = intentAction)
         finish()
-
     }
 
 }

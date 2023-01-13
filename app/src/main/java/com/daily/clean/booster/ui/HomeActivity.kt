@@ -1,7 +1,9 @@
 package com.daily.clean.booster.ui
 
 import android.animation.ArgbEvaluator
+import android.content.Intent
 import android.graphics.Color
+import android.os.Bundle
 import android.os.Environment
 import android.text.format.Formatter
 import android.view.animation.LinearInterpolator
@@ -9,7 +11,6 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.daily.clean.booster.R
 import com.daily.clean.booster.base.BaseActivity
-import com.daily.clean.booster.base.*
 import com.daily.clean.booster.base.FirebaseEvent
 import com.daily.clean.booster.core.CleanData
 import com.daily.clean.booster.core.DaiBooCleaner
@@ -44,6 +45,32 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         return Color.parseColor("#E8F3FF")
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        dispatchIntent(intent)
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        dispatchIntent(intent)
+    }
+
+    private fun dispatchIntent(intent: Intent?) {
+        val sourceId = intent?.getStringExtra(Noty_KEY_SOURCE) ?: ""
+        val workID = intent?.getStringExtra(Noty_KEY_WORK) ?: ""
+        val intentAction = intent?.action ?: ""
+
+        when (workID) {
+            NotyWorkBattery,
+            NotyWorkBooster,
+            NotyWorkCpu -> goBoosting(workID, actionStr = intentAction)
+
+            NotyWorkClean -> {
+                goJunkScanPage(intentAction)
+            }
+        }
+    }
+
     override fun onResume() {
         super.onResume()
         updateView()
@@ -70,35 +97,21 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
         binding.contentHome.cardClean.setOnClickListener {
             FirebaseEvent.logEvent("page_home_clean2")
-            clean(NotyWorkClean) }
+            goJunkScanPage() }
         binding.contentHome.cardBattry.setOnClickListener {
             FirebaseEvent.logEvent("page_home_battery")
-            clean(NotyWorkBattery) }
+            goBoosting(NotyWorkBattery) }
         binding.contentHome.cardBoost.setOnClickListener {
             FirebaseEvent.logEvent("page_home_boost")
-            clean(NotyWorkBooster)
+            goBoosting(NotyWorkBooster)
         }
         binding.contentHome.cardCpu.setOnClickListener {
             FirebaseEvent.logEvent("page_home_cpu")
-            clean(NotyWorkCpu)
+            goBoosting(NotyWorkCpu)
         }
         binding.contentHome.ivBall.setOnClickListener {
             FirebaseEvent.logEvent("page_home_clean")
-            clean(NotyWorkClean)
-        }
-    }
-
-    fun clean(workId: String) {
-        when (workId) {
-            NotyWorkClean -> {
-                goJunkScanPage(DB_PAGE_FROM_MAIN)
-            }
-
-            NotyWorkBooster,
-            NotyWorkCpu,
-            NotyWorkBattery -> {
-                goBoosting(workId, actionStr = DB_PAGE_FROM_MAIN)
-            }
+            goJunkScanPage()
         }
     }
 

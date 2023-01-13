@@ -193,7 +193,6 @@ class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
         }else{
             FirebaseEvent.pageReturnClick(workId)
         }
-        goMain()
         finish()
     }
 

@@ -80,7 +80,7 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
         }, {
             if (it) {
                 toast(R.string.access_storage_prompt.getString())
-                goMain()
+                finish()
             }
         })
     }

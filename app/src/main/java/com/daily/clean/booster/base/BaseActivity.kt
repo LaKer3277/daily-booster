@@ -16,8 +16,10 @@ import com.afollestad.materialdialogs.customview.customView
 import com.daily.clean.booster.App
 import com.daily.clean.booster.R
 import com.daily.clean.booster.ext.isRPlus
+import com.daily.clean.booster.pop.Noty_KEY_SOURCE
 import com.daily.clean.booster.pop.Noty_KEY_WORK
 import com.daily.clean.booster.tba.HttpTBA
+import com.daily.clean.booster.ui.HomeActivity
 import com.daily.clean.booster.ui.clean.BoostActivity
 import com.daily.clean.booster.ui.clean.CleanResultActivity
 import com.daily.clean.booster.ui.clean.JunkCleanActivity
@@ -124,6 +126,14 @@ abstract class BaseActivity<T: ViewBinding> : AppCompatActivity() {
             it.setText(msg)
             it.show()
         }
+    }
+
+    fun openMain(workId: String = "", sourceId: String = "", actionStr: String = "") {
+        startActivity(Intent(this, HomeActivity::class.java).apply {
+            putExtra(Noty_KEY_WORK, workId)
+            putExtra(Noty_KEY_SOURCE, sourceId)
+            action.let { action = actionStr }
+        })
     }
 
 

@@ -22,7 +22,6 @@ import com.daily.clean.booster.databinding.ActivityBoostBinding
 import com.daily.clean.booster.ext.doCycle
 import com.daily.clean.booster.ext.getString
 import com.daily.clean.booster.ext.getTitleText
-import com.daily.clean.booster.ext.goCleanResult
 import com.daily.clean.booster.pop.*
 import com.lzp.dslanimator.PlayMode
 import com.lzp.dslanimator.animSet
