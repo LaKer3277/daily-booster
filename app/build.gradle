@@ -7,17 +7,6 @@ plugins {
     id 'com.google.firebase.crashlytics'
 }
 
-apply plugin: 'stringfog'
-// 导入RandomKeyGenerator类，如果不使用RandomKeyGenerator，可以删除此行
-import com.github.megatronking.stringfog.plugin.kg.RandomKeyGenerator
-stringfog {
-    // 必要：加解密库的实现类路径，需和上面配置的加解密算法库一致。
-    implementation 'com.github.megatronking.stringfog.xor.StringFogImpl'
-    //fogPackages = ['com.alive.union']
-    kg new RandomKeyGenerator()
-    mode base64
-}
-
 android {
     compileSdk 31
     //pwd: 123123
@@ -106,8 +95,6 @@ dependencies {
 
     // Kotlin + coroutines
     implementation "androidx.work:work-runtime-ktx:2.7.1"
-    // 这里要和上面选用的加解密算法库一致，用于运行时解密。
-    implementation 'com.github.megatronking.stringfog:xor:4.0.1'
 
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
@@ -120,3 +107,11 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }
+
+/*gradle.taskGraph.whenReady {
+    tasks.each { task ->
+        if (task.name.contains("uploadCrashlyticsMappingFile")) {
+            task.enabled = false
+        }
+    }
+}*/
