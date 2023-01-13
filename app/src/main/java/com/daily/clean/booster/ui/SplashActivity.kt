@@ -137,7 +137,10 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
             override fun onError(msg: String) {
                 preloadOpen()
-                if (isActivityPaused) return
+                if (isActivityPaused) {
+                    finish()
+                    return
+                }
                 adNextAction.invoke()
             }
 

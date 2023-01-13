@@ -225,6 +225,10 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
     }
 
     private fun showAdClean() {
+        if (isActivityPaused) {
+            finish()
+            return
+        }
         FirebaseEvent.adChance(AdPos.InsClean)
         AdsLoader.loadAd(this, AdPos.InsClean, object :AdsListener() {
             override fun onLoaded(ad: BaseAd) {
