@@ -20,19 +20,13 @@ const val DB_NAME = "daiboo"
 
 //Intent key
 const val DB_KEY_IS_FIRST = "${DB_NAME}_is_first"
-const val DB_KEY_FROM = "${DB_NAME}_from"
 const val DB_KEY_WEB_URL = "${DB_NAME}_weburl"
 
+const val DB_FROM_KEY = "${DB_NAME}_from"
 const val DB_ACTION_FROM_POP_NOTY = "${DB_NAME}_from_pop"
 const val DB_ACTION_FROM_POP_NOTY_EXIT = "${DB_NAME}_from_pop_exit"
 const val DB_ACTION_FROM_POP_NOTY_FULLSCREEN = "${DB_NAME}_from_pop_fullscreen"
 const val DB_ACTION_FROM_NOTY_RESIDENT = "${DB_NAME}_from_notify"
-
-
-const val DB_PAGE_FROM_MAIN = "${DB_NAME}_from_main"
-const val DB_PAGE_FROM_SPLASH = "${DB_NAME}_from_splash"
-const val DB_PAGE_FROM_RESULT = "${DB_NAME}_from_result"
-const val DB_PAGE_FROM_FIRST = "${DB_NAME}_from_first"
 
 
 const val DB_KEY_CLEAN_SIZE = "${DB_NAME}_clean_size"
@@ -41,18 +35,18 @@ const val DB_KEY_CLEAN_SIZE = "${DB_NAME}_clean_size"
 const val DB_POP_JSON_TEST = """{
     "up_pop":1,
     "booster_avti":1,
-    "ref_fer":1,
+    "ref_fer":0,
     "booster_unl":{
         "first":1,
         "up":40,
-        "int":10,
+        "int":3,
         "siz":2,
         "acti_pos":1
     },
     "booster_time":{
         "first":1,
-        "up":50,
-        "int":10,
+        "up":999,
+        "int":5,
         "siz":2,
         "acti_pos":1
     },
@@ -60,6 +54,13 @@ const val DB_POP_JSON_TEST = """{
         "first":1,
         "up":40,
         "int":10,
+        "siz":2,
+        "acti_pos":1
+    },
+    "booster_cha":{
+        "first":1,
+        "up":40,
+        "int":0,
         "siz":2,
         "acti_pos":1
     },

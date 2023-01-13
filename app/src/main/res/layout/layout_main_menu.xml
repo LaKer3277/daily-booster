@@ -4,17 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    >
-
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/iv_menu_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:src="@mipmap/ic_menu_bg"
         android:scaleType="fitXY"
+        android:src="@mipmap/ic_menu_bg"
         tools:ignore="MissingConstraints" />
 
     <LinearLayout
@@ -27,9 +25,8 @@
             android:id="@+id/logo"
             android:layout_width="88dp"
             android:layout_height="88dp"
-            android:src="@mipmap/ic_logo"
             android:layout_marginTop="50dp"
-            />
+            android:src="@mipmap/ic_logo" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -40,8 +37,8 @@
 
         <LinearLayout
             style="@style/fill_with"
-            android:orientation="vertical"
             android:layout_marginTop="64dp"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -58,8 +55,8 @@
 
                 <TextView
                     style="@style/recom_item_text"
-                    android:textColor="@color/white"
-                    android:text="@string/contact_us" />
+                    android:text="@string/contact_us"
+                    android:textColor="@color/white" />
 
             </LinearLayout>
 
@@ -74,8 +71,8 @@
 
                 <TextView
                     style="@style/recom_item_text"
-                    android:textColor="@color/white"
-                    android:text="@string/privacy_policy" />
+                    android:text="@string/privacy_policy"
+                    android:textColor="@color/white" />
 
             </LinearLayout>
 
@@ -90,8 +87,8 @@
 
                 <TextView
                     style="@style/recom_item_text"
-                    android:textColor="@color/white"
-                    android:text="@string/rate_us" />
+                    android:text="@string/rate_us"
+                    android:textColor="@color/white" />
 
             </LinearLayout>
 
@@ -106,8 +103,8 @@
 
                 <TextView
                     style="@style/recom_item_text"
-                    android:textColor="@color/white"
-                    android:text="@string/update" />
+                    android:text="@string/update"
+                    android:textColor="@color/white" />
 
             </LinearLayout>
 
