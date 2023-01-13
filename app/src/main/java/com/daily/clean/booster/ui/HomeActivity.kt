@@ -91,7 +91,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     fun clean(workId: String) {
         when (workId) {
             NotyWorkClean -> {
-                goJunkCleanScanning(DB_PAGE_FROM_MAIN)
+                goJunkScanPage(DB_PAGE_FROM_MAIN)
             }
 
             NotyWorkBooster,

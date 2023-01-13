@@ -178,7 +178,7 @@ class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
 
     private fun clickJunkBtn() {
         checkStoragePermission({
-            goJunkCleanScanning()
+            goJunkScanPage()
             finish()
         }, {
             if (it) {

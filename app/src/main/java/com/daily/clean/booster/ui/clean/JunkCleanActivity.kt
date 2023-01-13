@@ -9,6 +9,7 @@ import com.daily.clean.booster.ads.AdsLoader
 import com.daily.clean.booster.ads.conf.AdPos
 import com.daily.clean.booster.ads.model.BaseAd
 import com.daily.clean.booster.ads.model.BaseIns
+import com.daily.clean.booster.appIns
 import com.daily.clean.booster.base.BaseActivity
 import com.daily.clean.booster.base.*
 import com.daily.clean.booster.base.FirebaseEvent
@@ -16,7 +17,6 @@ import com.daily.clean.booster.databinding.ActivityCleanBinding
 import com.daily.clean.booster.entity.DaiBooCleanEvent
 import com.daily.clean.booster.utils.DaiBooMK
 import com.daily.clean.booster.ext.doCycle
-import com.daily.clean.booster.ext.goCleanResult
 import com.daily.clean.booster.pop.NotyWorkClean
 import com.lzp.dslanimator.PlayMode
 import com.lzp.dslanimator.animSet
@@ -117,6 +117,10 @@ class JunkCleanActivity : BaseActivity<ActivityCleanBinding>() {
 
 
     private fun showAdOrInvokeNext() {
+        if (isActivityPaused) {
+            finish()
+            return
+        }
         FirebaseEvent.adChance(AdPos.InsClean)
         AdsLoader.loadAd(this, AdPos.InsClean, object : AdsListener() {
             override fun onLoaded(ad: BaseAd) {
@@ -149,6 +153,10 @@ class JunkCleanActivity : BaseActivity<ActivityCleanBinding>() {
     }
 
     private fun goNextPage() {
+        if (!appIns.isAtForeground()) {
+            finish()
+            return
+        }
         val extra = intent.getStringExtra(DB_KEY_CLEAN_SIZE) ?: "0B"
         goCleanResult(NotyWorkClean, extra = extra, from = intent.action)
         finish()

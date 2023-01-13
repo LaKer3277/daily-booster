@@ -28,10 +28,6 @@ import com.daily.clean.booster.appIns
 import com.daily.clean.booster.base.*
 import com.daily.clean.booster.pop.*
 import com.daily.clean.booster.ui.*
-import com.daily.clean.booster.ui.clean.BoostActivity
-import com.daily.clean.booster.ui.clean.CleanResultActivity
-import com.daily.clean.booster.ui.clean.JunkCleanActivity
-import com.daily.clean.booster.ui.clean.JunkScanActivity
 import com.google.android.gms.ads.AdActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -123,32 +119,6 @@ fun Activity.isADActivity(): Boolean {
     return this is AdActivity || this is AppLovinFullscreenActivity
 }
 
-fun AppCompatActivity.goBoosting(
-    work_id: String,
-    isFirst: Boolean = false,
-    actionStr: String? = null
-) {
-    startActivity(Intent(this, BoostActivity::class.java).apply {
-        putExtra(Noty_KEY_WORK, work_id)
-        putExtra(DB_KEY_IS_FIRST, isFirst)
-        actionStr?.let { action = actionStr }
-    })
-}
-
-
-fun AppCompatActivity.goJunkCleanScanning(act: String? = null) {
-    startActivity(Intent(this, JunkScanActivity::class.java).apply {
-        act?.let { action = act }
-    })
-}
-
-fun AppCompatActivity.goJunkCleanPage(extra: String?, act: String? = null) {
-    startActivity(Intent(this, JunkCleanActivity::class.java).apply {
-        extra?.let { putExtra(DB_KEY_CLEAN_SIZE, it) }
-        act?.let { action = act }
-    })
-}
-
 
 fun Context.updateApp() {
     try {
@@ -172,8 +142,6 @@ fun Context.updateApp() {
     } catch (e: ActivityNotFoundException) {
         e.printStackTrace()
     }
-
-
 }
 
 
@@ -194,17 +162,6 @@ fun Context.goTerm() {
 fun AppCompatActivity.goMain(from: String? = null) {
     startActivity(Intent(this, HomeActivity::class.java).apply {
         from?.let { putExtra(DB_KEY_FROM, it) }
-
-    })
-}
-
-fun AppCompatActivity.goCleanResult(work_id: String, extra: String? = null, from: String? = null, isFirst: Boolean = false) {
-
-    startActivity(Intent(this, CleanResultActivity::class.java).apply {
-        putExtra(Noty_KEY_WORK, work_id)
-        putExtra(DB_KEY_IS_FIRST, isFirst)
-        extra?.let { putExtra(DB_KEY_CLEAN_SIZE, it) }
-        from?.let { action = from }
 
     })
 }
@@ -234,7 +191,7 @@ fun Context.goShareApp() {
         intent.type = "text/plain"
         intent.putExtra(
             Intent.EXTRA_TEXT,
-            "https://play.google.com/store/apps/details?id=" + DB_APPLICATION_ID
+            "https://play.google.com/store/apps/details?id=$DB_APPLICATION_ID"
         )
         this.startActivity(Intent.createChooser(intent, "share"))
     } catch (e: java.lang.Exception) {
@@ -297,10 +254,3 @@ fun String.getTitleText(): String {
         else -> ""
     }
 }
-
-fun is24Android7() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
-fun is26Android8() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
-fun is28Android9() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
-fun is29Android10() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
-fun is30Android11() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.R
-fun is31Android12() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S

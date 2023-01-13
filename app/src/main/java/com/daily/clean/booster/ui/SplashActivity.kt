@@ -15,8 +15,6 @@ import com.daily.clean.booster.base.*
 import com.daily.clean.booster.databinding.ActivitySplashBinding
 import com.daily.clean.booster.pop.*
 import com.daily.clean.booster.ext.currentTms
-import com.daily.clean.booster.ext.goBoosting
-import com.daily.clean.booster.ext.goJunkCleanScanning
 import com.daily.clean.booster.ext.goMain
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -159,7 +157,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         val workId = workID
         when (workId) {
             NotyWorkClean -> {
-                goJunkCleanScanning(intentAction)
+                goJunkScanPage(intentAction)
             }
 
             NotyWorkBooster,

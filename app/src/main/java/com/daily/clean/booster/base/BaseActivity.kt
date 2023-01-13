@@ -1,5 +1,6 @@
 package com.daily.clean.booster.base
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
@@ -15,7 +16,12 @@ import com.afollestad.materialdialogs.customview.customView
 import com.daily.clean.booster.App
 import com.daily.clean.booster.R
 import com.daily.clean.booster.ext.isRPlus
+import com.daily.clean.booster.pop.Noty_KEY_WORK
 import com.daily.clean.booster.tba.HttpTBA
+import com.daily.clean.booster.ui.clean.BoostActivity
+import com.daily.clean.booster.ui.clean.CleanResultActivity
+import com.daily.clean.booster.ui.clean.JunkCleanActivity
+import com.daily.clean.booster.ui.clean.JunkScanActivity
 import com.hjq.permissions.OnPermissionCallback
 import com.hjq.permissions.Permission
 import com.hjq.permissions.XXPermissions
@@ -37,7 +43,7 @@ abstract class BaseActivity<T: ViewBinding> : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         //防止输入法顶起底部布局
-//        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+        //window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         super.onCreate(savedInstanceState)
         //屏幕适配
         dailyDensity()
@@ -120,6 +126,40 @@ abstract class BaseActivity<T: ViewBinding> : AppCompatActivity() {
         }
     }
 
+
+    fun goBoosting(
+        work_id: String,
+        isFirst: Boolean = false,
+        actionStr: String? = null
+    ) {
+        startActivity(Intent(this, BoostActivity::class.java).apply {
+            putExtra(Noty_KEY_WORK, work_id)
+            putExtra(DB_KEY_IS_FIRST, isFirst)
+            actionStr?.let { action = actionStr }
+        })
+    }
+
+    fun goJunkScanPage(act: String? = null) {
+        startActivity(Intent(this, JunkScanActivity::class.java).apply {
+            act?.let { action = act }
+        })
+    }
+
+    fun goJunkCleanPage(extra: String?, act: String? = null) {
+        startActivity(Intent(this, JunkCleanActivity::class.java).apply {
+            extra?.let { putExtra(DB_KEY_CLEAN_SIZE, it) }
+            act?.let { action = act }
+        })
+    }
+
+    fun goCleanResult(work_id: String, extra: String? = null, from: String? = null, isFirst: Boolean = false) {
+        startActivity(Intent(this, CleanResultActivity::class.java).apply {
+            putExtra(Noty_KEY_WORK, work_id)
+            putExtra(DB_KEY_IS_FIRST, isFirst)
+            extra?.let { putExtra(DB_KEY_CLEAN_SIZE, it) }
+            from?.let { action = from }
+        })
+    }
 
     fun checkStoragePermission(
         onGranted: () -> Unit,
