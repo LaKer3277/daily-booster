@@ -40,7 +40,7 @@
 }
 
 # 数据对象类
--keep class com.daily.clean.boost.entity.** { *; }
+-keep class com.daily.clean.booster.entity.** { *; }
 
 # 方法名等混淆指定配置
 
