@@ -15,7 +15,7 @@
         android:centerY="0.5"
         android:endColor="#1A9EF3"
         android:startColor="#3126F5" />
-    ®
+
     <!-- 边框的颜色和粗细 -->
     <!--    <stroke-->
     <!--        android:width="0.1dp"-->

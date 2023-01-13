@@ -2,6 +2,7 @@ package com.daily.clean.booster.ui.clean
 
 import android.animation.ValueAnimator
 import android.content.Intent
+import android.graphics.Color
 import android.os.Environment
 import android.text.format.Formatter
 import android.view.View
@@ -36,6 +37,14 @@ class JunkScanActivity : BaseActivity<ActivityJunkScanBinding>() {
 
     override fun dailyBinding(): ActivityJunkScanBinding {
         return ActivityJunkScanBinding.inflate(layoutInflater)
+    }
+
+    override fun statusColor(): Int {
+        return Color.parseColor("#3126F5")
+    }
+
+    override fun statusTxtColorDark(): Boolean {
+        return false
     }
 
     override fun dailyData() {

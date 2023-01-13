@@ -40,6 +40,10 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     override fun dailyLoad() {
     }
 
+    override fun statusColor(): Int {
+        return Color.parseColor("#E8F3FF")
+    }
+
     override fun onResume() {
         super.onResume()
         updateView()

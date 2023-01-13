@@ -3,6 +3,7 @@ package com.daily.clean.booster.ui
 import android.animation.Animator
 import android.animation.ValueAnimator
 import android.content.Intent
+import android.graphics.Color
 import androidx.lifecycle.lifecycleScope
 import com.daily.clean.booster.ads.AdsListener
 import com.daily.clean.booster.ads.AdsLoader
@@ -32,6 +33,10 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         dispatchIntent(intent)
+    }
+
+    override fun statusColor(): Int {
+        return Color.parseColor("#FAF9FC")
     }
 
     private fun dispatchIntent(intent: Intent?) {

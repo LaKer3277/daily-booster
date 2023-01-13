@@ -1,6 +1,7 @@
 package com.daily.clean.booster.ui.clean
 
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.graphics.Rect
 import android.view.View
 import android.widget.ImageView
@@ -28,6 +29,14 @@ class CleanResultActivity : BaseActivity<ActivityResultBinding>() {
 
     override fun dailyBinding(): ActivityResultBinding {
         return ActivityResultBinding.inflate(layoutInflater)
+    }
+
+    override fun statusColor(): Int {
+        return Color.parseColor("#3126F5")
+    }
+
+    override fun statusTxtColorDark(): Boolean {
+        return false
     }
 
     private var extraStr = "0B"

@@ -2,6 +2,7 @@ package com.daily.clean.booster.ui.clean
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import android.view.View
 import android.view.animation.LinearInterpolator
 import androidx.lifecycle.lifecycleScope
@@ -38,6 +39,14 @@ class BoostActivity : BaseActivity<ActivityBoostBinding>() {
 
     override fun dailyBinding(): ActivityBoostBinding {
         return ActivityBoostBinding.inflate(layoutInflater)
+    }
+
+    override fun statusColor(): Int {
+        return Color.parseColor("#3126F5")
+    }
+
+    override fun statusTxtColorDark(): Boolean {
+        return false
     }
 
     private var workingMode = NotyWorkBooster

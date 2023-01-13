@@ -32,7 +32,7 @@ abstract class BaseActivity<T: ViewBinding> : AppCompatActivity() {
         return 0
     }
     open fun statusTxtColorDark(): Boolean {
-        return false
+        return true
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_boost"
-    >
+    android:background="@drawable/bg_boost">
 
     <ImageView
         android:id="@+id/title_back"
@@ -29,10 +28,10 @@
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:adjustViewBounds="true"
+        app:layout_constraintBottom_toBottomOf="@id/iv_end"
         app:layout_constraintEnd_toEndOf="@id/iv_end"
         app:layout_constraintStart_toStartOf="@id/iv_end"
         app:layout_constraintTop_toTopOf="@id/iv_end"
-        app:layout_constraintBottom_toBottomOf="@id/iv_end"
         app:lottie_autoPlay="true"
         app:lottie_fileName="scan_booster.json"
         app:lottie_imageAssetsFolder="images"
@@ -67,10 +66,7 @@
         android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@id/tv_des"
         app:layout_constraintEnd_toEndOf="@id/lot_anim_scan"
-        app:layout_constraintStart_toStartOf="@id/lot_anim_scan"
-        />
-
-
+        app:layout_constraintStart_toStartOf="@id/lot_anim_scan" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
