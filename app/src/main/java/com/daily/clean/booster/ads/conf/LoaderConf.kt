@@ -1,8 +1,8 @@
 package com.daily.clean.booster.ads.conf
 
 import android.annotation.SuppressLint
-import android.util.Log
 import com.daily.clean.booster.datas.RemoteConfig
+import com.daily.clean.booster.ext.loggerAds
 import com.daily.clean.booster.ext.toAdPos
 import org.json.JSONArray
 import org.json.JSONObject
@@ -28,7 +28,7 @@ open class LoaderConf {
 
         fun tryParseRelease() {
             var adConfig = RemoteConfig.ins.getAdsConfig()
-            Log.i("AdsLoader", "RemoteConfig: $adConfig")
+            loggerAds("AdsConfig Remote: $adConfig")
             if (adConfig.isNullOrEmpty()) {
                 adConfig = localAds()
             }

@@ -5,6 +5,8 @@ import com.daily.clean.booster.ads.conf.LoaderConf
 import com.daily.clean.booster.base.DB_POP_JSON_TEST
 import com.daily.clean.booster.entity.DaiBooPopBean
 import com.daily.clean.booster.ext.json2Pop
+import com.daily.clean.booster.ext.loggerAds
+import com.daily.clean.booster.ext.loggerNotify
 import com.daily.clean.booster.isDebugMode
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
@@ -33,6 +35,7 @@ class RemoteConfig {
 
     fun fetchInit() {
         LoaderConf.tryParseLocal()
+        loggerNotify("PopConfig Local: $DB_POP_JSON_TEST")
         daiBooPopBean = DB_POP_JSON_TEST.json2Pop()
 
         remoteConfig.fetchAndActivate().addOnCompleteListener {

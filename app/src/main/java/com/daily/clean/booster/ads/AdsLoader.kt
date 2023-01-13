@@ -1,12 +1,12 @@
 package com.daily.clean.booster.ads
 
 import android.content.Context
-import android.util.Log
 import com.daily.clean.booster.ads.conf.AdConf
 import com.daily.clean.booster.ads.conf.AdPos
 import com.daily.clean.booster.ads.conf.LoaderConf
 import com.daily.clean.booster.ads.loader.AdmobLoader
 import com.daily.clean.booster.ads.model.BaseAd
+import com.daily.clean.booster.ext.loggerAds
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -16,8 +16,6 @@ import kotlin.collections.HashMap
 
 
 object AdsLoader: LoaderConf(), CoroutineScope by MainScope() {
-
-    const val adTag = "AdsLoader"
 
     private val syncRequesting = HashMap<String, String>()
     private val _ads = hashMapOf<String, ArrayList<BaseAd>>()
@@ -30,7 +28,7 @@ object AdsLoader: LoaderConf(), CoroutineScope by MainScope() {
             ad = ads.removeAt(i)
             if (!ad.isExpired()) break
         }
-        Log.e(adTag, "$pos getCache:$ad, container: $_ads")
+        loggerAds("$pos getCache:$ad, container: $_ads")
         return ad
     }
 
@@ -62,10 +60,10 @@ object AdsLoader: LoaderConf(), CoroutineScope by MainScope() {
 
     fun preloadAd(ctx: Context, adPos: AdPos) {
         if (isCached(adPos)) {
-            Log.i(adTag, "$adPos preloadAd but cached")
+            loggerAds("$adPos preloadAd but cached")
             return
         }
-        Log.i(adTag, "$adPos preloadAd")
+        loggerAds("$adPos preloadAd")
 
         loadAd(ctx.applicationContext, adPos, object : AdsListener() {
             override fun onLoaded(ad: BaseAd) {
@@ -85,7 +83,7 @@ object AdsLoader: LoaderConf(), CoroutineScope by MainScope() {
         adsListener: AdsListener,
         onlyCache: Boolean = false,
         newLoad: Boolean = false) {
-        Log.i(adTag, "$adPos loadAd")
+        loggerAds("$adPos loadAd")
 
         val cache = getCache(adPos)
         if (cache != null) {
@@ -163,7 +161,7 @@ object AdsLoader: LoaderConf(), CoroutineScope by MainScope() {
                 syncRequesting.remove(adPos.adPos)
             }
             putImpressJson(ad)
-            Log.e(adTag, "$adPos requested ad: $ad")
+            loggerAds("$adPos requested ad: $ad")
             if (ad == null) {
                 val cache = getCache(adPos)
                 if (cache != null) {
@@ -178,7 +176,7 @@ object AdsLoader: LoaderConf(), CoroutineScope by MainScope() {
 
         when (type) {
             "open" -> {
-                Log.i(adTag, "$adPos loadOpen: ${config.priority} ${config.id}")
+                loggerAds("$adPos loadOpen: ${config.priority} ${config.id}")
                 syncRequesting[adPos.adPos] = adPos.adPos
                 loader?.loadOpen(ctx, adPos, config, adsListener) {
                     checkResult(it)
@@ -186,7 +184,7 @@ object AdsLoader: LoaderConf(), CoroutineScope by MainScope() {
             }
 
             "interstitial" -> {
-                Log.i(adTag, "$adPos loadInterstitial: ${config.priority} ${config.id}")
+                loggerAds("$adPos loadInterstitial: ${config.priority} ${config.id}")
                 syncRequesting[adPos.adPos] = adPos.adPos
                 loader?.loadInterstitial(ctx, adPos, config, adsListener) {
                     checkResult(it)
@@ -194,7 +192,7 @@ object AdsLoader: LoaderConf(), CoroutineScope by MainScope() {
             }
 
             "native" -> {
-                Log.i(adTag, "$adPos loadNative: ${config.priority} ${config.id}")
+                loggerAds("$adPos loadNative: ${config.priority} ${config.id}")
                 syncRequesting[adPos.adPos] = adPos.adPos
                 loader?.loadNative(ctx, adPos, config, adsListener) {
                     checkResult(it)

@@ -97,3 +97,7 @@ fun loggerNotify(msg: String) {
 fun loggerHttp(msg: String) {
     Log.i("loggerHttp", msg)
 }
+
+fun loggerAds(msg: String) {
+    Log.i("AdsLoader", msg)
+}

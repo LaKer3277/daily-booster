@@ -55,7 +55,6 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
         animBallJump.cancel()
     }
 
-
     private fun initMenu() {
         binding.contentSetting.ivMenuBg.setOnClickListener { }
         binding.contentSetting.llContact.setOnClickListener { goContactUs() }
@@ -92,25 +91,15 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     fun clean(workId: String) {
         when (workId) {
             NotyWorkClean -> {
-                work_junkClean()
+                goJunkCleanScanning(DB_PAGE_FROM_MAIN)
             }
 
             NotyWorkBooster,
             NotyWorkCpu,
             NotyWorkBattery -> {
-                work_boost(workId)
+                goBoosting(workId, actionStr = DB_PAGE_FROM_MAIN)
             }
         }
-    }
-
-    private fun main() = this@HomeActivity
-
-    private fun work_junkClean() {
-        main().goJunkCleanScanning(DB_PAGE_FROM_MAIN)
-    }
-
-    private fun work_boost(id: String) {
-        main().goBoosting(id, actionStr = DB_PAGE_FROM_MAIN)
     }
 
 
@@ -141,10 +130,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
                 animBallJump.cancel()
             }
         }
-
-
     }
-
 
     var jobScanJunk: Job? = null
     var curTotalSize = 0L
@@ -178,7 +164,6 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     }
 
     fun showJunkSize2(start: Long, size: Long) {
-
         var curent = start
         val per = (size - start) / 100L
         lifecycleScope.launch {
@@ -192,7 +177,6 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
                 }
             }
         }
-
     }
 
 
@@ -228,15 +212,11 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             onEnd {
                 animBallJump.start()
             }
-
         }
-
     }
-
 
     private val animBallJump by lazy {
         animSet {
-
             translationYAnim {
                 target = binding.contentHome.clBall
                 values = floatArrayOf(0f, -80f, 0f)
@@ -257,9 +237,7 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             duration = 2000
             interpolator = LinearInterpolator()
             playMode = PlayMode.TOGETHER
-
         }
-
     }
 
 }
