@@ -56,14 +56,14 @@ open class LoaderConf {
                         idJson = idArray.optJSONObject(j) ?: continue
                         idList.add(
                             AdConf(
-                                Network = idJson.optString("ad_source"),
-                                Id = idJson.optString("id"),
-                                Form = idJson.optString("ad_type"),
-                                Hierarchy = idJson.optInt("weight")
+                                platform = idJson.optString("Network"),
+                                id = idJson.optString("Id"),
+                                type = idJson.optString("Form"),
+                                priority = idJson.optInt("Hierarchy")
                             )
                         )
                     }
-                    idList.sortBy { it.Hierarchy * -1 }
+                    idList.sortBy { it.priority * -1 }
                     hashMap[name] = PosConf(name.toAdPos(), idList)
                 }
 

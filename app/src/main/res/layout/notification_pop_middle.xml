@@ -2,19 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/pop_content"
     android:layout_width="match_parent"
-    android:layout_height="146dp"
+    android:layout_height="128dp"
     android:background="@color/white"
     android:orientation="vertical"
     android:paddingHorizontal="12dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/ll_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal"
-        android:visibility="visible">
+        android:layout_marginTop="10dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -23,7 +20,16 @@
             android:textColor="#1e1c26"
             android:textSize="14sp"
             android:textStyle="bold" />
-    </LinearLayout>
+
+        <TextView
+            android:id="@+id/btnWake_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:text="@string/cancel"
+            android:textColor="#999999"
+            android:textSize="12sp" />
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

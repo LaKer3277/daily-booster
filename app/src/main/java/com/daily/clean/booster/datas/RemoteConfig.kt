@@ -34,10 +34,13 @@ class RemoteConfig {
     fun fetchInit() {
         LoaderConf.tryParseLocal()
         daiBooPopBean = DB_POP_JSON_TEST.json2Pop()
+
         remoteConfig.fetchAndActivate().addOnCompleteListener {
             if (it.isSuccessful) {
                 LoaderConf.tryParseRelease()
                 //NotifyCenter.ins.initNotifyConf()
+                val popConf = getPopConfig()
+                if (popConf.isNullOrEmpty()) return@addOnCompleteListener
                 daiBooPopBean = getPopConfig().json2Pop()
             }
         }

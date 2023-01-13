@@ -30,7 +30,7 @@ class AdmobLoader: BaseLoader {
         admobNative.setLoadErrAction {
             callBack.invoke(null)
         }
-        AdLoader.Builder(ctx, adConf.Id)
+        AdLoader.Builder(ctx, adConf.id)
             .forNativeAd {
                 admobNative.loaded(it, adsListener)
                 callBack.invoke(admobNative)
@@ -54,7 +54,7 @@ class AdmobLoader: BaseLoader {
         val adRequest = AdRequest.Builder().build()
         AppOpenAd.load(
             ctx.applicationContext,
-            adConf.Id,
+            adConf.id,
             adRequest,
             AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT,
             object : AppOpenAd.AppOpenAdLoadCallback() {
@@ -79,7 +79,7 @@ class AdmobLoader: BaseLoader {
     ) {
         InterstitialAd.load(
             ctx,
-            adConf.Id,
+            adConf.id,
             AdRequest.Builder().build(),
             object : InterstitialAdLoadCallback() {
                 override fun onAdFailedToLoad(adError: LoadAdError) {

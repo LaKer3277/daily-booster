@@ -5,6 +5,7 @@ import com.daily.clean.booster.base.FirebaseEvent
 import com.daily.clean.booster.datas.RemoteConfig
 import com.daily.clean.booster.entity.DaiBooPopItemBean
 import com.daily.clean.booster.ext.loggerNotify
+import com.daily.clean.booster.tba.HttpTBA
 import com.daily.clean.booster.utils.DaiBooMK
 
 
@@ -49,16 +50,27 @@ object NotifyManager: NotifyPopper() {
         }
     }
 
+    private fun isRefEnable(ref: Int): Boolean {
+        return when (ref) {
+            0 -> true
+            1 -> HttpTBA.isUserBuyer
+            2 -> HttpTBA.isUserBuyerFb
+            else -> true
+        }
+    }
+
     private fun isCanPopConfig(tanId: String, item: DaiBooPopItemBean?): Boolean {
         if (appIns.isAtForeground()) return false
-
-        usingActivity = 1 == RemoteConfig.daiBooPopBean?.booster_avti
-        if (item == null) return false
+        val popBean = RemoteConfig.daiBooPopBean ?: return false
         //是否开启体外弹窗
-        if (1 != RemoteConfig.daiBooPopBean?.up_pop) {
+        if (1 != popBean.up_pop) {
             loggerNotify("allConfig Not Enable")
             return false
         }
+        if (!isRefEnable(popBean.ref_fer)) return false
+
+        usingActivity = 1 == popBean.booster_avti
+        if (item == null) return false
         //是否超过弹窗时间
         val overFirstTime = System.currentTimeMillis() - getFirstInstallTime() >= item.first * 60 * 60 * 1000L
         if (!overFirstTime) {

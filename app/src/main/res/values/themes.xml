@@ -136,7 +136,6 @@
     <style name="title_left">
         <item name="android:layout_width">56dp</item>
         <item name="android:layout_height">56dp</item>
-        <item name="android:layout_marginTop">30dp</item>
         <item name="android:layout_marginStart">16dp</item>
         <item name="android:scaleType">center</item>
         <item name="android:background">?selectableItemBackground</item>

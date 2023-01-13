@@ -80,6 +80,7 @@
     <string name="view_trash_details">View trash Details ></string>
     <string name="junk_suggest_to_cleanup">Junk suggest to cleanup</string>
     <string name="manage">Manage</string>
+    <string name="exit">exit</string>
     <string name="boost">Boost</string>
     <string name="optimize_up">OPTIMIZE</string>
     <string name="cool_down">Cool Down</string>

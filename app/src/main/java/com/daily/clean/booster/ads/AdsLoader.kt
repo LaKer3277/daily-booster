@@ -55,7 +55,7 @@ object AdsLoader: LoaderConf(), CoroutineScope by MainScope() {
         list.add(ad)
         Collections.sort(list, object : Comparator<BaseAd> {
             override fun compare(o1: BaseAd?, o2: BaseAd?): Int {
-                return (o1?.adConf?.Hierarchy?.compareTo(o2?.adConf?.Hierarchy ?: 0) ?: 0) * -1
+                return (o1?.adConf?.priority?.compareTo(o2?.adConf?.priority ?: 0) ?: 0) * -1
             }
         })
     }
@@ -178,7 +178,7 @@ object AdsLoader: LoaderConf(), CoroutineScope by MainScope() {
 
         when (type) {
             "open" -> {
-                Log.i(adTag, "$adPos loadOpen: ${config.Hierarchy} ${config.Id}")
+                Log.i(adTag, "$adPos loadOpen: ${config.priority} ${config.id}")
                 syncRequesting[adPos.adPos] = adPos.adPos
                 loader?.loadOpen(ctx, adPos, config, adsListener) {
                     checkResult(it)
@@ -186,7 +186,7 @@ object AdsLoader: LoaderConf(), CoroutineScope by MainScope() {
             }
 
             "inter" -> {
-                Log.i(adTag, "$adPos loadInterstitial: ${config.Hierarchy} ${config.Id}")
+                Log.i(adTag, "$adPos loadInterstitial: ${config.priority} ${config.id}")
                 syncRequesting[adPos.adPos] = adPos.adPos
                 loader?.loadInterstitial(ctx, adPos, config, adsListener) {
                     checkResult(it)
@@ -194,7 +194,7 @@ object AdsLoader: LoaderConf(), CoroutineScope by MainScope() {
             }
 
             "native" -> {
-                Log.i(adTag, "$adPos loadNative: ${config.Hierarchy} ${config.Id}")
+                Log.i(adTag, "$adPos loadNative: ${config.priority} ${config.id}")
                 syncRequesting[adPos.adPos] = adPos.adPos
                 loader?.loadNative(ctx, adPos, config, adsListener) {
                     checkResult(it)

@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/pop_content"
     android:layout_width="match_parent"
     android:layout_height="68dp"
-    android:background="@color/white"
-    android:gravity="center_vertical"
-    android:orientation="horizontal">
+    android:background="@color/white">
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@id/btnWake"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
@@ -38,7 +37,9 @@
         android:id="@+id/btnWake"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_marginEnd="12dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/btn_t1_c20"
         android:gravity="center"
         android:minWidth="60dp"
@@ -47,4 +48,13 @@
         android:textColor="@color/white"
         android:textSize="12sp" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/btnWake_no"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="6dp"
+        android:layout_marginTop="6dp"
+        android:background="@mipmap/noti_close" />
+
+</RelativeLayout>

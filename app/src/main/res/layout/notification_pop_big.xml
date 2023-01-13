@@ -75,7 +75,8 @@
         android:layout_marginBottom="8dp"
         android:background="@color/white"
         android:gravity="center"
-        android:text="Exit"
+        android:textSize="15sp"
+        android:text="@string/exit"
         android:textColor="#999999" />
 
 </LinearLayout>

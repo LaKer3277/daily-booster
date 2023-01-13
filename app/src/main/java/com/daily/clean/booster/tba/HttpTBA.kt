@@ -57,10 +57,10 @@ object HttpTBA: IHttpBase(), CoroutineScope by GlobalScope {
         val currency = "USD"
         //广告网络，广告真实的填充平台，例如admob的bidding，填充了Facebook的广告，此值为Facebook
         val adNetwork = adEvent.daiboo_ad_network
-        val adSource = adEvent.daiboo_ad_item.Network
-        val adCodeId = adEvent.daiboo_ad_item.Id
+        val adSource = adEvent.daiboo_ad_item.platform
+        val adCodeId = adEvent.daiboo_ad_item.id
         val adPosId = adEvent.daiboo_key
-        val adRitId = adEvent.daiboo_ad_item.Id
+        val adRitId = adEvent.daiboo_ad_item.id
         val adSense = ""
         val adFormat = adEvent.daiboo_ad_item.getFormat()
         //google ltvpingback的预估收益类型

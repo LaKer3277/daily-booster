@@ -182,7 +182,6 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
                 delay(9)
                 curent += per
                 val fs = Formatter.formatFileSize(this@HomeActivity, curent).uppercase()
-//                LogDM.d("scan end ${fs.trim()}")
                 fs.replace(" ", "").let {
                     binding.contentHome.tvJunkSize.text = it.substring(0, it.length - 2)
                     binding.contentHome.tvJunkSizeUnit.text = it.substring(it.length - 2, it.length)

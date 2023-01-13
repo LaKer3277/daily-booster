@@ -69,6 +69,7 @@ open class NotifyPopper {
             .setAutoCancel(true)
             .setGroupSummary(false)
             .setSound(null)
+            .setOngoing(true)
 
         val size = item?.siz ?: 2
         val small = getCustomView(workId, sourceId, 0)
@@ -194,10 +195,8 @@ open class NotifyPopper {
 
         val isBig = size == 2
         val remoteViews = RemoteViews(appIns.packageName, layoutResId).apply {
-            setOnClickPendingIntent(R.id.btnWake, btnClickPending(workID, tanID))
-            if (isBig) {
-                setOnClickPendingIntent(R.id.btnWake_no, btnClickPendingClose(workID, tanID))
-            }
+            setOnClickPendingIntent(R.id.pop_content, btnClickPending(workID, tanID))
+            setOnClickPendingIntent(R.id.btnWake_no, btnClickPendingClose(workID, tanID))
 
             when (workID) {
                 NotyWorkBooster -> {

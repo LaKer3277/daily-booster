@@ -1,7 +1,5 @@
 package com.daily.clean.booster.base
 
-import android.annotation.SuppressLint
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
@@ -30,6 +28,12 @@ abstract class BaseActivity<T: ViewBinding> : AppCompatActivity() {
 
     abstract fun dailyData()
     abstract fun dailyLoad()
+    open fun statusColor(): Int {
+        return 0
+    }
+    open fun statusTxtColorDark(): Boolean {
+        return false
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         //防止输入法顶起底部布局
@@ -37,8 +41,10 @@ abstract class BaseActivity<T: ViewBinding> : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         //屏幕适配
         dailyDensity()
-        //设置状态栏透明
-        dailyStatusBar()
+        val theme = statusColor()
+        if (theme != 0) {
+            changeStatusBarBg(theme, statusTxtColorDark())
+        }
         binding = dailyBinding()
         setContentView(binding.root)
 
@@ -83,17 +89,18 @@ abstract class BaseActivity<T: ViewBinding> : AppCompatActivity() {
     }
 
 
-    @SuppressLint("ObsoleteSdkInt")
-    fun dailyStatusBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            val option = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-            val vis = window.decorView.systemUiVisibility
-            window.decorView.systemUiVisibility = option or vis
-            window.statusBarColor = Color.TRANSPARENT
+    protected fun changeStatusBarBg(statusBarColor: Int, isDarkText: Boolean) {
+        val window = window
+        val decorView = window.decorView
+        //5.0开始需要把颜色设置透明，否则导航栏会呈现系统默认的浅灰色
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        window.statusBarColor = statusBarColor
+        //android 6.0以上才能设置状态栏字体、图标颜色. 如果设置了透明底色又不能深色字体,状态栏就GG了
+        if (isDarkText) {
+            //两个 flag 要结合使用，表示让应用的主体内容占用系统状态栏的空间
+            decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         } else {
-            window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
         }
     }
 
