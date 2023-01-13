@@ -185,7 +185,7 @@ object AdsLoader: LoaderConf(), CoroutineScope by MainScope() {
                 }
             }
 
-            "inter" -> {
+            "interstitial" -> {
                 Log.i(adTag, "$adPos loadInterstitial: ${config.priority} ${config.id}")
                 syncRequesting[adPos.adPos] = adPos.adPos
                 loader?.loadInterstitial(ctx, adPos, config, adsListener) {
