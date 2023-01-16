@@ -2,15 +2,16 @@ package com.daily.clean.booster.ui
 
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Bundle
 import android.view.Gravity
 import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.blankj.utilcode.util.ActivityUtils
 import com.daily.clean.booster.R
 import com.daily.clean.booster.appIns
-import com.daily.clean.booster.base.BaseActivity
 import com.daily.clean.booster.base.*
 import com.daily.clean.booster.base.FirebaseEvent
 import com.daily.clean.booster.pop.NotifyManager
@@ -19,10 +20,15 @@ import com.daily.clean.booster.utils.DaiBooRAMUtils
 import com.daily.clean.booster.ext.getString
 import com.daily.clean.booster.pop.*
 
-class NotificationActivity : BaseActivity<NotificationBigActBinding>() {
+class NotificationActivity : AppCompatActivity() {
 
-    override fun dailyBinding(): NotificationBigActBinding {
-        return NotificationBigActBinding.inflate(layoutInflater)
+    private lateinit var binding: NotificationBigActBinding
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = NotificationBigActBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        dailyData()
+        dailyLoad()
     }
 
     override fun onNewIntent(intentNew: Intent?) {
@@ -38,13 +44,13 @@ class NotificationActivity : BaseActivity<NotificationBigActBinding>() {
 
     private var workID = ""
     private var tanID = ""
-    override fun dailyData() {
+    private fun dailyData() {
         workID = intent?.getStringExtra(Noty_KEY_WORK) ?: ""
         tanID = intent?.getStringExtra(Noty_KEY_SOURCE) ?: ""
         FirebaseEvent.notyActivityShow(tanID)
     }
 
-    override fun dailyLoad() {
+    private fun dailyLoad() {
         val params = window.attributes
         window.setGravity(Gravity.CENTER)
         params.width = (resources.displayMetrics.widthPixels * 0.98f).toInt()
