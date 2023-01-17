@@ -32,10 +32,9 @@ class NotificationActivity : AppCompatActivity() {
     }
 
     override fun onNewIntent(intentNew: Intent?) {
-        super.onNewIntent(intent)
-        intent = intentNew
-        workID = intent?.getStringExtra(Noty_KEY_WORK) ?: ""
-        tanID = intent?.getStringExtra(Noty_KEY_SOURCE) ?: ""
+        super.onNewIntent(intentNew)
+        workID = intentNew?.getStringExtra(Noty_KEY_WORK) ?: ""
+        tanID = intentNew?.getStringExtra(Noty_KEY_SOURCE) ?: ""
         initView()
     }
 
