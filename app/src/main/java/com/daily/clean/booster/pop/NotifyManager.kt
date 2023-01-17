@@ -1,5 +1,7 @@
 package com.daily.clean.booster.pop
 
+import com.daily.clean.booster.ads.AdsLoader
+import com.daily.clean.booster.ads.conf.AdPos
 import com.daily.clean.booster.appIns
 import com.daily.clean.booster.base.FirebaseEvent
 import com.daily.clean.booster.datas.RemoteConfig
@@ -39,6 +41,7 @@ object NotifyManager: NotifyPopper() {
             FirebaseEvent.popLog(sourceId, 0)
             createNotificationAndPop(workId, sourceId)
             saveLastPopTime(sourceId)
+            AdsLoader.preloadAd(appIns, AdPos.Open)
         }
     }
 
